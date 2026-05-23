@@ -1,0 +1,17 @@
+
+ALLOCATION GOVERNANCE ENGINE — 2026-05-23
+
+Portfolio Health Score:
+80/100
+
+Allocation Regime:
+Neutral allocation environment.
+
+Governance Signals:
+
+Defense currently overweight. Semiconductor currently overweight.
+
+Observation:
+Portfolio governance now evaluates
+allocation quality, concentration,
+and regime-adjusted positioning.
