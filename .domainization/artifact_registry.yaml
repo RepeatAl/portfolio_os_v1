@@ -1,0 +1,2061 @@
+# Artifact Registry
+# Central index of all artifacts in Portfolio OS with metadata
+#
+# This file tracks artifacts that cannot embed YAML frontmatter (non-markdown files).
+# Markdown files should use YAML frontmatter instead of entries here.
+#
+# METADATA SCHEMA:
+#
+# Required Fields:
+#   artifact_id: string - Unique identifier (e.g., "system_architecture_md")
+#   file_path: string - Relative path from repo root (e.g., "docs/system_architecture.md")
+#   primary_domain: string - Domain ID from domain_registry.yaml (e.g., "ARCH")
+#   artifact_type: string - Type ID from lifecycle_state_machine.yaml (e.g., "SSOT")
+#   lifecycle_status: string - Current state from state machine (e.g., "canonical")
+#   created_date: string - Creation date in YYYY-MM-DD format
+#   last_modified: string - Last modification date in YYYY-MM-DD format
+#   owner_role: string - Responsibility description (e.g., "System architect")
+#   ssot_relationship: string - One of: canonical, derived, implementation, none
+#   allowed_writers: list[string] - Domain IDs with write permission
+#   allowed_readers: list[string] - Domain IDs with read permission (use "ALL" for public)
+#
+# Optional Fields:
+#   secondary_domains: list[string] - Additional domain associations
+#   dependencies: list[string] - Artifact IDs this depends on
+#   topic: string - Topic for SSOT conflict detection
+#   description: string - Human-readable description
+#   tags: list[string] - Categorization tags
+#
+# EXAMPLES BY ARTIFACT TYPE:
+
+artifacts:
+  # Example 1: SSOT Document (Markdown - should use frontmatter instead)
+  # This example shows the schema, but markdown files should embed this in frontmatter
+  - artifact_id: system_architecture_md
+    file_path: docs/system_architecture.md
+    primary_domain: ARCH
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-01-15"
+    last_modified: "2026-05-20"
+    owner_role: System architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - ARCH
+    allowed_readers:
+      - ALL
+    topic: system_architecture
+    description: "Defines the overall system architecture and component relationships"
+    tags:
+      - architecture
+      - design
+
+  # SIGNAL GENERATION ENGINES
+  - artifact_id: allocation_engine_py
+    file_path: engines/allocation_engine.py
+    primary_domain: SIGNALS
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_health_framework_md
+      - signal_calculation_framework_md
+    description: "Generates allocation structure signals for portfolio composition analysis"
+    tags:
+      - signals
+      - allocation
+
+  - artifact_id: regime_engine_py
+    file_path: engines/regime_engine.py
+    primary_domain: SIGNALS
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - market_regime_framework_md
+      - signal_calculation_framework_md
+    description: "Generates market regime classification signals based on liquidity conditions"
+    tags:
+      - signals
+      - regime
+
+  - artifact_id: attribution_engine_py
+    file_path: engines/attribution_engine.py
+    primary_domain: SIGNALS
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - correlation_dependency_framework_md
+      - signal_calculation_framework_md
+    description: "Generates attribution signals identifying portfolio performance drivers"
+    tags:
+      - signals
+      - attribution
+
+  - artifact_id: scoring_engine_py
+    file_path: engines/scoring_engine.py
+    primary_domain: SIGNALS
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - scoring_methodology_framework_md
+      - signal_calculation_framework_md
+    description: "Generates portfolio scoring signals for action prioritization"
+    tags:
+      - signals
+      - scoring
+
+  # SEMANTIC INTERPRETATION ENGINES
+  - artifact_id: semantic_engine_py
+    file_path: engines/semantic_engine.py
+    primary_domain: SEMANTICS
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-05"
+    last_modified: "2026-05-25"
+    owner_role: Semantic interpretation engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - SEMANTICS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - semantic_signal_registry_md
+      - semantic_reasoning_rules_md
+    description: "Interprets raw signals into semantic states with meaning and context"
+    tags:
+      - semantics
+      - interpretation
+
+  # REASONING ENGINES
+  - artifact_id: decision_engine_py
+    file_path: engines/decision_engine.py
+    primary_domain: REASONING
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-10"
+    last_modified: "2026-05-25"
+    owner_role: Reasoning logic engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - REASONING
+    allowed_readers:
+      - ALL
+    dependencies:
+      - decision_governance_md
+      - semantic_reasoning_rules_md
+    description: "Generates actionable decisions based on semantic states and priorities"
+    tags:
+      - reasoning
+      - decisions
+
+  - artifact_id: quality_engine_py
+    file_path: engines/quality_engine.py
+    primary_domain: REASONING
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-10"
+    last_modified: "2026-05-25"
+    owner_role: Reasoning logic engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - REASONING
+    allowed_readers:
+      - ALL
+    dependencies:
+      - decision_governance_md
+      - semantic_reasoning_rules_md
+    description: "Evaluates reasoning quality and confidence levels for decision validation"
+    tags:
+      - reasoning
+      - quality
+
+  - artifact_id: priority_engine_py
+    file_path: engines/priority_engine.py
+    primary_domain: REASONING
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-10"
+    last_modified: "2026-05-25"
+    owner_role: Reasoning logic engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - REASONING
+    allowed_readers:
+      - ALL
+    dependencies:
+      - decision_governance_md
+      - semantic_reasoning_rules_md
+    description: "Prioritizes actions and risks based on semantic interpretation"
+    tags:
+      - reasoning
+      - priority
+
+  # REPORT GENERATION ENGINES
+  - artifact_id: report_engine_py
+    file_path: engines/report_engine.py
+    primary_domain: REPORT
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-15"
+    last_modified: "2026-05-25"
+    owner_role: Report generation engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+      - report_section_specification_md
+    description: "Generates comprehensive portfolio manager reports from reasoning outputs"
+    tags:
+      - report
+      - generation
+
+  - artifact_id: morning_briefing_engine_py
+    file_path: engines/morning_briefing_engine.py
+    primary_domain: REPORT
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-15"
+    last_modified: "2026-05-25"
+    owner_role: Report generation engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+      - report_section_specification_md
+    description: "Generates daily morning briefing summaries for portfolio managers"
+    tags:
+      - report
+      - briefing
+
+  - artifact_id: delta_engine_py
+    file_path: engines/delta_engine.py
+    primary_domain: REPORT
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-15"
+    last_modified: "2026-05-25"
+    owner_role: Report generation engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+    description: "Detects and reports changes between consecutive portfolio reports"
+    tags:
+      - report
+      - delta
+
+  - artifact_id: pm_report_engine_py
+    file_path: reports/pm_report_engine.py
+    primary_domain: REPORT
+    artifact_type: ENGINE
+    lifecycle_status: development
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+      - report_section_specification_md
+    description: "Portfolio manager report generation engine (in development)"
+    tags:
+      - report
+      - pm
+
+  # SIMULATION ENGINES
+  - artifact_id: scenario_engine_py
+    file_path: engines/scenario_engine.py
+    primary_domain: SIM
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-20"
+    last_modified: "2026-05-25"
+    owner_role: Simulation engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - SIM
+    allowed_readers:
+      - ALL
+    dependencies:
+      - simulation_architecture_md
+    description: "Generates scenario analysis and stress testing simulations"
+    tags:
+      - simulation
+      - scenarios
+
+  # USER INTERFACE ENGINES
+  - artifact_id: visual_engine_py
+    file_path: engines/visual_engine.py
+    primary_domain: ARCH
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-25"
+    last_modified: "2026-05-25"
+    owner_role: UI/UX engineer
+    ssot_relationship: implementation
+    secondary_domains:
+      - USER
+    allowed_writers:
+      - ARCH
+      - USER
+    allowed_readers:
+      - ALL
+    dependencies:
+      - dashboard_philosophy_md
+    description: "Generates visualization data structures for dashboard rendering"
+    tags:
+      - visualization
+      - dashboard
+
+  # ARCHITECTURE ENGINES
+  - artifact_id: engine_registry_py
+    file_path: engines/engine_registry.py
+    primary_domain: ARCH
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: System architect
+    ssot_relationship: implementation
+    allowed_writers:
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies:
+      - engine_design_principles_md
+      - system_architecture_md
+    description: "Central registry defining engine dependencies and execution order"
+    tags:
+      - architecture
+      - orchestration
+
+  - artifact_id: engine_runner_py
+    file_path: engines/engine_runner.py
+    primary_domain: ARCH
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: System architect
+    ssot_relationship: implementation
+    allowed_writers:
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies:
+      - engine_design_principles_md
+      - system_architecture_md
+      - engine_registry_py
+    description: "Orchestrates engine execution flow and dependency resolution"
+    tags:
+      - architecture
+      - orchestration
+
+  # REPORT OUTPUTS
+  - artifact_id: portfolio_report_txt
+    file_path: portfolio_report.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-24"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_engine_py
+      - report_reasoning_system_md
+      - report_section_specification_md
+    description: "Daily portfolio manager report"
+    tags:
+      - report
+      - daily
+
+  - artifact_id: morning_briefing_txt
+    file_path: morning_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - morning_briefing_engine_py
+      - report_reasoning_system_md
+      - report_section_specification_md
+    description: "Daily morning briefing summary for portfolio managers"
+    tags:
+      - report
+      - briefing
+      - daily
+
+  - artifact_id: allocation_briefing_txt
+    file_path: allocation_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - allocation_engine_py
+      - report_reasoning_system_md
+    description: "Allocation structure analysis briefing"
+    tags:
+      - report
+      - briefing
+      - allocation
+
+  - artifact_id: attribution_briefing_txt
+    file_path: attribution_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - attribution_engine_py
+      - report_reasoning_system_md
+    description: "Performance attribution analysis briefing"
+    tags:
+      - report
+      - briefing
+      - attribution
+
+  - artifact_id: correlation_briefing_txt
+    file_path: correlation_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+      - correlation_dependency_framework_md
+    description: "Correlation and dependency analysis briefing"
+    tags:
+      - report
+      - briefing
+      - correlation
+
+  - artifact_id: cross_asset_briefing_txt
+    file_path: cross_asset_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+    description: "Cross-asset relationship analysis briefing"
+    tags:
+      - report
+      - briefing
+      - cross_asset
+
+  - artifact_id: divergence_briefing_txt
+    file_path: divergence_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+    description: "Market divergence analysis briefing"
+    tags:
+      - report
+      - briefing
+      - divergence
+
+  - artifact_id: early_warning_briefing_txt
+    file_path: early_warning_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+      - portfolio_health_framework_md
+    description: "Early warning signals briefing"
+    tags:
+      - report
+      - briefing
+      - early_warning
+
+  - artifact_id: flow_briefing_txt
+    file_path: flow_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+    description: "Market flow analysis briefing"
+    tags:
+      - report
+      - briefing
+      - flow
+
+  - artifact_id: liquidity_briefing_txt
+    file_path: liquidity_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - regime_engine_py
+      - report_reasoning_system_md
+      - market_regime_framework_md
+    description: "Liquidity conditions analysis briefing"
+    tags:
+      - report
+      - briefing
+      - liquidity
+
+  - artifact_id: market_breadth_briefing_txt
+    file_path: market_breadth_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+    description: "Market breadth analysis briefing"
+    tags:
+      - report
+      - briefing
+      - market_breadth
+
+  - artifact_id: narrative_dependency_briefing_txt
+    file_path: narrative_dependency_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+      - correlation_dependency_framework_md
+    description: "Narrative dependency analysis briefing"
+    tags:
+      - report
+      - briefing
+      - narrative
+
+  - artifact_id: portfolio_memory_briefing_txt
+    file_path: portfolio_memory_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+      - portfolio_memory_architecture_md
+    description: "Portfolio memory and historical context briefing"
+    tags:
+      - report
+      - briefing
+      - memory
+
+  - artifact_id: regime_briefing_txt
+    file_path: regime_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - regime_engine_py
+      - report_reasoning_system_md
+      - market_regime_framework_md
+    description: "Market regime classification briefing"
+    tags:
+      - report
+      - briefing
+      - regime
+
+  - artifact_id: relative_strength_briefing_txt
+    file_path: relative_strength_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - report_reasoning_system_md
+    description: "Relative strength analysis briefing"
+    tags:
+      - report
+      - briefing
+      - relative_strength
+
+  - artifact_id: scenario_briefing_txt
+    file_path: scenario_briefing.txt
+    primary_domain: REPORT
+    artifact_type: REPORT_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Report generation system
+    ssot_relationship: none
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    dependencies:
+      - scenario_engine_py
+      - report_reasoning_system_md
+      - simulation_architecture_md
+    description: "Scenario analysis and stress testing briefing"
+    tags:
+      - report
+      - briefing
+      - scenario
+
+  # SIGNAL OUTPUT DATA FILES (DATA_OUT)
+  - artifact_id: allocation_engine_xlsx
+    file_path: allocation_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - allocation_engine_py
+    description: "Allocation structure signal outputs"
+    tags:
+      - signals
+      - data
+      - allocation
+
+  - artifact_id: attribution_engine_xlsx
+    file_path: attribution_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - attribution_engine_py
+    description: "Performance attribution signal outputs"
+    tags:
+      - signals
+      - data
+      - attribution
+
+  - artifact_id: regime_engine_xlsx
+    file_path: regime_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - regime_engine_py
+    description: "Market regime classification signal outputs"
+    tags:
+      - signals
+      - data
+      - regime
+
+  - artifact_id: scenario_engine_xlsx
+    file_path: scenario_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - scenario_engine_py
+    description: "Scenario analysis signal outputs"
+    tags:
+      - signals
+      - data
+      - scenario
+
+  - artifact_id: risk_engine_xlsx
+    file_path: risk_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - signal_calculation_framework_md
+    description: "Risk assessment signal outputs"
+    tags:
+      - signals
+      - data
+      - risk
+
+  - artifact_id: correlation_matrix_xlsx
+    file_path: correlation_matrix.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - correlation_dependency_framework_md
+    description: "Asset correlation matrix signal outputs"
+    tags:
+      - signals
+      - data
+      - correlation
+
+  - artifact_id: high_correlation_pairs_xlsx
+    file_path: high_correlation_pairs.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - correlation_dependency_framework_md
+    description: "High correlation asset pairs signal outputs"
+    tags:
+      - signals
+      - data
+      - correlation
+
+  - artifact_id: divergence_engine_xlsx
+    file_path: divergence_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - signal_calculation_framework_md
+    description: "Market divergence signal outputs"
+    tags:
+      - signals
+      - data
+      - divergence
+
+  - artifact_id: early_warning_engine_xlsx
+    file_path: early_warning_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_health_framework_md
+    description: "Early warning signal outputs"
+    tags:
+      - signals
+      - data
+      - early_warning
+
+  - artifact_id: flow_engine_xlsx
+    file_path: flow_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - signal_calculation_framework_md
+    description: "Market flow signal outputs"
+    tags:
+      - signals
+      - data
+      - flow
+
+  - artifact_id: liquidity_engine_xlsx
+    file_path: liquidity_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - regime_engine_py
+      - market_regime_framework_md
+    description: "Liquidity conditions signal outputs"
+    tags:
+      - signals
+      - data
+      - liquidity
+
+  - artifact_id: market_breadth_engine_xlsx
+    file_path: market_breadth_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - signal_calculation_framework_md
+    description: "Market breadth signal outputs"
+    tags:
+      - signals
+      - data
+      - market_breadth
+
+  - artifact_id: narrative_risk_engine_xlsx
+    file_path: narrative_risk_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - correlation_dependency_framework_md
+    description: "Narrative risk signal outputs"
+    tags:
+      - signals
+      - data
+      - narrative
+
+  - artifact_id: relative_strength_engine_xlsx
+    file_path: relative_strength_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - signal_calculation_framework_md
+    description: "Relative strength signal outputs"
+    tags:
+      - signals
+      - data
+      - relative_strength
+
+  - artifact_id: cross_asset_engine_xlsx
+    file_path: cross_asset_engine.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - signal_calculation_framework_md
+    description: "Cross-asset relationship signal outputs"
+    tags:
+      - signals
+      - data
+      - cross_asset
+
+  - artifact_id: divergence_market_data_xlsx
+    file_path: divergence_market_data.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - signal_calculation_framework_md
+    description: "Divergence market data signal outputs"
+    tags:
+      - signals
+      - data
+      - divergence
+
+  - artifact_id: liquidity_signals_xlsx
+    file_path: liquidity_signals.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - regime_engine_py
+      - market_regime_framework_md
+    description: "Liquidity signal outputs"
+    tags:
+      - signals
+      - data
+      - liquidity
+
+  - artifact_id: macro_output_xlsx
+    file_path: macro_output.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - signal_calculation_framework_md
+    description: "Macro signal outputs"
+    tags:
+      - signals
+      - data
+      - macro
+
+  - artifact_id: narrative_summary_xlsx
+    file_path: narrative_summary.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - correlation_dependency_framework_md
+    description: "Narrative summary signal outputs"
+    tags:
+      - signals
+      - data
+      - narrative
+
+  - artifact_id: trigger_dependency_xlsx
+    file_path: trigger_dependency.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - correlation_dependency_framework_md
+    description: "Trigger dependency signal outputs"
+    tags:
+      - signals
+      - data
+      - dependency
+
+  - artifact_id: breadth_category_strength_xlsx
+    file_path: breadth_category_strength.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - signal_calculation_framework_md
+    description: "Category strength breadth signal outputs"
+    tags:
+      - signals
+      - data
+      - breadth
+
+  - artifact_id: category_attribution_xlsx
+    file_path: category_attribution.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - attribution_engine_py
+    description: "Category attribution signal outputs"
+    tags:
+      - signals
+      - data
+      - attribution
+
+  - artifact_id: category_relative_strength_xlsx
+    file_path: category_relative_strength.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - signal_calculation_framework_md
+    description: "Category relative strength signal outputs"
+    tags:
+      - signals
+      - data
+      - relative_strength
+
+  - artifact_id: cross_asset_data_xlsx
+    file_path: cross_asset_data.xlsx
+    primary_domain: SIGNALS
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation system
+    ssot_relationship: none
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    dependencies:
+      - signal_calculation_framework_md
+    description: "Cross-asset data signal outputs"
+    tags:
+      - signals
+      - data
+      - cross_asset
+
+  # PORTFOLIO STATE DATA FILES
+  - artifact_id: watchlist_xlsx
+    file_path: watchlist.xlsx
+    primary_domain: STATE
+    artifact_type: DATA_IN
+    lifecycle_status: active
+    created_date: "2026-05-20"
+    last_modified: "2026-05-25"
+    owner_role: Portfolio state management system
+    ssot_relationship: none
+    allowed_writers:
+      - STATE
+    allowed_readers:
+      - ALL
+    dependencies:
+      - watchlist_asset_registry_framework_md
+    description: "Portfolio watchlist with tracked assets"
+    tags:
+      - state
+      - watchlist
+      - portfolio
+
+  - artifact_id: data_json
+    file_path: data.json
+    primary_domain: STATE
+    artifact_type: CONFIG
+    lifecycle_status: active
+    created_date: "2026-01-20"
+    last_modified: "2026-05-22"
+    owner_role: State management system
+    ssot_relationship: none
+    allowed_writers:
+      - STATE
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_state_model_md
+    description: "Portfolio state configuration"
+    tags:
+      - config
+      - state
+
+  - artifact_id: portfolio_output_xlsx
+    file_path: portfolio_output.xlsx
+    primary_domain: STATE
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Portfolio state management system
+    ssot_relationship: none
+    allowed_writers:
+      - STATE
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_state_model_md
+    description: "Portfolio state output data"
+    tags:
+      - state
+      - portfolio
+      - output
+
+  - artifact_id: category_exposure_xlsx
+    file_path: category_exposure.xlsx
+    primary_domain: STATE
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Portfolio state management system
+    ssot_relationship: none
+    allowed_writers:
+      - STATE
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_state_model_md
+    description: "Portfolio category exposure data"
+    tags:
+      - state
+      - portfolio
+      - exposure
+
+  - artifact_id: category_flow_xlsx
+    file_path: category_flow.xlsx
+    primary_domain: STATE
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Portfolio state management system
+    ssot_relationship: none
+    allowed_writers:
+      - STATE
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_state_model_md
+    description: "Portfolio category flow data"
+    tags:
+      - state
+      - portfolio
+      - flow
+
+  - artifact_id: allocation_governance_xlsx
+    file_path: allocation_governance.xlsx
+    primary_domain: STATE
+    artifact_type: DATA_OUT
+    lifecycle_status: current
+    created_date: "2026-05-24"
+    last_modified: "2026-05-25"
+    owner_role: Portfolio state management system
+    ssot_relationship: none
+    allowed_writers:
+      - STATE
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_state_model_md
+      - decision_governance_md
+    description: "Portfolio allocation governance data"
+    tags:
+      - state
+      - portfolio
+      - governance
+
+  # DATA INPUT FILES
+  - artifact_id: market_snapshot_xlsx
+    file_path: data/market_snapshot_2026-05-23.xlsx
+    primary_domain: DATA
+    artifact_type: DATA_IN
+    lifecycle_status: active
+    created_date: "2026-05-23"
+    last_modified: "2026-05-23"
+    owner_role: Data ingestion system
+    ssot_relationship: none
+    allowed_writers:
+      - DATA
+    allowed_readers:
+      - ALL
+    dependencies:
+      - data_ingestion_normalization_framework_md
+    description: "Daily market data snapshot"
+    tags:
+      - market_data
+      - input
+
+  # Example 6: RUNTIME (Python entry point)
+  - artifact_id: main_py
+    file_path: main.py
+    primary_domain: DEPLOY
+    artifact_type: RUNTIME
+    lifecycle_status: active
+    created_date: "2026-01-10"
+    last_modified: "2026-05-15"
+    owner_role: Deployment engineer
+    ssot_relationship: none
+    allowed_writers:
+      - DEPLOY
+    allowed_readers:
+      - ALL
+    description: "Main execution entry point for Portfolio OS"
+    tags:
+      - runtime
+      - deployment
+
+  # Example 7: DASHBOARD (Frontend application)
+  - artifact_id: app_py
+    file_path: app.py
+    primary_domain: USER
+    artifact_type: DASHBOARD
+    lifecycle_status: active
+    created_date: "2026-02-15"
+    last_modified: "2026-05-20"
+    owner_role: Frontend engineer
+    ssot_relationship: none
+    allowed_writers:
+      - USER
+    allowed_readers:
+      - ALL
+    description: "Streamlit dashboard for portfolio visualization"
+    tags:
+      - dashboard
+      - ui
+
+  # HISTORICAL SNAPSHOT FILES (MEMORY DOMAIN)
+  - artifact_id: portfolio_history_xlsx
+    file_path: data/portfolio_history.xlsx
+    primary_domain: MEMORY
+    artifact_type: SNAPSHOT
+    lifecycle_status: captured
+    created_date: "2026-05-01"
+    last_modified: "2026-05-23"
+    owner_role: Portfolio memory system
+    ssot_relationship: none
+    allowed_writers:
+      - MEMORY
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_memory_architecture_md
+    description: "Historical portfolio positions and performance"
+    tags:
+      - history
+      - snapshot
+
+  - artifact_id: briefing_2026_05_23_txt
+    file_path: history/briefing_2026-05-23.txt
+    primary_domain: MEMORY
+    artifact_type: SNAPSHOT
+    lifecycle_status: archived
+    created_date: "2026-05-23"
+    last_modified: "2026-05-23"
+    owner_role: Portfolio memory system
+    ssot_relationship: none
+    allowed_writers:
+      - NONE
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_memory_architecture_md
+    description: "Archived briefing snapshot from 2026-05-23"
+    tags:
+      - history
+      - snapshot
+      - briefing
+
+  - artifact_id: macro_2026_05_23_xlsx
+    file_path: history/macro_2026-05-23.xlsx
+    primary_domain: MEMORY
+    artifact_type: SNAPSHOT
+    lifecycle_status: archived
+    created_date: "2026-05-23"
+    last_modified: "2026-05-23"
+    owner_role: Portfolio memory system
+    ssot_relationship: none
+    allowed_writers:
+      - NONE
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_memory_architecture_md
+    description: "Archived macro data snapshot from 2026-05-23"
+    tags:
+      - history
+      - snapshot
+      - macro
+
+  - artifact_id: narrative_2026_05_23_xlsx
+    file_path: history/narrative_2026-05-23.xlsx
+    primary_domain: MEMORY
+    artifact_type: SNAPSHOT
+    lifecycle_status: archived
+    created_date: "2026-05-23"
+    last_modified: "2026-05-23"
+    owner_role: Portfolio memory system
+    ssot_relationship: none
+    allowed_writers:
+      - NONE
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_memory_architecture_md
+    description: "Archived narrative data snapshot from 2026-05-23"
+    tags:
+      - history
+      - snapshot
+      - narrative
+
+  - artifact_id: portfolio_2026_05_23_xlsx
+    file_path: history/portfolio_2026-05-23.xlsx
+    primary_domain: MEMORY
+    artifact_type: SNAPSHOT
+    lifecycle_status: archived
+    created_date: "2026-05-23"
+    last_modified: "2026-05-23"
+    owner_role: Portfolio memory system
+    ssot_relationship: none
+    allowed_writers:
+      - NONE
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_memory_architecture_md
+    description: "Archived portfolio snapshot from 2026-05-23"
+    tags:
+      - history
+      - snapshot
+      - portfolio
+
+  - artifact_id: portfolio_memory_xlsx
+    file_path: history/portfolio_memory.xlsx
+    primary_domain: MEMORY
+    artifact_type: SNAPSHOT
+    lifecycle_status: captured
+    created_date: "2026-05-01"
+    last_modified: "2026-05-25"
+    owner_role: Portfolio memory system
+    ssot_relationship: none
+    allowed_writers:
+      - MEMORY
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_memory_architecture_md
+    description: "Consolidated portfolio memory across time periods"
+    tags:
+      - history
+      - snapshot
+      - memory
+
+  - artifact_id: regime_history_xlsx
+    file_path: history/regime_history.xlsx
+    primary_domain: MEMORY
+    artifact_type: SNAPSHOT
+    lifecycle_status: captured
+    created_date: "2026-05-01"
+    last_modified: "2026-05-25"
+    owner_role: Portfolio memory system
+    ssot_relationship: none
+    allowed_writers:
+      - MEMORY
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_memory_architecture_md
+      - market_regime_framework_md
+    description: "Historical market regime classifications"
+    tags:
+      - history
+      - snapshot
+      - regime
+
+  - artifact_id: report_2026_05_24_txt
+    file_path: history/report_2026-05-24.txt
+    primary_domain: MEMORY
+    artifact_type: SNAPSHOT
+    lifecycle_status: archived
+    created_date: "2026-05-24"
+    last_modified: "2026-05-24"
+    owner_role: Portfolio memory system
+    ssot_relationship: none
+    allowed_writers:
+      - NONE
+    allowed_readers:
+      - ALL
+    dependencies:
+      - portfolio_memory_architecture_md
+    description: "Archived report snapshot from 2026-05-24"
+    tags:
+      - history
+      - snapshot
+      - report
+
+  # CALIBRATION (Calibration document - should use frontmatter)
+  - artifact_id: kiro_calibration_report_md
+    file_path: reports/kiro_calibration_report.md
+    primary_domain: ARCH
+    artifact_type: CALIBRATION
+    lifecycle_status: active
+    created_date: "2026-03-01"
+    last_modified: "2026-05-10"
+    owner_role: System calibration engineer
+    ssot_relationship: none
+    allowed_writers:
+      - ARCH
+    allowed_readers:
+      - ALL
+    description: "Kiro AI calibration decisions and parameter tuning"
+    tags:
+      - calibration
+      - ai
+
+  # STEERING (Kiro steering rule - should use frontmatter)
+  - artifact_id: execution_governance_baseline_md
+    file_path: .kiro/steering/Committ.md
+    primary_domain: GOV
+    artifact_type: STEERING
+    lifecycle_status: active
+    created_date: "2026-04-01"
+    last_modified: "2026-05-15"
+    owner_role: Governance engineer
+    ssot_relationship: none
+    allowed_writers:
+      - GOV
+    allowed_readers:
+      - ALL
+    description: "Kiro execution governance rules (commit governance)"
+    tags:
+      - steering
+      - governance
+
+# USAGE NOTES:
+#
+# 1. Markdown files should use YAML frontmatter instead of registry entries
+# 2. Non-markdown files (Python, Excel, JSON, etc.) must be registered here
+# 3. artifact_id should be unique and descriptive (use file_path with underscores)
+# 4. primary_domain must exist in domain_registry.yaml
+# 5. artifact_type must exist in lifecycle_state_machine.yaml
+# 6. lifecycle_status must be valid for the artifact_type
+# 7. ssot_relationship: use "canonical" for authoritative docs, "derived" for summaries,
+#    "implementation" for code that implements a spec, "none" for generated/data artifacts
+# 8. allowed_writers: list domain IDs that can modify this artifact
+# 9. allowed_readers: use ["ALL"] for public, or list specific domain IDs for restricted
+# 10. dependencies: reference artifact_ids that this artifact depends on
+#
+# REGISTRY MODES:
+# - full: Registry is the authoritative metadata source (default for non-markdown)
+# - mirror_only: Registry indexes this artifact for dependency resolution,
+#   but frontmatter in the file itself is the authoritative metadata source.
+#   Registry mirrors. Frontmatter governs.
+
+  # ============================================================================
+  # SSOT FRAMEWORK DOCUMENTS (mirror_only mode)
+  # These entries exist ONLY for dependency graph resolution.
+  # Authoritative metadata lives in each file's YAML frontmatter.
+  # Registry mirrors. Frontmatter governs.
+  # ============================================================================
+
+  - artifact_id: signal_calculation_framework_md
+    file_path: docs/signal_calculation_framework.md
+    primary_domain: SIGNALS
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Signal calculation methodology and formulas"
+    tags:
+      - signals
+      - framework
+
+  - artifact_id: portfolio_health_framework_md
+    file_path: docs/portfolio_health_framework.md
+    primary_domain: SIGNALS
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Portfolio health assessment framework"
+    tags:
+      - signals
+      - health
+
+  - artifact_id: market_regime_framework_md
+    file_path: docs/market_regime_framework.md
+    primary_domain: SIGNALS
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Market regime classification framework"
+    tags:
+      - signals
+      - regime
+
+  - artifact_id: correlation_dependency_framework_md
+    file_path: docs/correlation_dependency_framework.md
+    primary_domain: SIGNALS
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Correlation and dependency analysis framework"
+    tags:
+      - signals
+      - correlation
+
+  - artifact_id: scoring_methodology_framework_md
+    file_path: docs/scoring_methodology_framework.md
+    primary_domain: SIGNALS
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: Signal generation architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - SIGNALS
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Portfolio scoring methodology framework"
+    tags:
+      - signals
+      - scoring
+
+  - artifact_id: semantic_signal_registry_md
+    file_path: docs/semantic_signal_registry.md
+    primary_domain: SEMANTICS
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-05"
+    last_modified: "2026-05-25"
+    owner_role: Semantic interpretation architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - SEMANTICS
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Semantic signal registry and interpretation rules"
+    tags:
+      - semantics
+      - registry
+
+  - artifact_id: semantic_reasoning_rules_md
+    file_path: docs/semantic_reasoning_rules.md
+    primary_domain: SEMANTICS
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-05"
+    last_modified: "2026-05-25"
+    owner_role: Semantic interpretation architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - SEMANTICS
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Semantic reasoning rules and interpretation logic"
+    tags:
+      - semantics
+      - reasoning
+
+  - artifact_id: decision_governance_md
+    file_path: docs/decision_governance.md
+    primary_domain: GOV
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-10"
+    last_modified: "2026-05-25"
+    owner_role: Governance architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - GOV
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Decision governance framework and rules"
+    tags:
+      - governance
+      - decisions
+
+  - artifact_id: report_reasoning_system_md
+    file_path: docs/report_reasoning_system.md
+    primary_domain: REPORT
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-15"
+    last_modified: "2026-05-25"
+    owner_role: Report generation architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Report reasoning system specification"
+    tags:
+      - report
+      - reasoning
+
+  - artifact_id: report_section_specification_md
+    file_path: docs/report_section_specification.md
+    primary_domain: REPORT
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-15"
+    last_modified: "2026-05-25"
+    owner_role: Report generation architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - REPORT
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Report section structure and content specification"
+    tags:
+      - report
+      - specification
+
+  - artifact_id: simulation_architecture_md
+    file_path: docs/simulation_architecture.md
+    primary_domain: SIM
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-20"
+    last_modified: "2026-05-25"
+    owner_role: Simulation architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - SIM
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Simulation and scenario analysis architecture"
+    tags:
+      - simulation
+      - architecture
+
+  - artifact_id: dashboard_philosophy_md
+    file_path: docs/dashboard_philosophy.md
+    primary_domain: USER
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-25"
+    last_modified: "2026-05-25"
+    owner_role: UI/UX architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - USER
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Dashboard design philosophy and principles"
+    tags:
+      - dashboard
+      - philosophy
+
+  - artifact_id: engine_design_principles_md
+    file_path: docs/engine_design_principles.md
+    primary_domain: ARCH
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: System architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - ARCH
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Engine design principles and patterns"
+    tags:
+      - architecture
+      - engines
+
+  - artifact_id: portfolio_memory_architecture_md
+    file_path: docs/portfolio_memory_architecture.md
+    primary_domain: MEMORY
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: Memory system architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - MEMORY
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Portfolio memory and historical data architecture"
+    tags:
+      - memory
+      - architecture
+
+  - artifact_id: portfolio_state_model_md
+    file_path: docs/portfolio_state_model.md
+    primary_domain: STATE
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: State management architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - STATE
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Portfolio state model and data structures"
+    tags:
+      - state
+      - model
+
+  - artifact_id: watchlist_asset_registry_framework_md
+    file_path: docs/watchlist_asset_registry_framework.md
+    primary_domain: STATE
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: State management architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - STATE
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Watchlist and asset registry framework"
+    tags:
+      - state
+      - watchlist
+
+  - artifact_id: data_ingestion_normalization_framework_md
+    file_path: docs/data_ingestion_normalization_framework.md
+    primary_domain: DATA
+    artifact_type: SSOT
+    lifecycle_status: canonical
+    created_date: "2026-02-01"
+    last_modified: "2026-05-25"
+    owner_role: Data management architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - DATA
+    allowed_readers:
+      - ALL
+    metadata_source: frontmatter
+    registry_mode: mirror_only
+    description: "Data ingestion and normalization framework"
+    tags:
+      - data
+      - ingestion
+
+  # RUNTIME ENTRY POINTS
+  - artifact_id: main_py
+    file_path: main.py
+    primary_domain: DEPLOY
+    artifact_type: RUNTIME
+    lifecycle_status: active
+    created_date: "2026-02-01"
+    last_modified: "2026-05-24"
+    owner_role: Deployment engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - DEPLOY
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies:
+      - engine_runner_py
+      - engine_registry_py
+    description: "Main runtime entry point for Portfolio OS engine execution pipeline"
+    tags:
+      - runtime
+      - deploy
+      - entry_point
+
+  - artifact_id: app_py
+    file_path: app.py
+    primary_domain: USER
+    artifact_type: DASHBOARD
+    lifecycle_status: active
+    created_date: "2026-02-01"
+    last_modified: "2026-05-24"
+    owner_role: Dashboard engineer
+    ssot_relationship: implementation
+    allowed_writers:
+      - USER
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies:
+      - dashboard_philosophy_md
+      - visual_engine_py
+    description: "Streamlit dashboard application entry point for portfolio visualization"
+    tags:
+      - dashboard
+      - user
+      - entry_point

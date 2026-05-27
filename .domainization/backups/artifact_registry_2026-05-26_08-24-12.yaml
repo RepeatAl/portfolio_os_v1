@@ -1,0 +1,59 @@
+artifacts:
+- allowed_readers:
+  - ALL
+  allowed_writers:
+  - ARCH
+  artifact_id: system_architecture_md
+  artifact_type: SSOT
+  created_date: '2025-01-01'
+  file_path: docs/system_architecture.md
+  last_modified: '2025-05-20'
+  lifecycle_status: canonical
+  owner_role: System Architect
+  primary_domain: ARCH
+  ssot_relationship: canonical
+  topic: system_architecture
+- allowed_readers:
+  - ALL
+  allowed_writers:
+  - SIGNALS
+  artifact_id: allocation_engine_py
+  artifact_type: ENGINE
+  created_date: '2025-01-15'
+  dependencies:
+  - system_architecture_md
+  file_path: engines/allocation_engine.py
+  last_modified: '2025-05-18'
+  lifecycle_status: active
+  owner_role: Signal Engineer
+  primary_domain: SIGNALS
+  ssot_relationship: implementation
+- allowed_readers:
+  - ALL
+  allowed_writers:
+  - REPORT
+  artifact_id: portfolio_report_txt
+  artifact_type: REPORT_OUT
+  created_date: '2025-03-01'
+  dependencies:
+  - system_architecture_md
+  file_path: portfolio_report.txt
+  last_modified: '2025-05-25'
+  lifecycle_status: current
+  owner_role: Report Engine
+  primary_domain: REPORT
+  ssot_relationship: derived
+- allowed_readers:
+  - ALL
+  allowed_writers:
+  - SIGNALS
+  artifact_id: signal_spec_md
+  artifact_type: SSOT
+  created_date: '2025-02-01'
+  file_path: docs/signal_specification.md
+  last_modified: '2025-04-10'
+  lifecycle_status: canonical
+  owner_role: Signal Architect
+  primary_domain: SIGNALS
+  ssot_relationship: canonical
+  topic: signal_specification

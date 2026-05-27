@@ -1,0 +1,402 @@
+report_date: '2026-05-26'
+report_time: '10:06:27'
+report_version: '1.0'
+enforcement_mode: observability
+summary:
+  total_artifacts: 93
+  registered_artifacts: 93
+  registration_percentage: 100.0
+  total_domains: 12
+  domains_with_artifacts: 12
+  report_value_valid_percentage: 0.0
+  infrastructure_drift_percentage: 9.67741935483871
+  total_flows_detected: 109
+  forbidden_flows_detected: 16
+  total_violations: 14
+  violations_by_severity:
+    critical: 0
+    high: 14
+    medium: 0
+    low: 0
+domain_coverage:
+- domain_id: SIGNALS
+  domain_name: Signal Generation
+  priority: core
+  artifact_count: 33
+  artifact_types:
+  - type: DATA_OUT
+    count: 24
+  - type: ENGINE
+    count: 4
+  - type: SSOT
+    count: 5
+- domain_id: REPORT
+  domain_name: Report Generation
+  priority: core
+  artifact_count: 22
+  artifact_types:
+  - type: ENGINE
+    count: 4
+  - type: REPORT_OUT
+    count: 16
+  - type: SSOT
+    count: 2
+- domain_id: MEMORY
+  domain_name: Portfolio Memory
+  priority: surface
+  artifact_count: 9
+  artifact_types:
+  - type: SNAPSHOT
+    count: 8
+  - type: SSOT
+    count: 1
+- domain_id: STATE
+  domain_name: Portfolio State
+  priority: surface
+  artifact_count: 8
+  artifact_types:
+  - type: CONFIG
+    count: 1
+  - type: DATA_IN
+    count: 1
+  - type: DATA_OUT
+    count: 4
+  - type: SSOT
+    count: 2
+- domain_id: ARCH
+  domain_name: Architecture
+  priority: surface
+  artifact_count: 6
+  artifact_types:
+  - type: CALIBRATION
+    count: 1
+  - type: ENGINE
+    count: 3
+  - type: SSOT
+    count: 2
+- domain_id: SEMANTICS
+  domain_name: Semantic Interpretation
+  priority: core
+  artifact_count: 3
+  artifact_types:
+  - type: ENGINE
+    count: 1
+  - type: SSOT
+    count: 2
+- domain_id: REASONING
+  domain_name: Reasoning Logic
+  priority: core
+  artifact_count: 3
+  artifact_types:
+  - type: ENGINE
+    count: 3
+- domain_id: USER
+  domain_name: User Interface
+  priority: surface
+  artifact_count: 3
+  artifact_types:
+  - type: DASHBOARD
+    count: 1
+  - type: ENGINE
+    count: 1
+  - type: SSOT
+    count: 1
+- domain_id: GOV
+  domain_name: Governance
+  priority: surface
+  artifact_count: 2
+  artifact_types:
+  - type: SSOT
+    count: 1
+  - type: STEERING
+    count: 1
+- domain_id: DATA
+  domain_name: Data Management
+  priority: surface
+  artifact_count: 2
+  artifact_types:
+  - type: DATA_IN
+    count: 1
+  - type: SSOT
+    count: 1
+- domain_id: SIM
+  domain_name: Simulation
+  priority: surface
+  artifact_count: 2
+  artifact_types:
+  - type: ENGINE
+    count: 1
+  - type: SSOT
+    count: 1
+- domain_id: DEPLOY
+  domain_name: Deployment
+  priority: surface
+  artifact_count: 1
+  artifact_types:
+  - type: RUNTIME
+    count: 1
+lifecycle_distribution:
+- artifact_type: CALIBRATION
+  total_count: 1
+  states:
+  - state: active
+    count: 1
+- artifact_type: CONFIG
+  total_count: 1
+  states:
+  - state: active
+    count: 1
+- artifact_type: DASHBOARD
+  total_count: 1
+  states:
+  - state: active
+    count: 1
+- artifact_type: DATA_IN
+  total_count: 2
+  states:
+  - state: active
+    count: 2
+- artifact_type: DATA_OUT
+  total_count: 28
+  states:
+  - state: current
+    count: 28
+- artifact_type: ENGINE
+  total_count: 16
+  states:
+  - state: active
+    count: 15
+  - state: development
+    count: 1
+- artifact_type: REPORT_OUT
+  total_count: 16
+  states:
+  - state: current
+    count: 16
+- artifact_type: RUNTIME
+  total_count: 1
+  states:
+  - state: active
+    count: 1
+- artifact_type: SNAPSHOT
+  total_count: 8
+  states:
+  - state: archived
+    count: 5
+  - state: captured
+    count: 3
+- artifact_type: SSOT
+  total_count: 18
+  states:
+  - state: canonical
+    count: 18
+- artifact_type: STEERING
+  total_count: 1
+  states:
+  - state: active
+    count: 1
+report_value_health:
+  total_artifacts: 93
+  artifacts_with_report_value: 0
+  artifacts_with_valid_report_value: 0
+  artifacts_speculative: 0
+  artifacts_infrastructure_heavy: 9
+  artifacts_missing_report_value: 93
+  coverage_percentage: 0.0
+  valid_percentage: 0.0
+  infrastructure_drift_percentage: 9.67741935483871
+  category_distribution: {}
+runtime_flow_analysis:
+  total_flows: 109
+  allowed_flows: 93
+  forbidden_flows: 16
+  flow_health_percentage: 85.3
+  forbidden_flow_details:
+  - source_domain: GOV
+    target_domain: REASONING
+    artifact_id: decision_engine_py
+    reason: Surface domain 'GOV' cannot create meaning in core domain 'REASONING'
+      (Req 14.10)
+    suggestion: Only core reasoning domains can create meaning. GOV should consume
+      outputs from REASONING, not produce them.
+  - source_domain: GOV
+    target_domain: REASONING
+    artifact_id: quality_engine_py
+    reason: Surface domain 'GOV' cannot create meaning in core domain 'REASONING'
+      (Req 14.10)
+    suggestion: Only core reasoning domains can create meaning. GOV should consume
+      outputs from REASONING, not produce them.
+  - source_domain: GOV
+    target_domain: REASONING
+    artifact_id: priority_engine_py
+    reason: Surface domain 'GOV' cannot create meaning in core domain 'REASONING'
+      (Req 14.10)
+    suggestion: Only core reasoning domains can create meaning. GOV should consume
+      outputs from REASONING, not produce them.
+  - source_domain: SIGNALS
+    target_domain: REPORT
+    artifact_id: allocation_briefing_txt
+    reason: Signal → Report skips semantic interpretation and reasoning (Req 14.2)
+    suggestion: 'Route through full chain: SIGNALS → SEMANTICS → REASONING → REPORT'
+  - source_domain: SIGNALS
+    target_domain: REPORT
+    artifact_id: attribution_briefing_txt
+    reason: Signal → Report skips semantic interpretation and reasoning (Req 14.2)
+    suggestion: 'Route through full chain: SIGNALS → SEMANTICS → REASONING → REPORT'
+  - source_domain: SIGNALS
+    target_domain: REPORT
+    artifact_id: correlation_briefing_txt
+    reason: Signal → Report skips semantic interpretation and reasoning (Req 14.2)
+    suggestion: 'Route through full chain: SIGNALS → SEMANTICS → REASONING → REPORT'
+  - source_domain: SIGNALS
+    target_domain: REPORT
+    artifact_id: early_warning_briefing_txt
+    reason: Signal → Report skips semantic interpretation and reasoning (Req 14.2)
+    suggestion: 'Route through full chain: SIGNALS → SEMANTICS → REASONING → REPORT'
+  - source_domain: SIGNALS
+    target_domain: REPORT
+    artifact_id: liquidity_briefing_txt
+    reason: Signal → Report skips semantic interpretation and reasoning (Req 14.2)
+    suggestion: 'Route through full chain: SIGNALS → SEMANTICS → REASONING → REPORT'
+  - source_domain: SIGNALS
+    target_domain: REPORT
+    artifact_id: liquidity_briefing_txt
+    reason: Signal → Report skips semantic interpretation and reasoning (Req 14.2)
+    suggestion: 'Route through full chain: SIGNALS → SEMANTICS → REASONING → REPORT'
+  - source_domain: SIGNALS
+    target_domain: REPORT
+    artifact_id: narrative_dependency_briefing_txt
+    reason: Signal → Report skips semantic interpretation and reasoning (Req 14.2)
+    suggestion: 'Route through full chain: SIGNALS → SEMANTICS → REASONING → REPORT'
+  - source_domain: MEMORY
+    target_domain: REPORT
+    artifact_id: portfolio_memory_briefing_txt
+    reason: Surface domain 'MEMORY' cannot create meaning in core domain 'REPORT'
+      (Req 14.10)
+    suggestion: Only core reasoning domains can create meaning. MEMORY should consume
+      outputs from REPORT, not produce them.
+  - source_domain: SIGNALS
+    target_domain: REPORT
+    artifact_id: regime_briefing_txt
+    reason: Signal → Report skips semantic interpretation and reasoning (Req 14.2)
+    suggestion: 'Route through full chain: SIGNALS → SEMANTICS → REASONING → REPORT'
+  - source_domain: SIGNALS
+    target_domain: REPORT
+    artifact_id: regime_briefing_txt
+    reason: Signal → Report skips semantic interpretation and reasoning (Req 14.2)
+    suggestion: 'Route through full chain: SIGNALS → SEMANTICS → REASONING → REPORT'
+  - source_domain: SIM
+    target_domain: REPORT
+    artifact_id: scenario_briefing_txt
+    reason: Surface domain 'SIM' cannot create meaning in core domain 'REPORT' (Req
+      14.10)
+    suggestion: Only core reasoning domains can create meaning. SIM should consume
+      outputs from REPORT, not produce them.
+  - source_domain: SIM
+    target_domain: REPORT
+    artifact_id: scenario_briefing_txt
+    reason: Surface domain 'SIM' cannot create meaning in core domain 'REPORT' (Req
+      14.10)
+    suggestion: Only core reasoning domains can create meaning. SIM should consume
+      outputs from REPORT, not produce them.
+  - source_domain: SIM
+    target_domain: SIGNALS
+    artifact_id: scenario_engine_xlsx
+    reason: Surface domain 'SIM' cannot create meaning in core domain 'SIGNALS' (Req
+      14.10)
+    suggestion: Only core reasoning domains can create meaning. SIM should consume
+      outputs from SIGNALS, not produce them.
+  authority_chain_status: violations_detected
+  execution_time_ms: 0.54
+violations:
+- artifact_id: null
+  file_path: docs/action_space_framework.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: null
+  file_path: docs/opportunity_engine_design.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: null
+  file_path: docs/portfolio_os_domainization_steering.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: null
+  file_path: docs/future_framework_backlog.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: null
+  file_path: docs/confidence_model.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: null
+  file_path: docs/report_pipeline_architecture.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: null
+  file_path: docs/deployment_intelligence_framework.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: null
+  file_path: docs/multilingual_rendering_framework.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: null
+  file_path: docs/trusted_signal_sources.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: null
+  file_path: reports/governance_stabilization_verification_2026-05-25.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: null
+  file_path: reports/task_1_execution_report.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: null
+  file_path: reports/governance_stabilization_preflight_2026-05-25.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: null
+  file_path: reports/governance_stabilization_audit_2026-05-25.md
+  violation_type: unregistered
+  severity: high
+  description: Artifact not registered in domainization system
+  recommendation: Add YAML frontmatter metadata or register in artifact_registry.yaml
+- artifact_id: main_py
+  file_path: main.py
+  violation_type: missing_ssot_reference
+  severity: high
+  description: Implementation artifact dependencies do not include SSOT
+  recommendation: Add SSOT specification artifact_id to dependencies field
+recommendations:
+- priority: high
+  action: Register 13 unregistered artifact(s)
+  rationale: Unregistered artifacts lack governance and lifecycle tracking
+- priority: medium
+  action: Add SSOT references to 1 artifact(s)
+  rationale: Derived and implementation artifacts must reference their canonical SSOT

@@ -1,0 +1,626 @@
+# Artifact Type Guide
+
+## Overview
+
+The domainization system classifies every artifact in Portfolio OS into one of 11 defined types. Each type has a specific purpose, a lifecycle state machine governing its evolution, and rules about which domains can own it. This guide documents all artifact types, their lifecycle states, and provides guidance on when to use each type.
+
+## Features
+
+- 11 artifact types covering all file categories in Portfolio OS
+- Defined lifecycle state machines with valid transitions for each type
+- Clear modifiable vs. read-only state classification
+- Regenerable state support for automated outputs
+- Validation of lifecycle transitions via the `LifecycleManager`
+
+## Artifact Types
+
+### 1. SSOT (Single Source of Truth)
+
+**Description**: Canonical specification documents that define system behavior.
+
+**Purpose**: SSOT documents are the authoritative reference for a given topic. They define how the system should work, what rules apply, and what behavior is expected. All implementation artifacts should trace back to an SSOT.
+
+**Typical Files**: Markdown documents in `docs/` with YAML frontmatter.
+
+**Lifecycle States**:
+
+| State | Description | Modifiable |
+|-------|-------------|------------|
+| `draft` | Initial authoring phase | ✅ Yes |
+| `review` | Under domain owner review | ✅ Yes |
+| `canonical` | Approved as authoritative source | ✅ Yes |
+| `deprecated` | Superseded or no longer applicable | ❌ Read-only |
+
+**State Transitions**:
+
+```
+draft → review        (Author completes initial version and requests review)
+review → canonical    (Domain owner approves document as authoritative)
+review → draft        (Reviewer requests revisions)
+canonical → draft     (Major revision required, temporarily loses canonical status)
+canonical → deprecated (Superseded by new version or no longer applicable)
+```
+
+**When to Use**: Use SSOT for any document that defines system behavior, architecture decisions, framework specifications, or methodology descriptions. If multiple people need to reference "how X works," it should be an SSOT.
+
+**Example Registry Entry**:
+```yaml
+- artifact_id: system_architecture_md
+  file_path: docs/system_architecture.md
+  primary_domain: ARCH
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  ssot_relationship: canonical
+```
+
+---
+
+### 2. ENGINE
+
+**Description**: Python modules that implement signal generation, semantic interpretation, reasoning, or reporting.
+
+**Purpose**: Engines are the executable business logic of Portfolio OS. They transform inputs into outputs following the rules defined in SSOT documents.
+
+**Typical Files**: Python files in `engines/` or `reports/` directories.
+
+**Lifecycle States**:
+
+| State | Description | Modifiable |
+|-------|-------------|------------|
+| `planned` | Designed but not yet implemented | ✅ Yes |
+| `development` | Active implementation in progress | ✅ Yes |
+| `active` | Production-ready and deployed | ✅ Yes |
+| `deprecated` | Replaced or no longer needed | ❌ Read-only |
+
+**State Transitions**:
+
+```
+planned → development     (Implementation work begins)
+development → active      (Engine is production-ready and deployed)
+development → development (Iterative development allowed)
+active → development      (Bug fixes or enhancements required)
+active → deprecated       (Replaced by new engine or no longer needed)
+development → deprecated  (Development abandoned)
+```
+
+**When to Use**: Use ENGINE for any Python module that performs computation, transformation, or generation. This includes signal engines, semantic engines, reasoning engines, and report engines.
+
+**Example Registry Entry**:
+```yaml
+- artifact_id: allocation_engine_py
+  file_path: engines/allocation_engine.py
+  primary_domain: SIGNALS
+  artifact_type: ENGINE
+  lifecycle_status: active
+  dependencies:
+    - signal_calculation_framework_md
+```
+
+---
+
+### 3. REPORT_OUT
+
+**Description**: Text reports generated for portfolio managers.
+
+**Purpose**: REPORT_OUT artifacts are the final human-readable outputs of the system. They represent the culmination of the signal → semantic → reasoning → report chain.
+
+**Typical Files**: `.txt` files at the repository root (e.g., `portfolio_report.txt`, `morning_briefing.txt`).
+
+**Lifecycle States**:
+
+| State | Description | Modifiable |
+|-------|-------------|------------|
+| `generated` | Freshly produced by an engine | ❌ Regenerable only |
+| `current` | Latest version of the report | ❌ Regenerable only |
+| `archived` | Superseded by newer report | ❌ Read-only |
+
+**State Transitions**:
+
+```
+generated → current  (Becomes the latest version of the report)
+current → archived   (Superseded by newer report)
+```
+
+**Special Rules**:
+- REPORT_OUT artifacts are never manually modifiable
+- They can only be overwritten by their generating engine (regenerable)
+- Archived reports are fully read-only
+
+**When to Use**: Use REPORT_OUT for any text output generated by a report engine that is intended for human consumption.
+
+**Example Registry Entry**:
+```yaml
+- artifact_id: portfolio_report_txt
+  file_path: portfolio_report.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: current
+  dependencies:
+    - report_engine_py
+```
+
+---
+
+### 4. DATA_IN
+
+**Description**: External data files ingested into the system.
+
+**Purpose**: DATA_IN artifacts represent external data sources that feed into the system's processing pipeline. They are consumed by engines but not produced by them.
+
+**Typical Files**: Excel files in `data/` directory, external market data snapshots.
+
+**Lifecycle States**:
+
+| State | Description | Modifiable |
+|-------|-------------|------------|
+| `active` | Currently used by the system | ✅ Yes |
+| `stale` | Outdated or superseded | ❌ Read-only |
+| `archived` | Moved to historical storage | ❌ Read-only |
+
+**State Transitions**:
+
+```
+active → stale     (Data becomes outdated or superseded)
+stale → archived   (Moved to historical storage)
+active → archived  (Direct archival without stale period)
+```
+
+**When to Use**: Use DATA_IN for any external data file that the system consumes. This includes market data snapshots, portfolio history files, and any manually-provided input data.
+
+**Example Registry Entry**:
+```yaml
+- artifact_id: market_snapshot_xlsx
+  file_path: data/market_snapshot_2026-05-23.xlsx
+  primary_domain: DATA
+  artifact_type: DATA_IN
+  lifecycle_status: active
+```
+
+---
+
+### 5. DATA_OUT
+
+**Description**: Structured data files produced by signal, semantic, or reasoning engines.
+
+**Purpose**: DATA_OUT artifacts are the machine-readable outputs of engines. They serve as intermediate data products that other engines or reports consume.
+
+**Typical Files**: Excel files at the repository root generated by engines (e.g., `allocation_engine.xlsx`).
+
+**Lifecycle States**:
+
+| State | Description | Modifiable |
+|-------|-------------|------------|
+| `generated` | Freshly produced by an engine | ❌ Regenerable only |
+| `current` | Latest version of the data | ❌ Regenerable only |
+| `archived` | Superseded by newer data | ❌ Read-only |
+
+**State Transitions**:
+
+```
+generated → current  (Becomes the latest version of the data)
+current → archived   (Superseded by newer data)
+```
+
+**Special Rules**:
+- DATA_OUT artifacts are never manually modifiable
+- They can only be overwritten by their generating engine (regenerable)
+- Archived data is fully read-only
+
+**When to Use**: Use DATA_OUT for any structured data file produced by an engine. This includes signal outputs, semantic state files, and reasoning result files.
+
+**Example Registry Entry**:
+```yaml
+- artifact_id: allocation_engine_xlsx
+  file_path: allocation_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  dependencies:
+    - allocation_engine_py
+```
+
+---
+
+### 6. RUNTIME
+
+**Description**: Scripts that orchestrate system execution.
+
+**Purpose**: RUNTIME artifacts are the entry points that coordinate engine execution, manage workflows, and handle system orchestration.
+
+**Typical Files**: `main.py`, orchestration scripts, pipeline runners.
+
+**Lifecycle States**:
+
+| State | Description | Modifiable |
+|-------|-------------|------------|
+| `development` | Under active development | ✅ Yes |
+| `active` | Production-ready | ✅ Yes |
+| `deprecated` | Replaced or no longer used | ❌ Read-only |
+
+**State Transitions**:
+
+```
+development → active      (Runtime script is production-ready)
+active → development      (Modifications required)
+active → deprecated       (Replaced by new runtime or no longer used)
+development → deprecated  (Development abandoned)
+```
+
+**When to Use**: Use RUNTIME for any script whose primary purpose is to orchestrate execution of other components. This includes main entry points, pipeline scripts, and workflow coordinators.
+
+**Example Registry Entry**:
+```yaml
+- artifact_id: main_py
+  file_path: main.py
+  primary_domain: DEPLOY
+  artifact_type: RUNTIME
+  lifecycle_status: active
+```
+
+---
+
+### 7. DASHBOARD
+
+**Description**: Frontend applications for user interaction.
+
+**Purpose**: DASHBOARD artifacts provide the user-facing interface layer. They visualize data, accept user input, and present system outputs in an interactive format.
+
+**Typical Files**: `app.py` (Streamlit/Dash apps), frontend components.
+
+**Lifecycle States**:
+
+| State | Description | Modifiable |
+|-------|-------------|------------|
+| `development` | Under active development | ✅ Yes |
+| `active` | Production-ready | ✅ Yes |
+| `deprecated` | Replaced or no longer used | ❌ Read-only |
+
+**State Transitions**:
+
+```
+development → active      (Dashboard is production-ready)
+active → development      (Modifications required)
+active → deprecated       (Replaced by new dashboard or no longer used)
+development → deprecated  (Development abandoned)
+```
+
+**When to Use**: Use DASHBOARD for any user-facing application or visualization component. If users interact with it directly, it is a DASHBOARD.
+
+**Example Registry Entry**:
+```yaml
+- artifact_id: app_py
+  file_path: app.py
+  primary_domain: USER
+  artifact_type: DASHBOARD
+  lifecycle_status: active
+```
+
+---
+
+### 8. SNAPSHOT
+
+**Description**: Historical snapshots of portfolio state or market data.
+
+**Purpose**: SNAPSHOT artifacts capture a point-in-time state of the system or market. They serve as historical records for backtesting, auditing, and trend analysis.
+
+**Typical Files**: Files in `history/` directory, dated data captures.
+
+**Lifecycle States**:
+
+| State | Description | Modifiable |
+|-------|-------------|------------|
+| `captured` | Freshly captured point-in-time data | ❌ Regenerable only |
+| `archived` | Moved to long-term storage | ❌ Read-only |
+
+**State Transitions**:
+
+```
+captured → archived  (Moved to long-term storage)
+```
+
+**Special Rules**:
+- SNAPSHOT artifacts are never manually modifiable
+- They represent immutable historical records
+- Once archived, they are permanently read-only
+
+**When to Use**: Use SNAPSHOT for any historical data capture. This includes daily portfolio snapshots, market state captures, and any time-stamped data that should be preserved unchanged.
+
+**Example Registry Entry**:
+```yaml
+- artifact_id: portfolio_history_xlsx
+  file_path: data/portfolio_history.xlsx
+  primary_domain: MEMORY
+  artifact_type: SNAPSHOT
+  lifecycle_status: archived
+```
+
+---
+
+### 9. CONFIG
+
+**Description**: System configuration and settings files.
+
+**Purpose**: CONFIG artifacts define system parameters, settings, and operational configuration. They control how the system behaves without changing its logic.
+
+**Typical Files**: YAML/JSON configuration files, environment settings.
+
+**Lifecycle States**:
+
+| State | Description | Modifiable |
+|-------|-------------|------------|
+| `draft` | Configuration being prepared | ✅ Yes |
+| `active` | Validated and deployed | ✅ Yes |
+| `deprecated` | No longer used | ❌ Read-only |
+
+**State Transitions**:
+
+```
+draft → active       (Configuration validated and deployed)
+active → draft       (Modifications required)
+active → deprecated  (Configuration no longer used)
+draft → deprecated   (Configuration abandoned)
+```
+
+**When to Use**: Use CONFIG for any file that controls system behavior through parameters rather than logic. This includes registry configurations, deployment settings, and feature flags.
+
+**Example Registry Entry**:
+```yaml
+- artifact_id: domain_registry_yaml
+  file_path: .domainization/domain_registry.yaml
+  primary_domain: GOV
+  artifact_type: CONFIG
+  lifecycle_status: active
+```
+
+---
+
+### 10. CALIBRATION
+
+**Description**: Documents that record system calibration decisions and parameter tuning.
+
+**Purpose**: CALIBRATION artifacts document the reasoning behind parameter choices, threshold settings, and tuning decisions. They bridge the gap between SSOT specifications and CONFIG values.
+
+**Typical Files**: Calibration reports, parameter tuning documents.
+
+**Lifecycle States**:
+
+| State | Description | Modifiable |
+|-------|-------------|------------|
+| `draft` | Calibration being developed | ✅ Yes |
+| `active` | Validated and applied | ✅ Yes |
+| `superseded` | Replaced by newer calibration | ❌ Read-only |
+
+**State Transitions**:
+
+```
+draft → active       (Calibration validated and applied)
+active → superseded  (New calibration replaces this one)
+draft → superseded   (Calibration abandoned without activation)
+```
+
+**When to Use**: Use CALIBRATION for any document that records why specific parameter values were chosen, how thresholds were determined, or what tuning was applied. If it explains "why this number," it is a CALIBRATION.
+
+**Example Registry Entry**:
+```yaml
+- artifact_id: kiro_calibration_report_md
+  file_path: docs/kiro_calibration_report.md
+  primary_domain: ARCH
+  artifact_type: CALIBRATION
+  lifecycle_status: active
+```
+
+---
+
+### 11. STEERING
+
+**Description**: Kiro AI steering rules that guide agent behavior.
+
+**Purpose**: STEERING artifacts define rules and guidance for the Kiro AI agent. They control how the agent writes code, makes decisions, and interacts with the codebase.
+
+**Typical Files**: Markdown files in `.kiro/steering/` directory.
+
+**Lifecycle States**:
+
+| State | Description | Modifiable |
+|-------|-------------|------------|
+| `draft` | Steering rule being developed | ✅ Yes |
+| `active` | Validated and enabled | ✅ Yes |
+| `deprecated` | No longer needed | ❌ Read-only |
+
+**State Transitions**:
+
+```
+draft → active       (Steering rule validated and enabled)
+active → draft       (Modifications required)
+active → deprecated  (Steering rule no longer needed)
+draft → deprecated   (Steering rule abandoned)
+```
+
+**When to Use**: Use STEERING for any file that provides behavioral guidance to the Kiro AI agent. This includes coding conventions, workflow rules, and decision-making guidelines.
+
+**Example Registry Entry**:
+```yaml
+- artifact_id: file_naming_conventions_md
+  file_path: .kiro/steering/file_naming_conventions.md
+  primary_domain: GOV
+  artifact_type: STEERING
+  lifecycle_status: active
+```
+
+---
+
+## Lifecycle Concepts
+
+### Modifiable vs. Read-Only vs. Regenerable
+
+The lifecycle system classifies each state into one of three categories:
+
+| Category | Description | Who Can Change Content |
+|----------|-------------|----------------------|
+| **Modifiable** | Content can be freely edited by humans | Domain owners and allowed writers |
+| **Regenerable** | Content can be overwritten by automated engine runs | Only the generating engine |
+| **Read-only** | Content is frozen; only metadata can be updated | No one (metadata only) |
+
+**Key Distinction**: Regenerable is NOT the same as modifiable. A regenerable artifact cannot be manually edited, but it CAN be overwritten by its generating system during daily regeneration cycles.
+
+### Initial States
+
+Every artifact type has a defined initial state assigned when the artifact is first registered:
+
+| Artifact Type | Initial State |
+|---------------|---------------|
+| SSOT | `draft` |
+| ENGINE | `planned` |
+| REPORT_OUT | `generated` |
+| DATA_IN | `active` |
+| DATA_OUT | `generated` |
+| RUNTIME | `development` |
+| DASHBOARD | `development` |
+| SNAPSHOT | `captured` |
+| CONFIG | `draft` |
+| CALIBRATION | `draft` |
+| STEERING | `draft` |
+
+### Deprecated/Archived/Superseded States
+
+All artifact types have a terminal read-only state:
+- **deprecated**: Used by SSOT, ENGINE, RUNTIME, DASHBOARD, CONFIG, STEERING
+- **archived**: Used by REPORT_OUT, DATA_IN, DATA_OUT, SNAPSHOT
+- **superseded**: Used by CALIBRATION
+
+Once an artifact reaches its terminal state, only metadata updates are allowed. Content modifications are blocked.
+
+## Quick Reference: Type Selection Guide
+
+Use this decision tree to determine the correct artifact type:
+
+1. **Does it define how the system should work?** → `SSOT`
+2. **Does it execute business logic?** → `ENGINE`
+3. **Is it a human-readable report output?** → `REPORT_OUT`
+4. **Is it external data consumed by the system?** → `DATA_IN`
+5. **Is it structured data produced by an engine?** → `DATA_OUT`
+6. **Does it orchestrate system execution?** → `RUNTIME`
+7. **Is it a user-facing interface?** → `DASHBOARD`
+8. **Is it a historical point-in-time capture?** → `SNAPSHOT`
+9. **Does it control system parameters?** → `CONFIG`
+10. **Does it document parameter tuning decisions?** → `CALIBRATION`
+11. **Does it guide Kiro AI behavior?** → `STEERING`
+
+## Usage
+
+### Querying Artifacts by Type
+
+```python
+from lifecycle_manager import LifecycleManager
+from artifact_registry import ArtifactRegistry
+from pathlib import Path
+
+# Load lifecycle manager
+lm = LifecycleManager(Path('.domainization/lifecycle_state_machine.yaml'))
+
+# Get state machine for a specific type
+sm = lm.get_state_machine('ENGINE')
+print(f"States: {sm.states}")
+print(f"Initial state: {sm.get_initial_state()}")
+
+# Check valid transitions
+allowed = sm.get_allowed_transitions('development')
+print(f"From development, can go to: {allowed}")
+
+# Check if artifact is modifiable
+can_modify = sm.is_modifiable('active')
+print(f"Active engines are modifiable: {can_modify}")
+```
+
+### Validating Lifecycle Transitions
+
+```python
+from lifecycle_manager import LifecycleManager
+from pathlib import Path
+
+lm = LifecycleManager(Path('.domainization/lifecycle_state_machine.yaml'))
+
+# Validate a transition
+is_valid = lm.validate_transition('SSOT', 'draft', 'review')
+print(f"draft → review valid: {is_valid}")  # True
+
+# Invalid transition
+is_valid = lm.validate_transition('SSOT', 'draft', 'canonical')
+print(f"draft → canonical valid: {is_valid}")  # False (must go through review)
+```
+
+### Registering a New Artifact
+
+```python
+from artifact_registry import ArtifactRegistry
+from pathlib import Path
+
+registry = ArtifactRegistry(Path('.domainization/artifact_registry.yaml'))
+
+# Register a new engine
+registry.register_artifact({
+    'artifact_id': 'my_new_engine_py',
+    'file_path': 'engines/my_new_engine.py',
+    'primary_domain': 'SIGNALS',
+    'artifact_type': 'ENGINE',
+    'lifecycle_status': 'planned',
+    'created_date': '2025-01-15',
+    'last_modified': '2025-01-15',
+    'owner_role': 'Signal generation for new indicator',
+    'ssot_relationship': 'implementation',
+    'allowed_writers': ['SIGNALS'],
+    'allowed_readers': ['ALL'],
+    'dependencies': ['signal_calculation_framework_md']
+})
+```
+
+### CLI Commands
+
+```bash
+# List all artifacts of a specific type
+python -m domainization list --type ENGINE
+
+# List all artifacts in a specific lifecycle state
+python -m domainization list --lifecycle active
+
+# Show lifecycle state machine for a type
+python -m domainization show --state-machine SSOT
+
+# Validate a lifecycle transition
+python -m domainization validate --artifact my_engine_py --new-status active
+```
+
+## Testing
+
+### Running Tests
+
+```bash
+# Run lifecycle schema tests
+python -m pytest .domainization/src/test_lifecycle_schema.py -v
+
+# Run lifecycle manager tests
+python -m pytest .domainization/src/test_lifecycle_manager.py -v
+
+# Run all lifecycle-related tests
+python -m pytest .domainization/src/test_lifecycle*.py -v
+```
+
+## Requirements Satisfied
+
+This documentation satisfies the following requirements:
+
+- ✅ **Requirement 3.1**: All 11 artifact types documented with their purposes
+- ✅ **Requirement 3.2**: All artifact types listed (SSOT, ENGINE, REPORT_OUT, DATA_IN, DATA_OUT, RUNTIME, DASHBOARD, SNAPSHOT, CONFIG, CALIBRATION, STEERING)
+- ✅ **Requirement 3.3**: Lifecycle state machines defined for each type with valid transitions
+- ✅ **Requirement 4.1**: Initial lifecycle states documented for all types
+- ✅ **Requirement 4.2**: Lifecycle transitions validated against state machine rules
+
+## Related Files
+
+- `.domainization/lifecycle_state_machine.yaml`: State machine definitions for all 11 types
+- `.domainization/src/lifecycle_schema.py`: Python data models for state machines
+- `.domainization/src/lifecycle_manager.py`: Lifecycle operations and transition validation
+- `.domainization/src/artifact_registry.py`: Artifact registry operations
+- `.domainization/src/artifact_schema.py`: Artifact metadata schema
+- `.domainization/src/test_lifecycle_schema.py`: Unit tests for lifecycle schema
+- `.domainization/src/test_lifecycle_manager.py`: Unit tests for lifecycle manager

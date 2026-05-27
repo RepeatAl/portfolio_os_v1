@@ -1,0 +1,198 @@
+# Domain Registry
+# Defines the 12 canonical domains with authority boundaries and responsibilities
+
+domains:
+  # GOVERNANCE DOMAIN
+  - domain_id: GOV
+    name: Governance
+    responsibility_scope: "Decision frameworks, confidence models, action space definitions, governance rules"
+    allowed_artifact_types:
+      - SSOT
+      - CONFIG
+      - STEERING
+    cannot_own:
+      - ENGINE
+      - REPORT_OUT
+      - DATA_OUT
+    priority: surface
+    authority_level: null
+
+  # ARCHITECTURE DOMAIN
+  - domain_id: ARCH
+    name: Architecture
+    responsibility_scope: "System design, component architecture, integration patterns, technical infrastructure"
+    allowed_artifact_types:
+      - SSOT
+      - ENGINE
+      - CONFIG
+      - CALIBRATION
+    cannot_own:
+      - REPORT_OUT
+      - DATA_OUT
+    priority: surface
+    authority_level: null
+
+  # SIGNALS DOMAIN (Core Reasoning Chain - Level 1)
+  - domain_id: SIGNALS
+    name: Signal Generation
+    responsibility_scope: "Raw signal calculation, market data processing, quantitative metrics, structured signals only"
+    allowed_artifact_types:
+      - SSOT
+      - ENGINE
+      - DATA_OUT
+      - CONFIG
+    cannot_own:
+      - REPORT_OUT
+      - DASHBOARD
+    priority: core
+    authority_level: 1
+
+  # SEMANTICS DOMAIN (Core Reasoning Chain - Level 2)
+  - domain_id: SEMANTICS
+    name: Semantic Interpretation
+    responsibility_scope: "Semantic state creation, signal interpretation, meaning extraction from structured signals"
+    allowed_artifact_types:
+      - SSOT
+      - ENGINE
+      - DATA_OUT
+      - CONFIG
+    cannot_own:
+      - REPORT_OUT
+      - DASHBOARD
+    priority: core
+    authority_level: 2
+
+  # REASONING DOMAIN (Core Reasoning Chain - Level 3)
+  - domain_id: REASONING
+    name: Reasoning Logic
+    responsibility_scope: "Decision logic, reasoning objects, portfolio conclusions, strategic recommendations"
+    allowed_artifact_types:
+      - SSOT
+      - ENGINE
+      - DATA_OUT
+      - CONFIG
+    cannot_own:
+      - REPORT_OUT
+      - DASHBOARD
+    priority: core
+    authority_level: 3
+
+  # REPORT DOMAIN (Core Reasoning Chain - Level 4)
+  - domain_id: REPORT
+    name: Report Generation
+    responsibility_scope: "Human-readable report text, narrative generation, multilingual rendering, PM communication"
+    allowed_artifact_types:
+      - SSOT
+      - ENGINE
+      - REPORT_OUT
+      - CONFIG
+    cannot_own:
+      - DATA_OUT
+      - DASHBOARD
+    priority: core
+    authority_level: 4
+
+  # STATE DOMAIN
+  - domain_id: STATE
+    name: Portfolio State
+    responsibility_scope: "Portfolio holdings, watchlist management, asset registry, current state tracking"
+    allowed_artifact_types:
+      - SSOT
+      - DATA_IN
+      - DATA_OUT
+      - SNAPSHOT
+      - CONFIG
+    cannot_own:
+      - ENGINE
+      - REPORT_OUT
+    priority: surface
+    authority_level: null
+
+  # DATA DOMAIN
+  - domain_id: DATA
+    name: Data Management
+    responsibility_scope: "Data ingestion, normalization, trusted sources, data quality, ETL processes"
+    allowed_artifact_types:
+      - SSOT
+      - ENGINE
+      - DATA_IN
+      - DATA_OUT
+      - CONFIG
+    cannot_own:
+      - REPORT_OUT
+      - DASHBOARD
+    priority: surface
+    authority_level: null
+
+  # USER DOMAIN
+  - domain_id: USER
+    name: User Interface
+    responsibility_scope: "Dashboard, visualization, user interaction, frontend presentation"
+    allowed_artifact_types:
+      - SSOT
+      - DASHBOARD
+      - CONFIG
+    cannot_own:
+      - ENGINE
+      - DATA_OUT
+      - REPORT_OUT
+    priority: surface
+    authority_level: null
+
+  # DEPLOY DOMAIN
+  - domain_id: DEPLOY
+    name: Deployment
+    responsibility_scope: "Runtime orchestration, deployment scripts, infrastructure as code, execution entry points"
+    allowed_artifact_types:
+      - RUNTIME
+      - CONFIG
+    cannot_own:
+      - SSOT
+      - ENGINE
+      - REPORT_OUT
+      - DATA_OUT
+    priority: surface
+    authority_level: null
+
+  # MEMORY DOMAIN
+  - domain_id: MEMORY
+    name: Portfolio Memory
+    responsibility_scope: "Historical snapshots, portfolio memory, time-series archival, historical analysis"
+    allowed_artifact_types:
+      - SSOT
+      - ENGINE
+      - SNAPSHOT
+      - DATA_OUT
+      - CONFIG
+    cannot_own:
+      - REPORT_OUT
+      - DASHBOARD
+    priority: surface
+    authority_level: null
+
+  # SIMULATION DOMAIN
+  - domain_id: SIM
+    name: Simulation
+    responsibility_scope: "Scenario modeling, what-if analysis, portfolio simulation, stress testing"
+    allowed_artifact_types:
+      - SSOT
+      - ENGINE
+      - DATA_OUT
+      - CONFIG
+    cannot_own:
+      - REPORT_OUT
+      - DASHBOARD
+    priority: surface
+    authority_level: null
+
+# Core Reasoning Chain Priority
+# Authority flows from raw data to human communication:
+# SIGNALS (1) → SEMANTICS (2) → REASONING (3) → REPORT (4)
+#
+# Rules:
+# - Lower authority_level = higher authority in reasoning chain
+# - SIGNALS creates structured signals from raw data
+# - SEMANTICS interprets signals into semantic states
+# - REASONING creates conclusions from semantic states
+# - REPORT renders reasoning into human-readable text
+# - Surface domains (STATE, DATA, USER, DEPLOY, MEMORY, SIM, GOV, ARCH) support core reasoning
