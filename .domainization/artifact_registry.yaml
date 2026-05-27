@@ -2059,3 +2059,268 @@ artifacts:
       - dashboard
       - user
       - entry_point
+
+  # RUNTIME GOVERNANCE MODULES
+  - artifact_id: runtime_state_model_py
+    file_path: runtime/runtime_state_model.py
+    primary_domain: GOV
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-05-26"
+    last_modified: "2026-05-26"
+    owner_role: System architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - GOV
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies: []
+    report_value:
+      category: traceability
+      justification: "Defines shared runtime state vocabulary enabling all governance components to classify and aggregate pipeline health consistently"
+    description: "Multi-dimensional runtime state model with orthogonal integrity dimensions for governance-aware components"
+    tags:
+      - runtime
+      - governance
+      - state_model
+
+  # RUNTIME GOVERNANCE MODULES
+  - artifact_id: severity_taxonomy_py
+    file_path: runtime/severity_taxonomy.py
+    primary_domain: GOV
+    artifact_type: RUNTIME
+    lifecycle_status: active
+    created_date: "2026-05-26"
+    last_modified: "2026-05-26"
+    owner_role: System architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - GOV
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies: []
+    report_value:
+      category: traceability
+      justification: "Defines canonical severity levels used by all validators and pipeline components for consistent event classification"
+    description: "Single canonical definition of severity levels used system-wide by all governance-aware components"
+    tags:
+      - governance
+      - runtime
+      - severity
+      - taxonomy
+
+  - artifact_id: reasoning_object_py
+    file_path: runtime/reasoning_object.py
+    primary_domain: REASONING
+    artifact_type: RUNTIME
+    lifecycle_status: active
+    created_date: "2026-05-26"
+    last_modified: "2026-05-26"
+    owner_role: System architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - REASONING
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies:
+      - severity_taxonomy_py
+    report_value:
+      category: pm_reasoning
+      justification: "Defines the formal schema for Reasoning Objects that carry portfolio conclusions from REASONING to REPORT layer"
+    description: "Reasoning Object schema and TemporalValidity model — formal contract between REASONING and REPORT layers"
+    tags:
+      - runtime
+      - reasoning
+      - schema
+      - temporal_validity
+
+  # GOVERNANCE MODULES
+  - artifact_id: schema_version_registry_py
+    file_path: governance/schema_version_registry.py
+    primary_domain: GOV
+    artifact_type: RUNTIME
+    lifecycle_status: active
+    created_date: "2026-05-26"
+    last_modified: "2026-05-26"
+    owner_role: System architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - GOV
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies: []
+    report_value:
+      category: traceability
+      justification: "Tracks schema versions for all canonical artifacts enabling compatibility validation and preventing silent breaking changes"
+    description: "Schema version registry tracking versions for all 5 canonical artifact schemas with compatibility validation"
+    tags:
+      - governance
+      - schema
+      - versioning
+      - compatibility
+
+  - artifact_id: provenance_schema_py
+    file_path: governance/provenance_schema.py
+    primary_domain: GOV
+    artifact_type: RUNTIME
+    lifecycle_status: active
+    created_date: "2026-05-27"
+    last_modified: "2026-05-27"
+    owner_role: System architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - GOV
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies:
+      - schema_version_registry_py
+    report_value:
+      category: traceability
+      justification: "Defines provenance structure enabling full chain traceability from report sections back to signal engines via reasoning objects and semantic states"
+    description: "Provenance schema defining SectionProvenance and ReportProvenance dataclasses with YAML/JSON serialization and canonical sidecar file persistence"
+    tags:
+      - governance
+      - provenance
+      - traceability
+      - sidecar
+
+  - artifact_id: run_context_py
+    file_path: runtime/run_context.py
+    primary_domain: ARCH
+    artifact_type: RUNTIME
+    lifecycle_status: active
+    created_date: "2026-05-27"
+    last_modified: "2026-05-27"
+    owner_role: System architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - ARCH
+      - GOV
+    allowed_readers:
+      - ALL
+    dependencies:
+      - runtime_state_model_py
+    report_value:
+      category: traceability
+      justification: "Creates temporal snapshots ensuring all engines operate on identical data, enabling deterministic replay and provenance validation"
+    description: "Run Context creation and validation — temporal snapshot ensuring pipeline consistency across all chain layers"
+    tags:
+      - runtime
+      - run_context
+      - temporal_consistency
+      - provenance
+
+  - artifact_id: canonical_boundary_py
+    file_path: governance/canonical_boundary.py
+    primary_domain: GOV
+    artifact_type: RUNTIME
+    lifecycle_status: active
+    created_date: "2026-05-27"
+    last_modified: "2026-05-27"
+    owner_role: System architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - GOV
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies: []
+    report_value:
+      category: traceability
+      justification: "Classifies artifacts as canonical or transient, preventing governance overhead on internal processing structures while enforcing boundary promotion"
+    description: "Canonical boundary enforcement classifying artifacts and promoting transient to canonical when persisted or passed downstream"
+    tags:
+      - governance
+      - canonical
+      - boundary
+      - classification
+
+  # PIPELINE RESULT CONTRACT
+  - artifact_id: pipeline_result_py
+    file_path: runtime/pipeline_result.py
+    primary_domain: ARCH
+    artifact_type: RUNTIME
+    lifecycle_status: active
+    created_date: "2026-05-27"
+    last_modified: "2026-05-27"
+    owner_role: System architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - ARCH
+      - GOV
+    allowed_readers:
+      - ALL
+    dependencies:
+      - runtime_state_model_py
+    report_value:
+      category: traceability
+      justification: "Provides typed contract for pipeline execution output enabling deterministic validation of all generated artifacts and integrity states"
+    description: "Typed PipelineResult dataclass contract replacing implicit dict-based orchestration outputs with explicit typed fields"
+    tags:
+      - runtime
+      - pipeline
+      - contract
+      - determinism
+
+  # CONFIDENCE DEGRADATION POLICY
+  - artifact_id: confidence_policy_py
+    file_path: runtime/confidence_policy.py
+    primary_domain: GOV
+    artifact_type: RUNTIME
+    lifecycle_status: active
+    created_date: "2026-05-27"
+    last_modified: "2026-05-27"
+    owner_role: System architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - GOV
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies:
+      - runtime_state_model_py
+      - severity_taxonomy_py
+    report_value:
+      category: confidence_explanation
+      justification: "Defines configurable degradation formula enabling transparent confidence reduction when upstream signal categories are unavailable"
+    description: "Configurable confidence degradation policy loaded from governance YAML without modifying schema or engine source code"
+    tags:
+      - runtime
+      - governance
+      - confidence
+      - degradation
+      - policy
+
+  # SEMANTIC STATE STORE
+  - artifact_id: semantic_state_store_py
+    file_path: runtime/semantic_state_store.py
+    primary_domain: SEMANTICS
+    artifact_type: RUNTIME
+    lifecycle_status: active
+    created_date: "2026-05-27"
+    last_modified: "2026-05-27"
+    owner_role: System architect
+    ssot_relationship: canonical
+    allowed_writers:
+      - SEMANTICS
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies:
+      - run_context_py
+      - runtime_state_model_py
+    report_value:
+      category: traceability
+      justification: "Persists immutable semantic state snapshots enabling forensic replay, delta tracking, and canonical snapshot retrieval between pipeline runs"
+    description: "Immutable archive persistence layer for semantic states with delta computation and historical replay"
+    tags:
+      - runtime
+      - semantics
+      - persistence
+      - snapshot
+      - delta
