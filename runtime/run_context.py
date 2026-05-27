@@ -211,6 +211,27 @@ class RunContext:
             report_hash=data.get("report_hash"),
         )
 
+    def compute_and_record_report_hash(self, report_path: str) -> str:
+        """Compute SHA-256 hash of daily_report.md and record in report_hash.
+
+        Reads the report file, computes its SHA-256 digest, stores it in
+        self.report_hash, and returns the hex digest string.
+
+        Args:
+            report_path: Path to the daily_report.md file.
+
+        Returns:
+            SHA-256 hex digest of the report file content.
+
+        Raises:
+            FileNotFoundError: If the report file does not exist.
+            OSError: If the report file cannot be read.
+        """
+        content = Path(report_path).read_bytes()
+        digest = hashlib.sha256(content).hexdigest()
+        self.report_hash = digest
+        return digest
+
     def _find_source(self, file_path: str) -> DataSourceReference | None:
         """Find a data source reference by file path."""
         for source in self.data_sources:

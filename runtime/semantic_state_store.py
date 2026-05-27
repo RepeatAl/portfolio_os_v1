@@ -88,7 +88,7 @@ class SemanticStateStore:
 
         try:
             with open(snapshot_path, "w", encoding="utf-8") as f:
-                yaml.safe_dump(snapshot_data, f, default_flow_style=False, sort_keys=False)
+                yaml.safe_dump(snapshot_data, f, default_flow_style=False, sort_keys=True)
         except OSError as e:
             logger.error(
                 "Failed to write semantic snapshot for run %s: %s",
@@ -114,7 +114,7 @@ class SemanticStateStore:
         try:
             pointer_data = {"current_run_id": run_id, "timestamp": timestamp}
             with open(self.latest_pointer_path, "w", encoding="utf-8") as f:
-                yaml.safe_dump(pointer_data, f, default_flow_style=False, sort_keys=False)
+                yaml.safe_dump(pointer_data, f, default_flow_style=False, sort_keys=True)
         except OSError as e:
             logger.error(
                 "Failed to update latest pointer for run %s: %s",
@@ -283,7 +283,7 @@ class SemanticStateStore:
         delta_log["deltas"].append(delta)
 
         with open(self.delta_log_path, "w", encoding="utf-8") as f:
-            yaml.safe_dump(delta_log, f, default_flow_style=False, sort_keys=False)
+            yaml.safe_dump(delta_log, f, default_flow_style=False, sort_keys=True)
 
     @staticmethod
     def _empty_delta(run_id: str) -> dict:

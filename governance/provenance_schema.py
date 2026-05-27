@@ -38,7 +38,11 @@ class SectionProvenance:
             YAML string representation of this section's provenance.
         """
         data = asdict(self)
-        return yaml.safe_dump(data, default_flow_style=False, sort_keys=False)
+        # Sort identifier lists for deterministic output
+        data["reasoning_object_ids"] = sorted(data["reasoning_object_ids"])
+        data["semantic_state_ids"] = sorted(data["semantic_state_ids"])
+        data["signal_engine_ids"] = sorted(data["signal_engine_ids"])
+        return yaml.safe_dump(data, default_flow_style=False, sort_keys=True)
 
     def to_json(self) -> str:
         """Serialize to JSON for sidecar file and optional markdown embedding.
@@ -82,10 +86,18 @@ class ReportProvenance:
             "run_context_id": self.run_context_id,
             "timestamp": self.timestamp,
             "schema_version": self.schema_version,
-            "sections": [asdict(section) for section in self.sections],
+            "sections": [
+                {
+                    **asdict(section),
+                    "reasoning_object_ids": sorted(section.reasoning_object_ids),
+                    "semantic_state_ids": sorted(section.semantic_state_ids),
+                    "signal_engine_ids": sorted(section.signal_engine_ids),
+                }
+                for section in self.sections
+            ],
         }
         with open(file_path, "w", encoding="utf-8") as f:
-            yaml.safe_dump(data, f, default_flow_style=False, sort_keys=False)
+            yaml.safe_dump(data, f, default_flow_style=False, sort_keys=True)
         return file_path
 
     def embed_in_markdown(self, section_name: str) -> str:
