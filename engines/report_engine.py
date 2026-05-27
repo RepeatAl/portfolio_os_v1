@@ -11,17 +11,20 @@ ReportEngine must NOT create semantics, NOT create reasoning, NOT infer
 missing conclusions. May ONLY render Reasoning_Object content and
 degradation notices.
 
-Requirements: 24.1, 24.2, 24.4, 6.1, 6.4
+Requirements: 24.1, 24.2, 24.4, 6.1, 6.4, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7
 """
 
 from __future__ import annotations
 
+import logging
 import warnings
 from datetime import datetime
 
 from runtime.reasoning_object import ReasoningObject
 from runtime.run_context import RunContext
 from governance.provenance_schema import SectionProvenance, ReportProvenance
+
+logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -534,7 +537,13 @@ class ReportEngine:
             report_parts.append("```")
             report_parts.append("")
 
-        # Step 3: Data Availability summary (Requirement 11.5)
+        # Step 3: Portfolio State / Watchlist separation (Requirements 5.1-5.7)
+        # "Current Portfolio Reality" appears before "Watchlist and Deployment Candidates"
+        report_parts.append(
+            self.render_portfolio_watchlist_blocks(portfolio_state, watchlist)
+        )
+
+        # Step 4: Data Availability summary (Requirement 11.5)
         report_parts.append("## Data Availability")
         report_parts.append("")
         report_parts.append(
@@ -582,6 +591,220 @@ class ReportEngine:
             else:
                 status = "unavailable_no_output"
             lines.append(f"| {category} | {status} |")
+
+        return "\n".join(lines)
+
+    # ------------------------------------------------------------------
+    # Portfolio State / Watchlist Separation (Requirements 5.1–5.7)
+    # ------------------------------------------------------------------
+
+    def render_portfolio_watchlist_blocks(
+        self,
+        portfolio_state: dict,
+        watchlist: dict,
+    ) -> str:
+        """Render the "Current Portfolio Reality" and "Watchlist and Deployment
+        Candidates" blocks for the daily report.
+
+        Implements Requirements 5.1–5.7:
+        - Portfolio block appears BEFORE Watchlist block (5.1)
+        - Watchlist block presents potential future exposures (5.2)
+        - Portfolio block sourced exclusively from Portfolio_State (5.3)
+        - Watchlist block sourced exclusively from Watchlist data (5.4)
+        - Position transitions include transition notice (5.5)
+        - Duplicate positions classified per Portfolio_State, omitted from Watchlist (5.6)
+        - Empty states render explicit empty-state notice (5.7)
+
+        Args:
+            portfolio_state: Dict with keys 'positions' (list of position dicts)
+                and optionally 'transitions' (list of transition dicts).
+            watchlist: Dict with keys 'positions' (list of position dicts)
+                and optionally 'transitions' (list of transition dicts).
+
+        Returns:
+            Markdown string containing both blocks in correct order.
+        """
+        parts: list[str] = []
+
+        # Extract positions
+        portfolio_positions = portfolio_state.get("positions", [])
+        watchlist_positions = watchlist.get("positions", [])
+
+        # Handle duplicate positions (Requirement 5.6):
+        # If a position_id exists in both, classify per Portfolio_State,
+        # omit from Watchlist, and log a data conflict warning.
+        portfolio_ids = {
+            p.get("position_id", "") for p in portfolio_positions if p.get("position_id")
+        }
+        filtered_watchlist_positions: list[dict] = []
+        for wp in watchlist_positions:
+            pos_id = wp.get("position_id", "")
+            if pos_id and pos_id in portfolio_ids:
+                logger.warning(
+                    "Data conflict: position '%s' exists in both Portfolio_State "
+                    "and Watchlist. Classifying per Portfolio_State, omitting "
+                    "from Watchlist block.",
+                    pos_id,
+                )
+            else:
+                filtered_watchlist_positions.append(wp)
+
+        # Render "Current Portfolio Reality" block (Requirement 5.1, 5.3)
+        parts.append("## Current Portfolio Reality")
+        parts.append("")
+        parts.append(
+            self._render_portfolio_block(portfolio_positions, portfolio_state)
+        )
+        parts.append("")
+
+        # Render "Watchlist and Deployment Candidates" block (Requirement 5.2, 5.4)
+        parts.append("## Watchlist and Deployment Candidates")
+        parts.append("")
+        parts.append(
+            self._render_watchlist_block(filtered_watchlist_positions, watchlist)
+        )
+        parts.append("")
+
+        return "\n".join(parts)
+
+    def _render_portfolio_block(
+        self,
+        positions: list[dict],
+        portfolio_state: dict,
+    ) -> str:
+        """Render the Current Portfolio Reality block content.
+
+        Sources exclusively from Portfolio_State data (Requirement 5.3).
+        Renders empty-state notice if no positions (Requirement 5.7).
+        Includes transition notices for positions that moved (Requirement 5.5).
+
+        Args:
+            positions: List of position dicts from Portfolio_State.
+            portfolio_state: Full portfolio_state dict (may contain transitions).
+
+        Returns:
+            Markdown content for the portfolio block.
+        """
+        lines: list[str] = []
+
+        # Handle empty state (Requirement 5.7)
+        if not positions:
+            lines.append(
+                "> **Empty State Notice:** No positions are currently present "
+                "in the portfolio. Portfolio_State contains zero holdings for "
+                "this Run_Context."
+            )
+            # Still render transitions if any
+            transitions = portfolio_state.get("transitions", [])
+            if transitions:
+                lines.append("")
+                lines.append(self._render_transitions(transitions))
+            return "\n".join(lines)
+
+        # Render position details
+        lines.append("| Position | Dominant Drivers | Risk Factors |")
+        lines.append("|---|---|---|")
+        for pos in positions:
+            position_id = pos.get("position_id", "Unknown")
+            drivers = pos.get("drivers", "—")
+            if isinstance(drivers, list):
+                drivers = ", ".join(drivers)
+            risks = pos.get("risks", "—")
+            if isinstance(risks, list):
+                risks = ", ".join(risks)
+            lines.append(f"| {position_id} | {drivers} | {risks} |")
+
+        # Render transitions (Requirement 5.5)
+        transitions = portfolio_state.get("transitions", [])
+        if transitions:
+            lines.append("")
+            lines.append(self._render_transitions(transitions))
+
+        return "\n".join(lines)
+
+    def _render_watchlist_block(
+        self,
+        positions: list[dict],
+        watchlist: dict,
+    ) -> str:
+        """Render the Watchlist and Deployment Candidates block content.
+
+        Sources exclusively from Watchlist data (Requirement 5.4).
+        Renders empty-state notice if no positions (Requirement 5.7).
+        Includes transition notices for positions that moved (Requirement 5.5).
+
+        Args:
+            positions: List of position dicts from Watchlist (already filtered
+                for duplicates).
+            watchlist: Full watchlist dict (may contain transitions).
+
+        Returns:
+            Markdown content for the watchlist block.
+        """
+        lines: list[str] = []
+
+        # Handle empty state (Requirement 5.7)
+        if not positions:
+            lines.append(
+                "> **Empty State Notice:** No deployment candidates are "
+                "currently on the watchlist. Watchlist contains zero positions "
+                "for this Run_Context."
+            )
+            # Still render transitions if any
+            transitions = watchlist.get("transitions", [])
+            if transitions:
+                lines.append("")
+                lines.append(self._render_transitions(transitions))
+            return "\n".join(lines)
+
+        # Render watchlist position details
+        lines.append("| Position | Entry Conditions | Rationale |")
+        lines.append("|---|---|---|")
+        for pos in positions:
+            position_id = pos.get("position_id", "Unknown")
+            entry_conditions = pos.get("entry_conditions", "—")
+            if isinstance(entry_conditions, list):
+                entry_conditions = ", ".join(entry_conditions)
+            rationale = pos.get("rationale", "—")
+            lines.append(f"| {position_id} | {entry_conditions} | {rationale} |")
+
+        # Render transitions (Requirement 5.5)
+        transitions = watchlist.get("transitions", [])
+        if transitions:
+            lines.append("")
+            lines.append(self._render_transitions(transitions))
+
+        return "\n".join(lines)
+
+    def _render_transitions(self, transitions: list[dict]) -> str:
+        """Render position transition notices.
+
+        Each transition notice states the position identifier, the previous
+        classification, and the new classification (Requirement 5.5).
+
+        Args:
+            transitions: List of transition dicts with keys:
+                - position_id: The position that transitioned
+                - previous_classification: Where it was before (e.g., "watchlist")
+                - new_classification: Where it is now (e.g., "portfolio")
+
+        Returns:
+            Markdown transition notices.
+        """
+        if not transitions:
+            return ""
+
+        lines: list[str] = []
+        lines.append("**Position Transitions:**")
+        lines.append("")
+        for t in transitions:
+            position_id = t.get("position_id", "Unknown")
+            previous = t.get("previous_classification", "unknown")
+            new = t.get("new_classification", "unknown")
+            lines.append(
+                f"- **{position_id}**: transitioned from "
+                f"*{previous}* to *{new}*"
+            )
 
         return "\n".join(lines)
 
