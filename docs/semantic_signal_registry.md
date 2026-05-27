@@ -254,6 +254,77 @@ Confidence increases when:
 
 ---
 
+## semiconductor_dependency_high
+
+Category:
+narrative_dependency
+
+Meaning:
+Portfolio performance strongly depends on semiconductor infrastructure leadership.
+
+Signal Origin:
+- allocation_engine
+- attribution_engine
+
+Reasoning Impact:
+Portfolio remains exposed to semiconductor cycle risk; supply chain disruptions or demand shifts in chip infrastructure may disproportionately impact returns.
+
+Confidence Behavior:
+Confidence increases when:
+- semiconductor allocation concentrated
+- AI infrastructure correlation rises
+- chip supply chain dependency elevated
+
+---
+
+## energy_grid_dependency
+
+Category:
+narrative_dependency
+
+Meaning:
+Portfolio performance depends on energy grid expansion and power infrastructure buildout narratives.
+
+Signal Origin:
+- allocation_engine
+- attribution_engine
+- scenario_engine
+
+Reasoning Impact:
+Portfolio becomes sensitive to energy policy changes, grid capacity constraints, and power infrastructure investment cycles.
+
+Confidence Behavior:
+Confidence increases when:
+- energy infrastructure allocation rising
+- power demand growth narrative strengthening
+- grid buildout capital expenditure increasing
+
+---
+
+## datacenter_infrastructure_exposure
+
+Category:
+narrative_dependency
+
+Meaning:
+Portfolio carries significant exposure to datacenter infrastructure buildout and hyperscaler capital expenditure cycles.
+
+Signal Origin:
+- allocation_engine
+- attribution_engine
+- correlation_engine
+
+Reasoning Impact:
+Portfolio returns become sensitive to hyperscaler capex decisions, datacenter demand cycles, and compute infrastructure investment trends.
+
+Confidence Behavior:
+Confidence increases when:
+- datacenter-related allocation concentrated
+- hyperscaler capex correlation elevated
+- compute infrastructure demand persistent
+
+---
+
 # LIQUIDITY SIGNALS
 
 ---
