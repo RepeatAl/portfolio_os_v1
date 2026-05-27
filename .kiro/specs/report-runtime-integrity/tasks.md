@@ -10,8 +10,8 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
 
 ## Tasks
 
-- [ ] 1. Phase A Preflight — Verify Foundation Prerequisites
-  - [ ] 1.1 Inspect existing governance and runtime modules
+- [x] 1. Phase A Preflight — Verify Foundation Prerequisites
+  - [x] 1.1 Inspect existing governance and runtime modules
     - Verify `.domainization/src/report_value_detector.py` exists and assess reuse (EXTEND)
     - Verify `.domainization/src/runtime_flow_detector.py` exists and assess reuse (EXTEND)
     - Verify `.domainization/src/health_reporter.py` exists and assess reuse (EXTEND)
