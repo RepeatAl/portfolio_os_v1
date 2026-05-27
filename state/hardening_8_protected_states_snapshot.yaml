@@ -1,0 +1,102 @@
+# HARDENING 8 — SEMANTIC STATE PROTECTION SNAPSHOT
+# Created: Phase C Preflight (Task 7.1)
+# Purpose: Snapshot of 5 protected states BEFORE any Phase C modification.
+#          Used for before/after comparison to confirm no mutation occurred.
+# Requirement: 7.4 — Existing Semantic States shall be maintained without modification.
+#
+# These 5 states are PROTECTED and must NOT be modified during Phase C.
+# Any structural change to these states constitutes a HARDENING 8 violation.
+
+schema_version: "1.0.0"
+snapshot_context:
+  created_by: "task_7.1_phase_c_preflight"
+  created_at: "2026-05-27T00:00:00Z"
+  source_document: "docs/semantic_signal_registry.md"
+  source_engine: "engines/semantic_engine.py"
+  purpose: "before_modification_reference"
+
+protected_states:
+
+  - signal_id: "ai_dependency_high"
+    category: "narrative_dependency"
+    meaning: "Portfolio performance strongly depends on continued AI-related market leadership."
+    signal_origin:
+      - "allocation_engine"
+      - "attribution_engine"
+      - "correlation_engine"
+    reasoning_impact: "Portfolio upside remains strong if AI leadership continues, but dependency risk rises if AI expectations weaken."
+    confidence_behavior:
+      confidence_increases_when:
+        - "AI exposure concentrated"
+        - "semiconductors dominate"
+        - "growth correlation rises"
+
+  - signal_id: "deployment_fully_extended"
+    category: "deployment"
+    meaning: "Portfolio currently maintains very high invested exposure."
+    signal_origin:
+      - "allocation_engine"
+      - "capital_engine"
+    reasoning_impact: "Future flexibility decreases while exposure sensitivity rises."
+    confidence_behavior:
+      confidence_increases_when:
+        - "cash low"
+        - "concentration elevated"
+
+  - signal_id: "concentration_risk_elevated"
+    category: "concentration"
+    meaning: "Portfolio exposure depends heavily on a limited number of positions, sectors, or narratives."
+    signal_origin:
+      - "allocation_engine"
+      - "correlation_engine"
+      - "scenario_engine"
+    reasoning_impact: "Portfolio drawdown sensitivity increases."
+    confidence_behavior:
+      confidence_increases_when:
+        - "top holdings dominate allocation"
+        - "correlations rise"
+        - "narrative overlap increases"
+
+  - signal_id: "portfolio_health_fragile"
+    category: "portfolio_health"
+    meaning: "Portfolio structure may become vulnerable under stress scenarios."
+    signal_origin:
+      - "scenario_engine"
+      - "correlation_engine"
+      - "concentration_engine"
+    reasoning_impact: "Risk management and exposure discipline become increasingly important."
+    confidence_behavior:
+      confidence_increases_when:
+        - "concentration elevated"
+        - "scenarios weak"
+        - "diversification poor"
+
+  - signal_id: "defense_dependency_elevated"
+    category: "narrative_dependency"
+    meaning: "Portfolio performance increasingly depends on continued defense-sector strength."
+    signal_origin:
+      - "allocation_engine"
+      - "attribution_engine"
+    reasoning_impact: "Portfolio becomes more sensitive to geopolitical and macro-defense narratives."
+    confidence_behavior:
+      confidence_increases_when:
+        - "defense allocation dominant"
+        - "defense momentum persistent"
+
+# ENGINE IMPLEMENTATION SNAPSHOT
+# Current implementation in engines/semantic_engine.py (Phase B state):
+# - interpret_allocation_signals() produces 3 of the 5 protected states:
+#   1. defense_dependency_elevated (when Defense allocation > 25%)
+#   2. semiconductor_dependency_elevated (when Semiconductor allocation > 25%)
+#   3. concentration_risk_elevated (when any category allocation > 25%)
+#
+# Note: ai_dependency_high, deployment_fully_extended, and portfolio_health_fragile
+# are defined in the Semantic Signal Registry (docs/semantic_signal_registry.md)
+# but are NOT YET implemented in engines/semantic_engine.py.
+# Phase C task 8.1 adds NEW states; it must NOT modify these 5 protected structures.
+
+# VERIFICATION CHECKSUMS (for automated comparison)
+# To verify no mutation occurred after Phase C modifications:
+# 1. Compare this file's protected_states section against the registry
+# 2. Compare engines/semantic_engine.py signal_id strings against this snapshot
+# 3. Any difference = HARDENING 8 VIOLATION

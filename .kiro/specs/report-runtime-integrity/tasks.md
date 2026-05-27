@@ -333,8 +333,8 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     - All property tests pass (`.venv/bin/python -m pytest tests/ -v`)
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 7. Phase C Preflight — Verify Semantic Expansion Prerequisites
-  - [ ] 7.1 Inspect semantic signal registry and existing states
+- [x] 7. Phase C Preflight — Verify Semantic Expansion Prerequisites
+  - [x] 7.1 Inspect semantic signal registry and existing states
     - Verify `engines/semantic_engine.py` current state coverage (only 3 states: defense_dependency_elevated, semiconductor_dependency_elevated, concentration_risk_elevated)
     - Verify Semantic_State_Store structure is operational from Phase B
     - **HARDENING 8 — SEMANTIC STATE PROTECTION:** Snapshot the 5 protected states before any modification:
@@ -347,8 +347,8 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     - Verify no accidental structural change to protected states (compare before/after)
     - _Requirements: 7.4_
 
-- [ ] 8. Phase C — Semantic Expansion
-  - [ ] 8.1 Implement new semantic states
+- [x] 8. Phase C — Semantic Expansion
+  - [x] 8.1 Implement new semantic states
     - **Infrastructure:** EXTEND `engines/semantic_engine.py` (add new states alongside existing 3)
     - Inspect existing `engines/semantic_engine.py` — confirm `interpret_allocation_signals()` structure
     - Add `semiconductor_dependency_high` (category: narrative_dependency) to Semantic Signal Registry
@@ -359,13 +359,13 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     - **Registry update:** Update `engines/semantic_engine.py` entry in `.domainization/artifact_registry.yaml`
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_
 
-  - [ ] 8.2 Write property test for Semantic Coverage Invariant
+  - [x] 8.2 Write property test for Semantic Coverage Invariant
     - **Property 4: Semantic Coverage Invariant**
     - **Validates: Requirements 2.1, 2.2**
     - Test that for valid signal outputs covering all 14 categories, at least one Semantic State per category and exactly one Reasoning Object per category are produced
     - Hypothesis generates random valid signal outputs for all 14 categories; verify coverage completeness
 
-  - [ ] 8.3 Implement Deployment Matrix (`runtime/deployment_matrix.py`)
+  - [x] 8.3 Implement Deployment Matrix (`runtime/deployment_matrix.py`)
     - **Infrastructure:** CREATE `runtime/deployment_matrix.py` (no existing equivalent)
     - Create `PositionAssignment` dataclass with position_id, basket, rationale, semantic_state_refs, confidence_level, temporal_validity
     - Create `DeploymentMatrix` dataclass with positions, run_context_id, schema_version
@@ -375,13 +375,13 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     - **Registry update:** Add `runtime/deployment_matrix.py` to `.domainization/artifact_registry.yaml`
     - _Requirements: 14.1, 14.2, 14.3, 14.4, 14.5_
 
-  - [ ] 8.4 Write property test for Deployment Matrix Partition Invariant
+  - [x] 8.4 Write property test for Deployment Matrix Partition Invariant
     - **Property 17: Deployment Matrix Partition Invariant**
     - **Validates: Requirements 14.2, 14.3**
     - Test that each position is assigned to exactly one basket with confidence_level, semantic_state_refs, and valid temporal_validity
     - Hypothesis generates random position lists; verify partition is exhaustive and exclusive
 
-  - [ ] 8.5 Implement Portfolio State / Watchlist separation in report output
+  - [x] 8.5 Implement Portfolio State / Watchlist separation in report output
     - **Infrastructure:** EXTEND `engines/report_engine.py` ReportEngine class
     - Add "Current Portfolio Reality" block to daily_report.md (appears before Watchlist block)
     - Add "Watchlist and Deployment Candidates" block to daily_report.md
@@ -392,25 +392,25 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     - Handle empty states: render explicit empty-state notice
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7_
 
-  - [ ] 8.6 Write property test for Portfolio/Watchlist Separation
+  - [x] 8.6 Write property test for Portfolio/Watchlist Separation
     - **Property 7: Portfolio/Watchlist Separation**
     - **Validates: Requirements 5.1, 5.2, 5.3, 5.4, 5.6**
     - Test that portfolio block appears before watchlist, positions are exclusive to their block, duplicates resolve to Portfolio_State
     - Hypothesis generates random position sets with overlaps; verify separation invariant holds
 
-  - [ ] 8.7 Write property test for Position Transition Rendering
+  - [x] 8.7 Write property test for Position Transition Rendering
     - **Property 23: Position Transition Rendering**
     - **Validates: Requirements 5.5**
     - Test that transitions include notice with position_id, previous classification, and new classification
 
-  - [ ] 8.8 Integrate confidence governance with configurable policy
+  - [x] 8.8 Integrate confidence governance with configurable policy
     - **Infrastructure:** EXTEND `engines/pipeline_orchestrator.py` and Reasoning Engines
     - Wire `ConfidenceDegradationPolicy.load()` into Reasoning Engines
     - Log policy changes with previous version, new version, effective timestamp
     - Ensure policy updates do not require schema or engine source code changes
     - _Requirements: 19.4, 19.5_
 
-- [ ] 9. Phase C Output Contract Verification
+- [x] 9. Phase C Output Contract Verification
   - Verify all Phase C outputs meet HARDENING 9 contract:
     - New semantic states active (semiconductor_dependency_high, energy_grid_dependency, datacenter_infrastructure_exposure emitted when conditions met)
     - Deployment matrix generated with valid partition (all positions in exactly one basket)
@@ -420,7 +420,7 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 10. Phase D Preflight — Verify Compatibility Cleanup Prerequisites
-  - [ ] 10.1 Inspect briefing file compatibility and downstream consumers
+  - [~] 10.1 Inspect briefing file compatibility and downstream consumers
     - Verify all 14 briefing `.txt` files still exist on disk (coexistence during transition)
     - Identify any downstream consumers of briefing files (scripts, imports, references)
     - Verify artifact registry coverage — count registered vs unregistered artifacts
@@ -428,7 +428,7 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     - _Requirements: 2.5, 3.1, 25.1_
 
 - [ ] 11. Phase D — Compatibility Cleanup
-  - [ ] 11.1 Implement briefing file deprecation with sunset governance
+  - [~] 11.1 Implement briefing file deprecation with sunset governance
     - **Infrastructure:** EXTEND `.domainization/artifact_registry.yaml` entries for briefing files; CREATE sunset logic in `governance/sunset_governance.py`
     - Inspect existing briefing file entries in artifact registry
     - Annotate each legacy Briefing_File in Artifact_Registry with: deprecation_start_date, sunset_target_date, downstream_dependency_count
@@ -440,13 +440,13 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     - **Registry update:** Add `governance/sunset_governance.py` to `.domainization/artifact_registry.yaml`
     - _Requirements: 2.5, 25.1, 25.2, 25.3, 25.4_
 
-  - [ ] 11.2 Write property test for Sunset Governance Behavior
+  - [~] 11.2 Write property test for Sunset Governance Behavior
     - **Property 22: Sunset Governance Behavior**
     - **Validates: Requirements 25.3, 25.4**
     - Test that files at sunset with zero deps stop generating; files at sunset with deps continue + critical warning
     - Hypothesis generates random sunset dates and dependency counts; verify behavior matches policy
 
-  - [ ] 11.3 Register 13 unregistered artifacts
+  - [~] 11.3 Register 13 unregistered artifacts
     - **Infrastructure:** EXTEND `.domainization/artifact_registry.yaml`
     - Inspect existing `.domainization/artifact_registry.yaml` — identify the 13 unregistered artifacts from baseline health report
     - Add all 13 currently unregistered artifacts with all required schema fields: artifact_id, file_path, primary_domain, artifact_type, lifecycle_status, created_date, last_modified, owner_role, ssot_relationship, allowed_writers, allowed_readers, metadata_source, registry_mode, dependencies, report_value
@@ -456,7 +456,7 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     - **Registry update:** Self-referential — registry entries added to `.domainization/artifact_registry.yaml`
     - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-  - [ ] 11.4 Add report_value metadata to all artifacts (100% coverage)
+  - [~] 11.4 Add report_value metadata to all artifacts (100% coverage)
     - **Infrastructure:** EXTEND `.domainization/artifact_registry.yaml`; EXTEND existing `.domainization/src/report_value_detector.py`
     - Inspect existing `.domainization/src/report_value_detector.py` — confirm `assess_artifact()`, `detect_missing_report_value()`, `_is_speculative_claim()` methods exist and can be reused
     - Add report_value field (category + justification) to every registered artifact
@@ -465,13 +465,13 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     - Achieve 100% report_value field population
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6_
 
-  - [ ] 11.5 Write property test for Report Value Validation
+  - [~] 11.5 Write property test for Report Value Validation
     - **Property 6: Report Value Validation**
     - **Validates: Requirements 4.2, 4.4**
     - Test that invalid categories are flagged and speculative language patterns are detected
     - Hypothesis generates random category strings and justification text; verify detection accuracy
 
-  - [ ] 11.6 Observability polish (health report integration)
+  - [~] 11.6 Observability polish (health report integration)
     - **Infrastructure:** EXTEND existing `.domainization/src/health_reporter.py` (do not create new health reporter)
     - Inspect existing `.domainization/src/health_reporter.py` — confirm `generate_health_report()`, `get_report_value_health_score()`, `get_runtime_flow_analysis()` methods
     - Integrate governance events into existing health report
@@ -480,7 +480,7 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     - Verify zero forbidden flows, zero unregistered artifacts, 100% report_value coverage in health report
     - _Requirements: 1.5, 3.4, 4.6, 17.4, 18.4_
 
-- [ ] 12. Phase D Output Contract Verification (Final)
+- [~] 12. Phase D Output Contract Verification (Final)
   - Verify all Phase D outputs meet HARDENING 9 contract:
     - Legacy briefings marked deprecated in artifact registry (deprecation_start_date, sunset_target_date populated)
     - Registry complete: zero unregistered-artifact warnings in health report
