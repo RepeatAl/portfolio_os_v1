@@ -1,24 +1,26 @@
-from datetime import datetime
+def run_morning_briefing_engine(priority_data, scoring_data, delta_data, report_data):
+    print("\n=== MORNING BRIEFING ===")
 
+    priorities = priority_data.get("priorities", [])
+    scores = scoring_data.get("scores", [])
+    changes = delta_data.get("changes", ["No previous data available."])
+    report_text = report_data.get("report", "")
 
-def run_morning_briefing_engine(report_data, scoring_data, delta_data):
+    # --- TOP PRIORITY ---
+    if scores:
+        top = max(scores, key=lambda x: x["score"])
+        top_priority = f"{top['item']} (Score: {top['score']})"
+    else:
+        top_priority = "No priority available"
 
-    report = report_data["report"]
-    scores = scoring_data["scores"]
-    changes = delta_data["changes"]
-
-    today = datetime.now().strftime("%Y-%m-%d")
-
-    top_item = scores[0]["item"]
-    top_score = scores[0]["score"]
-
+    # --- BUILD BRIEFING ---
     briefing = f"""
-MORNING BRIEFING — {today}
+MORNING BRIEFING — TODAY
 ==========================
 
 TOP PRIORITY
 ------------
-{top_item} (Score: {top_score})
+{top_priority}
 
 CHANGE VS YESTERDAY
 -------------------
@@ -35,16 +37,11 @@ Act on highest concentration risks first.
 
 SYSTEM SUMMARY
 --------------
-{report}
+{report_text}
 """
 
-    print("\n=== MORNING BRIEFING ===")
     print(briefing)
 
     return {
         "briefing": briefing
     }
-
-
-if __name__ == "__main__":
-    print("Run via main orchestrator.")

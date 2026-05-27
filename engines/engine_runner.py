@@ -10,50 +10,61 @@ from engines.report_engine import run_report_engine
 from engines.delta_engine import run_delta_engine
 from engines.morning_briefing_engine import run_morning_briefing_engine
 from engines.visual_engine import run_visual_engine
-from engines.engine_registry import ENGINE_REGISTRY
 
 
-FUNCTION_MAP = {
-    "run_allocation_engine": run_allocation_engine,
-    "run_regime_engine": run_regime_engine,
-    "run_attribution_engine": run_attribution_engine,
-    "run_priority_engine": run_priority_engine,
-    "run_scenario_engine": run_scenario_engine,
-    "run_decision_engine": run_decision_engine,
-    "run_scoring_engine": run_scoring_engine,
-    "run_quality_engine": run_quality_engine,
-    "run_report_engine": run_report_engine,
-    "run_delta_engine": run_delta_engine,
-    "run_morning_briefing_engine": run_morning_briefing_engine,
-    "run_visual_engine": run_visual_engine
-}
+def run_all_engines(portfolio_data=None, risk_profile=None):
+    print("\n=== PORTFOLIO OS START ===")
 
+    # --- ALLOCATION ---
+    allocation = run_allocation_engine(portfolio_data, risk_profile)
 
-def run_all_engines(user_portfolio):
+    # --- REGIME ---
+    regime = run_regime_engine()
 
-    results = {}
+    # --- ATTRIBUTION ---
+    attribution = run_attribution_engine(allocation, regime)
 
-    for engine_name, config in ENGINE_REGISTRY.items():
+    # --- PRIORITY ---
+    priority = run_priority_engine(allocation, attribution)
 
-        function_name = config["function"]
-        dependencies = config["dependencies"]
+    # --- SCENARIO ---
+    scenario = run_scenario_engine(allocation)
 
-        func = FUNCTION_MAP[function_name]
+    # --- DECISION ---
+    decision = run_decision_engine(priority, scenario)
 
-        # =========================
-        # SPECIAL CASE: ALLOCATION
-        # =========================
+    # --- SCORING ---
+    scoring = run_scoring_engine(priority, scenario)
 
-        if engine_name == "allocation":
-            result = func(user_portfolio)
+    # --- QUALITY (FIXED HERE) ---
+    quality = run_quality_engine(allocation, priority, scoring)
 
-        elif not dependencies:
-            result = func()
+    # --- REPORT ---
+    report = run_report_engine(regime, decision, quality)
 
-        else:
-            dep_results = [results[d] for d in dependencies]
-            result = func(*dep_results)
+    # --- DELTA ---
+    delta = run_delta_engine(report)
 
-        results[engine_name] = result
+    # --- MORNING BRIEFING ---
+    briefing = run_morning_briefing_engine(priority, scoring, delta, report)
 
-    return results
+    # --- VISUAL ---
+    visuals = run_visual_engine(allocation, decision, scenario, quality)
+
+    print("\n=== DASHBOARD DATA ===")
+    print(visuals)
+
+    return {
+        "allocation": allocation,
+        "regime": regime,
+        "attribution": attribution,
+        "priority": priority,
+        "scenario": scenario,
+        "decision": decision,
+        "scoring": scoring,
+        "quality": quality,
+        "report": report,
+        "delta": delta,
+        "morning_briefing": briefing,
+        "visual": visuals
+    }

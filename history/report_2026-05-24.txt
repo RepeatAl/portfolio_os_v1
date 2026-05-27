@@ -8,7 +8,7 @@ Neutral allocation environment.
 
 KEY DECISION
 ------------
-Primary focus: Reassess portfolio positioning under current macro uncertainty.
+Primary focus: Reduce concentration in AI Infrastructure (25.98%).
 
 RISK CONTEXT
 ------------
@@ -20,9 +20,11 @@ Maintain cautious positioning until macro clarity improves.
 
 CONFIDENCE
 ----------
-Score: 30
-Level: LOW
+Score: 100
+Level: HIGH
 
 DETAIL FLAGS
 ------------
+- Multiple high-impact signals detected.
 - Priority signals are present and actionable.
+- Concentration risk confirmed by allocation data.

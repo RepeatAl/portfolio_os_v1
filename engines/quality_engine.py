@@ -1,73 +1,82 @@
-def run_quality_engine(allocation_data, priority_data, scoring_data):
-
-    priorities = priority_data["priorities"]
-    scores = scoring_data["scores"]
-
-    quality_flags = []
-
-    confidence = 0
-
-    # =========================
-    # SIGNAL STRENGTH
-    # =========================
-
-    high_scores = [s for s in scores if s["score"] >= 70]
-
-    if len(high_scores) >= 2:
-        confidence += 40
-        quality_flags.append("Multiple high-impact signals detected.")
-
-    # =========================
-    # CONSISTENCY CHECK
-    # =========================
-
-    if len(priorities) > 0:
-        confidence += 30
-        quality_flags.append("Priority signals are present and actionable.")
-
-    # =========================
-    # CONCENTRATION CONFIRMATION
-    # =========================
-
-    allocation = allocation_data["allocation"]
-
-    concentration = any(item["Allocation %"] > 25 for item in allocation)
-
-    if concentration:
-        confidence += 30
-        quality_flags.append("Concentration risk confirmed by allocation data.")
-
-    # =========================
-    # FINAL CONFIDENCE
-    # =========================
-
-    if confidence >= 80:
-        level = "HIGH"
-    elif confidence >= 50:
-        level = "MEDIUM"
-    else:
-        level = "LOW"
-
-    # =========================
-    # OUTPUT
-    # =========================
-
-    quality_result = {
-        "confidence_score": confidence,
-        "confidence_level": level,
-        "flags": quality_flags
-    }
+def run_quality_engine(allocation, scenario, decision):
 
     print("\n=== QUALITY ENGINE ===")
-    print(f"Confidence: {confidence} ({level})")
 
-    for f in quality_flags:
-        print(f"- {f}")
+    confidence_score = 50
 
-    print("\nQuality Engine modularisiert.")
+    # ---------------------------------------------------
+    # DECISION ANALYSIS
+    # ---------------------------------------------------
 
-    return quality_result
+    decisions = decision.get(
+        "decisions",
+        []
+    )
 
+    for d in decisions:
 
-if __name__ == "__main__":
-    print("Run via main orchestrator.")
+        message = d.get(
+            "message",
+            ""
+        ).lower()
+
+        if "reduce" in message:
+            confidence_score += 15
+
+        if "risk" in message:
+            confidence_score += 10
+
+        if "acceptable" in message:
+            confidence_score -= 5
+
+    # ---------------------------------------------------
+    # SCENARIO DEPTH
+    # ---------------------------------------------------
+
+    scenarios = scenario.get(
+        "scenarios",
+        []
+    )
+
+    if len(scenarios) > 0:
+        confidence_score += 10
+
+    # ---------------------------------------------------
+    # ALLOCATION COMPLEXITY
+    # ---------------------------------------------------
+
+    allocation_data = allocation.get(
+        "allocation",
+        []
+    )
+
+    if len(allocation_data) >= 5:
+        confidence_score += 5
+
+    # ---------------------------------------------------
+    # NORMALIZE
+    # ---------------------------------------------------
+
+    confidence_score = max(
+        0,
+        min(confidence_score, 100)
+    )
+
+    result = {
+
+        "confidence_score": confidence_score,
+
+        "quality_label": (
+            "HIGH"
+            if confidence_score >= 80
+            else "MEDIUM"
+            if confidence_score >= 50
+            else "LOW"
+        )
+    }
+
+    print(f"Confidence Score: {confidence_score}")
+
+    print("Quality Engine modularisiert.")
+
+    return result

@@ -1,0 +1,17 @@
+{
+    "users": {},
+    "portfolios": {
+        "c771b39b-4c5b-4acc-8ebc-f346b97487d1": [
+            {
+                "ticker": "NVDA",
+                "quantity": 10.0,
+                "category": "AI Infrastructure"
+            },
+            {
+                "ticker": "RHM.DE",
+                "quantity": 5.0,
+                "category": "Defense"
+            }
+        ]
+    }
+}

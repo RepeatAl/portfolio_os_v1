@@ -1,90 +1,267 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import List
-import uuid
+import streamlit as st
+import pandas as pd
 
-from engines.engine_runner import run_all_engines
+# ---------------------------------------------------
+# ENGINE IMPORTS
+# ---------------------------------------------------
 
-app = FastAPI()
+from engines.allocation_engine import run_allocation_engine
+from engines.regime_engine import run_regime_engine
+from engines.attribution_engine import run_attribution_engine
+from engines.priority_engine import run_priority_engine
+from engines.scenario_engine import run_scenario_engine
+from engines.decision_engine import run_decision_engine
+from engines.scoring_engine import run_scoring_engine
+from engines.quality_engine import run_quality_engine
+from engines.visual_engine import run_visual_engine
+from engines.report_engine import run_report_engine
 
-# =========================
-# IN-MEMORY DATABASE
-# =========================
+# ---------------------------------------------------
+# PAGE CONFIG
+# ---------------------------------------------------
 
-users = {}
-portfolios = {}
+st.set_page_config(
 
-# =========================
-# MODELS
-# =========================
+    page_title="Portfolio OS",
 
-class UserCreate(BaseModel):
-    email: str
+    layout="wide",
 
+    initial_sidebar_state="collapsed"
+)
 
-class Asset(BaseModel):
-    ticker: str
-    quantity: float
-    category: str
+# ---------------------------------------------------
+# TITLE
+# ---------------------------------------------------
 
+st.title("📊 Portfolio Operating System")
 
-class PortfolioUpdate(BaseModel):
-    assets: List[Asset]
+# ---------------------------------------------------
+# PIPELINE EXECUTION
+# ---------------------------------------------------
 
+allocation = run_allocation_engine()
 
-# =========================
-# USER
-# =========================
+regime = run_regime_engine(
+    allocation
+)
 
-@app.post("/create_user")
-def create_user(user: UserCreate):
+attribution = run_attribution_engine(
+    allocation,
+    regime
+)
 
-    user_id = str(uuid.uuid4())
+priority = run_priority_engine(
+    allocation,
+    attribution
+)
 
-    users[user_id] = {
-        "email": user.email
-    }
+scenario = run_scenario_engine(
+    allocation,
+    regime,
+    attribution
+)
 
-    portfolios[user_id] = []
+decision = run_decision_engine(
+    allocation,
+    scenario,
+    priority
+)
 
-    return {
-        "user_id": user_id,
-        "email": user.email
-    }
+scoring = run_scoring_engine(
+    allocation,
+    decision
+)
 
+quality = run_quality_engine(
+    allocation,
+    scenario,
+    decision
+)
 
-# =========================
-# PORTFOLIO
-# =========================
+visuals = run_visual_engine(
+    allocation,
+    decision,
+    scenario,
+    quality
+)
 
-@app.post("/update_portfolio/{user_id}")
-def update_portfolio(user_id: str, data: PortfolioUpdate):
+report = run_report_engine(
+    allocation,
+    regime,
+    decision,
+    quality,
+    scenario
+)
 
-    portfolios[user_id] = [asset.dict() for asset in data.assets]
+# ---------------------------------------------------
+# KPI SECTION
+# ---------------------------------------------------
 
-    return {
-        "message": "Portfolio updated",
-        "assets": portfolios[user_id]
-    }
+col1, col2, col3 = st.columns(3)
 
+with col1:
 
-@app.get("/get_portfolio/{user_id}")
-def get_portfolio(user_id: str):
+    st.metric(
+        "Risk Level",
+        visuals["risk_bar"]["level"]
+    )
 
-    return {
-        "portfolio": portfolios.get(user_id, [])
-    }
+with col2:
 
+    st.metric(
+        "Confidence Score",
+        visuals["risk_bar"]["value"]
+    )
 
-# =========================
-# ANALYSIS
-# =========================
+with col3:
 
-@app.get("/run_analysis/{user_id}")
-def run_analysis(user_id: str):
+    st.metric(
+        "Primary Action",
+        visuals["next_move"]["message"]
+    )
 
-    user_portfolio = portfolios.get(user_id, [])
+# ---------------------------------------------------
+# NEXT MOVE
+# ---------------------------------------------------
 
-    results = run_all_engines(user_portfolio)
+st.subheader("🎯 Next Move")
 
-    return results
+st.info(
+    visuals["next_move"]["message"]
+)
+
+# ---------------------------------------------------
+# PORTFOLIO ALLOCATION
+# ---------------------------------------------------
+
+st.subheader("📈 Portfolio Allocation")
+
+allocation_df = pd.DataFrame(
+    visuals["portfolio_pie"]
+)
+
+st.bar_chart(
+    allocation_df.set_index("category")
+)
+
+st.dataframe(
+    allocation_df,
+    width="stretch"
+)
+
+# ---------------------------------------------------
+# TARGET VS ACTUAL
+# ---------------------------------------------------
+
+st.subheader("⚖️ Target vs Actual Allocation")
+
+target_vs_actual_df = pd.DataFrame(
+    visuals["target_vs_actual"]
+)
+
+if not target_vs_actual_df.empty:
+
+    st.dataframe(
+        target_vs_actual_df,
+        width="stretch"
+    )
+
+else:
+
+    st.write(
+        "No target allocation data available."
+    )
+
+# ---------------------------------------------------
+# RISK ASSESSMENT
+# ---------------------------------------------------
+
+st.subheader("⚠️ Risk Assessment")
+
+risk_value = visuals["risk_bar"]["value"]
+
+st.progress(
+    min(risk_value / 100, 1.0)
+)
+
+st.write(
+    visuals["risk_bar"]["message"]
+)
+
+# ---------------------------------------------------
+# MARKET SCENARIOS
+# ---------------------------------------------------
+
+st.subheader("🧠 Market Scenarios")
+
+for scenario_item in visuals["scenarios"]:
+
+    st.markdown(
+        f"### {scenario_item['title']}"
+    )
+
+    st.write(
+        scenario_item["message"]
+    )
+
+# ---------------------------------------------------
+# ACTION SIMULATION
+# ---------------------------------------------------
+
+st.subheader("🔮 Action Simulation")
+
+if visuals["action_simulation"]:
+
+    for sim in visuals["action_simulation"]:
+
+        st.markdown(
+            "### If you follow the recommendation"
+        )
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+
+            st.markdown("#### Before")
+
+            st.write(
+                sim["before"]
+            )
+
+        with col2:
+
+            st.markdown("#### After")
+
+            st.write(
+                sim["after"]
+            )
+
+        st.success(
+            sim["impact"]
+        )
+
+else:
+
+    st.write(
+        "No simulation available."
+    )
+
+# ---------------------------------------------------
+# FINAL REPORT
+# ---------------------------------------------------
+
+st.subheader("🧾 Portfolio Intelligence Report")
+
+st.code(
+    report["report"]
+)
+
+# ---------------------------------------------------
+# FOOTER
+# ---------------------------------------------------
+
+st.divider()
+
+st.caption(
+    "Portfolio OS v1"
+)

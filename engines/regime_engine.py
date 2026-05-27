@@ -1,7 +1,7 @@
 import yfinance as yf
 
 
-def run_regime_engine():
+def run_regime_engine(allocation):
 
     # =========================
     # REGIME CONTEXT

@@ -53,6 +53,11 @@ ENGINE_REGISTRY = {
     "morning_briefing": {
         "function": "run_morning_briefing_engine",
         "dependencies": ["report", "scoring", "delta"]
+    },
+
+    "visual": {
+        "function": "run_visual_engine",
+        "dependencies": ["allocation", "decision", "scenario"]
     }
 
 }

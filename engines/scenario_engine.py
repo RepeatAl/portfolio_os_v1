@@ -1,52 +1,96 @@
-def run_scenario_engine(allocation_data, regime_data):
+def run_scenario_engine(allocation, regime, attribution):
 
-    allocation = allocation_data["allocation"]
-    regime_comment = regime_data["Regime Comment"]
+    print("\n=== SCENARIO ENGINE ===")
 
     scenarios = []
 
-    # =========================
-    # SCENARIO 1: CONCENTRATION RISK
-    # =========================
+    action_scenarios = []
 
-    for item in allocation:
+    regime_comment = regime.get(
+        "Regime Comment",
+        "Neutral environment."
+    )
 
-        category = item["Category"]
-        weight = item["Allocation %"]
-
-        if weight > 25:
-            scenarios.append({
-                "scenario": f"If {category} declines 10%",
-                "impact": f"Portfolio may experience disproportionate drawdown due to {weight}% exposure."
-            })
-
-    # =========================
-    # SCENARIO 2: MACRO SHIFT
-    # =========================
+    # ---------------------------------------------------
+    # BASE MARKET SCENARIOS
+    # ---------------------------------------------------
 
     if "neutral" in regime_comment.lower():
 
         scenarios.append({
-            "scenario": "If macro environment turns risk-off",
-            "impact": "Growth and cyclical exposures may underperform simultaneously."
+
+            "scenario": "Neutral Market Regime",
+
+            "impact": (
+                "Markets remain range-bound. "
+                "Selective positioning remains important."
+            )
         })
 
-    # =========================
-    # OUTPUT
-    # =========================
+    else:
 
-    scenario_result = {
-        "scenarios": scenarios
+        scenarios.append({
+
+            "scenario": "Macro Stress Regime",
+
+            "impact": (
+                "Higher volatility and defensive positioning expected."
+            )
+        })
+
+    # ---------------------------------------------------
+    # TARGET VS ACTUAL
+    # ---------------------------------------------------
+
+    target_vs_actual = allocation.get(
+        "target_vs_actual"
+    )
+
+    if target_vs_actual is None:
+        target_vs_actual = []
+
+    # ---------------------------------------------------
+    # ACTION SIMULATION
+    # ---------------------------------------------------
+
+    for row in target_vs_actual:
+
+        difference = row.get(
+            "Difference %",
+            0
+        )
+
+        if difference > 10:
+
+            action_scenarios.append({
+
+                "before": (
+                    f"{row['Risk Level']} exposure "
+                    f"is currently {row['Actual %']}%"
+                ),
+
+                "after": (
+                    f"Reducing exposure closer to "
+                    f"{row['Target %']}%"
+                ),
+
+                "impact": (
+                    "Portfolio concentration risk improves "
+                    "and resilience increases."
+                )
+            })
+
+    # ---------------------------------------------------
+    # FINAL OUTPUT
+    # ---------------------------------------------------
+
+    result = {
+
+        "scenarios": scenarios,
+
+        "action_scenarios": action_scenarios
     }
 
-    print("\n=== SCENARIO ENGINE ===")
-    for s in scenarios:
-        print(f"- {s['scenario']}: {s['impact']}")
+    print("Scenario Engine modularisiert.")
 
-    print("\nScenario Engine modularisiert.")
-
-    return scenario_result
-
-
-if __name__ == "__main__":
-    print("Run via main orchestrator.")
+    return result

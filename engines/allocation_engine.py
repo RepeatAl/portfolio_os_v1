@@ -1,96 +1,60 @@
 import pandas as pd
-import yfinance as yf
+
+from engines.semantic_engine import interpret_allocation_signals
 
 
-def run_allocation_engine(user_portfolio):
+WATCHLIST_PATH = "watchlist.xlsx"
 
-    results = []
 
-    # =========================
-    # PORTFOLIO ENGINE (USER DATA)
-    # =========================
+def load_watchlist(path=WATCHLIST_PATH):
+    return pd.read_excel(path)
 
-    for asset in user_portfolio:
 
-        symbol = asset["ticker"]
-        quantity = asset["quantity"]
-        category = asset["category"]
+def build_allocation_table(watchlist_df):
+    required_columns = ["Category", "Market Value €"]
 
-        ticker = yf.Ticker(symbol)
-        data = ticker.history(period="5d")
-
-        if data.empty:
-            continue
-
-        current_price = data["Close"].iloc[-1]
-
-        market_value = current_price * quantity
-
-        results.append({
-            "Ticker": symbol,
-            "Category": category,
-            "Market Value €": round(market_value, 2)
-        })
-
-    portfolio_df = pd.DataFrame(results)
-
-    if portfolio_df.empty:
-        return {
-            "allocation": [],
-            "governance": [{"Governance Signals": "No data available."}]
-        }
-
-    # =========================
-    # TOTAL VALUE
-    # =========================
-
-    total_value = portfolio_df["Market Value €"].sum()
-
-    # =========================
-    # CATEGORY ALLOCATION
-    # =========================
+    for column in required_columns:
+        if column not in watchlist_df.columns:
+            raise ValueError(f"Missing required column: {column}")
 
     allocation_df = (
-        portfolio_df
-        .groupby("Category")["Market Value €"]
+        watchlist_df
+        .groupby("Category", as_index=False)["Market Value €"]
         .sum()
-        .reset_index()
     )
 
-    allocation_df["Allocation %"] = (
-        allocation_df["Market Value €"] / total_value
-    ) * 100
+    total_value = allocation_df["Market Value €"].sum()
 
-    allocation_df["Allocation %"] = allocation_df["Allocation %"].round(2)
+    if total_value == 0:
+        allocation_df["Allocation %"] = 0.0
+    else:
+        allocation_df["Allocation %"] = (
+            allocation_df["Market Value €"] / total_value * 100
+        ).round(2)
 
-    # =========================
-    # GOVERNANCE FLAGS
-    # =========================
+    return allocation_df
 
-    governance_flags = []
+
+def build_governance_signals(allocation_df):
+    signals = []
 
     for _, row in allocation_df.iterrows():
-
         category = row["Category"]
-        allocation = row["Allocation %"]
+        allocation = float(row["Allocation %"])
 
-        if allocation > 35:
-            governance_flags.append(
-                f"{category} exceeds healthy concentration limits."
-            )
-        elif allocation > 25:
-            governance_flags.append(
-                f"{category} currently overweight."
-            )
+        if allocation > 25:
+            signals.append({
+                "Governance Signals": f"{category} currently overweight."
+            })
 
-    if len(governance_flags) == 0:
-        governance_flags.append(
-            "Portfolio allocation balanced."
-        )
+    return pd.DataFrame(signals)
 
-    governance_df = pd.DataFrame({
-        "Governance Signals": governance_flags
-    })
+
+def run_allocation_engine():
+    watchlist_df = load_watchlist()
+    allocation_df = build_allocation_table(watchlist_df)
+    governance_df = build_governance_signals(allocation_df)
+    semantic_states = interpret_allocation_signals(allocation_df)
 
     print("\n=== ALLOCATION ENGINE ===")
     print(allocation_df)
@@ -98,13 +62,15 @@ def run_allocation_engine(user_portfolio):
     print("\n=== GOVERNANCE ENGINE ===")
     print(governance_df)
 
-    print("\nAllocation Engine (User Portfolio aktiv).")
+    print("\n=== SEMANTIC STATES ===")
+    for state in semantic_states:
+        print(state)
 
-    return {
-        "allocation": allocation_df.to_dict(orient="records"),
-        "governance": governance_df.to_dict(orient="records")
-    }
+    allocation_df.to_excel("allocation_engine.xlsx", index=False)
+    governance_df.to_excel("allocation_governance.xlsx", index=False)
+
+    print("\nAllocation Engine modularisiert.")
 
 
 if __name__ == "__main__":
-    print("Run via orchestrator.")
+    run_allocation_engine()

@@ -1,67 +1,109 @@
-def run_decision_engine(priority_data, scenario_data):
+def run_decision_engine(allocation, scenario, priority):
 
-    priorities = priority_data["priorities"]
-    scenarios = scenario_data["scenarios"]
+    print("\n=== DECISION ENGINE ===")
 
     decisions = []
 
-    # =========================
+    # ---------------------------------------------------
+    # LOAD PRIORITIES
+    # ---------------------------------------------------
+
+    priorities = priority.get(
+        "priorities",
+        []
+    )
+
+    # ---------------------------------------------------
+    # LOAD SCENARIOS
+    # ---------------------------------------------------
+
+    action_scenarios = scenario.get(
+        "action_scenarios",
+        []
+    )
+
+    # ---------------------------------------------------
     # PRIMARY ACTION
-    # =========================
+    # ---------------------------------------------------
 
-    if len(priorities) > 0:
+    if priorities:
 
-        top_priority = priorities[0]["message"]
+        top_priority = priorities[0]
 
         decisions.append({
+
             "type": "primary_action",
-            "message": f"Primary focus: {top_priority}"
+
+            "message": top_priority.get(
+                "message",
+                "No action available."
+            ),
+
+            "priority_type": top_priority.get(
+                "type",
+                "general"
+            )
         })
 
-    # =========================
-    # RISK FRAME
-    # =========================
-
-    if len(scenarios) > 0:
-
-        decisions.append({
-            "type": "risk_frame",
-            "message": "Downside scenarios indicate concentration-driven vulnerability."
-        })
-
-    # =========================
-    # STRATEGIC STANCE
-    # =========================
-
-    if any("uncertainty" in p["message"].lower() for p in priorities):
-
-        decisions.append({
-            "type": "strategy",
-            "message": "Maintain cautious positioning until macro clarity improves."
-        })
     else:
 
         decisions.append({
-            "type": "strategy",
-            "message": "Portfolio positioning can remain constructive."
+
+            "type": "primary_action",
+
+            "message": (
+                "Portfolio currently appears balanced."
+            ),
+
+            "priority_type": "balanced"
         })
 
-    # =========================
-    # OUTPUT
-    # =========================
+    # ---------------------------------------------------
+    # RISK INTERPRETATION
+    # ---------------------------------------------------
 
-    decision_result = {
-        "decisions": decisions
+    if action_scenarios:
+
+        decisions.append({
+
+            "type": "risk_adjustment",
+
+            "message": (
+                "Portfolio adjustments may improve "
+                "overall resilience."
+            )
+        })
+
+    else:
+
+        decisions.append({
+
+            "type": "hold",
+
+            "message": (
+                "Current positioning remains acceptable."
+            )
+        })
+
+    # ---------------------------------------------------
+    # FINAL DECISION STATE
+    # ---------------------------------------------------
+
+    result = {
+
+        "decisions": decisions,
+
+        "primary_action": decisions[0]["message"],
+
+        "decision_count": len(decisions)
     }
 
-    print("\n=== DECISION ENGINE ===")
+    print("\n=== DECISION OUTPUT ===")
+
     for d in decisions:
+
         print(f"- {d['message']}")
 
     print("\nDecision Engine modularisiert.")
 
-    return decision_result
-
-
-if __name__ == "__main__":
-    print("Run via main orchestrator.")
+    return result

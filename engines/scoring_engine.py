@@ -1,73 +1,45 @@
-def run_scoring_engine(priority_data, scenario_data):
-
-    priorities = priority_data["priorities"]
-    scenarios = scenario_data["scenarios"]
-
-    scores = []
-
-    # =========================
-    # PRIORITY SCORING
-    # =========================
-
-    for p in priorities:
-
-        score = 0
-
-        if p["type"] == "risk":
-            score += 70
-
-        if "Reduce concentration" in p["message"]:
-            score += 20
-
-        if p["type"] == "context":
-            score += 40
-
-        scores.append({
-            "item": p["message"],
-            "score": score
-        })
-
-    # =========================
-    # SCENARIO SCORING
-    # =========================
-
-    for s in scenarios:
-
-        score = 0
-
-        if "disproportionate drawdown" in s["impact"]:
-            score += 60
-
-        if "macro" in s["scenario"].lower():
-            score += 50
-
-        scores.append({
-            "item": s["scenario"],
-            "score": score
-        })
-
-    # =========================
-    # SORTING
-    # =========================
-
-    scores = sorted(scores, key=lambda x: x["score"], reverse=True)
-
-    # =========================
-    # OUTPUT
-    # =========================
-
-    scoring_result = {
-        "scores": scores
-    }
+def run_scoring_engine(allocation, decision):
 
     print("\n=== SCORING ENGINE ===")
-    for s in scores:
-        print(f"- {s['item']} → Score: {s['score']}")
 
-    print("\nScoring Engine modularisiert.")
+    decisions = decision.get(
+        "decisions",
+        []
+    )
 
-    return scoring_result
+    score = 50
 
+    for d in decisions:
 
-if __name__ == "__main__":
-    print("Run via main orchestrator.")
+        message = d.get(
+            "message",
+            ""
+        ).lower()
+
+        if "reduce" in message:
+            score += 20
+
+        if "risk" in message:
+            score += 10
+
+        if "acceptable" in message:
+            score -= 10
+
+    score = min(score, 100)
+
+    result = {
+
+        "portfolio_score": score,
+
+        "score_label": (
+            "Strong Action Needed"
+            if score >= 70
+            else "Moderate Review"
+        )
+    }
+
+    print(f"Portfolio Score: {score}")
+
+    print("Scoring Engine modularisiert.")
+
+    return result
