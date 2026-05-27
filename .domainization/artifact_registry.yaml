@@ -228,7 +228,7 @@ artifacts:
     artifact_type: ENGINE
     lifecycle_status: active
     created_date: "2026-02-15"
-    last_modified: "2026-05-25"
+    last_modified: "2026-05-27"
     owner_role: Report generation engineer
     ssot_relationship: implementation
     allowed_writers:
@@ -238,10 +238,17 @@ artifacts:
     dependencies:
       - report_reasoning_system_md
       - report_section_specification_md
-    description: "Generates comprehensive portfolio manager reports from reasoning outputs"
+      - reasoning_object_py
+      - provenance_schema_py
+    description: "Chain-compliant report engine with ReportEngine orchestrator composing 4 sub-components (SectionCompletenessClassifier, ProvenanceAssembler, SectionRenderer, DegradationRenderer). Enforces Hardening 7 boundary: render only, no inference. Legacy run_report_engine() retained deprecated for backward compatibility."
+    report_value:
+      category: pm_reasoning
+      justification: "Renders Reasoning Objects into the 9-section daily report with provenance metadata and degradation notices"
     tags:
       - report
       - generation
+      - chain_compliant
+      - provenance
 
   - artifact_id: morning_briefing_engine_py
     file_path: engines/morning_briefing_engine.py
@@ -2324,3 +2331,65 @@ artifacts:
       - persistence
       - snapshot
       - delta
+
+  - artifact_id: chain_validator_py
+    file_path: runtime/chain_validator.py
+    primary_domain: GOV
+    artifact_type: RUNTIME
+    lifecycle_status: active
+    created_date: "2026-05-27"
+    last_modified: "2026-05-27"
+    owner_role: Governance maintainer
+    ssot_relationship: canonical
+    allowed_writers:
+      - GOV
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies:
+      - provenance_schema_py
+      - reasoning_object_py
+      - runtime_state_model_py
+    report_value:
+      category: traceability
+      justification: "Verifies provenance chain integrity for every report section ensuring no canonical chain layer is skipped at runtime"
+    description: "Pre-normalized graph-based provenance verification with O(1) lookups and 2-second validation budget"
+    tags:
+      - runtime
+      - governance
+      - chain-validation
+      - provenance
+      - observability
+
+  - artifact_id: pipeline_orchestrator_py
+    file_path: engines/pipeline_orchestrator.py
+    primary_domain: ARCH
+    artifact_type: ENGINE
+    lifecycle_status: active
+    created_date: "2026-05-27"
+    last_modified: "2026-05-27"
+    owner_role: System architect
+    ssot_relationship: implementation
+    allowed_writers:
+      - ARCH
+    allowed_readers:
+      - ALL
+    dependencies:
+      - engine_runner_py
+      - semantic_engine_py
+      - run_context_py
+      - reasoning_object_py
+      - semantic_state_store_py
+      - provenance_schema_py
+      - pipeline_result_py
+      - runtime_state_model_py
+      - severity_taxonomy_py
+    report_value:
+      category: traceability
+      justification: "Chain-aware pipeline orchestrator enforcing canonical authority flow SIGNALS to SEMANTICS to REASONING to REPORT with forbidden flow detection"
+    description: "Replaces engine_runner.py orchestration with chain-compliant 10-step pipeline execution enforcing domain boundaries"
+    tags:
+      - architecture
+      - orchestration
+      - pipeline
+      - chain-compliance
