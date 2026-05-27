@@ -4,13 +4,19 @@ Defines how confidence_level is reduced when upstream signal categories are
 missing or degraded. Policy parameters are loaded from a YAML config file,
 allowing governance changes without modifying schema or engine source code.
 
-Requirements: 19.1, 19.2, 19.3, 19.4
+Requirements: 19.1, 19.2, 19.3, 19.4, 19.5
 """
 
+from __future__ import annotations
+
+import logging
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 
 import yaml
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -46,7 +52,7 @@ class ConfidenceDegradationPolicy:
         )
 
     @classmethod
-    def load(cls, config_path: str = "governance/confidence_policy.yaml") -> "ConfidenceDegradationPolicy":
+    def load(cls, config_path: str = "governance/confidence_policy.yaml") -> ConfidenceDegradationPolicy:
         """Load policy from YAML config file.
 
         If the config file does not exist, returns the default policy.
@@ -73,3 +79,58 @@ class ConfidenceDegradationPolicy:
             minimum_floor=data.get("minimum_floor", 0),
             version=data.get("version", "1.0.0"),
         )
+
+    @classmethod
+    def load_and_log_changes(
+        cls,
+        config_path: str = "governance/confidence_policy.yaml",
+        previous_policy: ConfidenceDegradationPolicy | None = None,
+    ) -> tuple[ConfidenceDegradationPolicy, dict | None]:
+        """Load policy from YAML and log changes if version differs from previous.
+
+        This method supports Requirement 19.5: policy changes are logged with
+        previous version, new version, and effective timestamp.
+
+        Args:
+            config_path: Path to the YAML configuration file.
+            previous_policy: The previously active policy for change detection.
+
+        Returns:
+            Tuple of (new_policy, change_record). change_record is None if no
+            version change occurred, otherwise a dict with previous_version,
+            new_version, and effective_timestamp.
+        """
+        new_policy = cls.load(config_path)
+        change_record: dict | None = None
+
+        if previous_policy is not None and previous_policy.version != new_policy.version:
+            effective_timestamp = datetime.now(timezone.utc).strftime(
+                "%Y-%m-%dT%H:%M:%SZ"
+            )
+            change_record = {
+                "previous_version": previous_policy.version,
+                "new_version": new_policy.version,
+                "effective_timestamp": effective_timestamp,
+                "previous_base_ceiling": previous_policy.base_ceiling,
+                "new_base_ceiling": new_policy.base_ceiling,
+                "previous_penalty": previous_policy.penalty_per_missing_category,
+                "new_penalty": new_policy.penalty_per_missing_category,
+                "previous_floor": previous_policy.minimum_floor,
+                "new_floor": new_policy.minimum_floor,
+            }
+            logger.info(
+                "Confidence degradation policy updated: version %s → %s "
+                "(effective: %s). base_ceiling: %d→%d, "
+                "penalty_per_missing_category: %d→%d, minimum_floor: %d→%d",
+                previous_policy.version,
+                new_policy.version,
+                effective_timestamp,
+                previous_policy.base_ceiling,
+                new_policy.base_ceiling,
+                previous_policy.penalty_per_missing_category,
+                new_policy.penalty_per_missing_category,
+                previous_policy.minimum_floor,
+                new_policy.minimum_floor,
+            )
+
+        return new_policy, change_record

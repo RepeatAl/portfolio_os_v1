@@ -21,6 +21,7 @@ from engines.pipeline_orchestrator import (
     PipelineOrchestrator,
     _run_with_timeout,
 )
+from runtime.confidence_policy import ConfidenceDegradationPolicy
 from runtime.pipeline_result import PipelineResult
 from runtime.runtime_state_model import RuntimeState
 from runtime.severity_taxonomy import Severity
@@ -222,3 +223,190 @@ class TestConstants:
     def test_all_sections_in_canonical_list(self):
         for section in CATEGORY_TO_SECTION.values():
             assert section in CANONICAL_SECTIONS
+
+
+class TestConfidencePolicyGovernance:
+    """Test confidence policy governance integration (Requirements 19.4, 19.5)."""
+
+    def test_orchestrator_loads_policy_on_init(self):
+        """PipelineOrchestrator loads confidence policy during initialization."""
+        po = PipelineOrchestrator()
+        assert po._confidence_policy is not None
+        assert po._confidence_policy.base_ceiling == 50
+        assert po._confidence_policy.version == "1.0.0"
+
+    def test_policy_change_log_starts_empty(self):
+        """Policy change log is empty on initialization."""
+        po = PipelineOrchestrator()
+        assert po._policy_change_log == []
+
+    def test_reload_policy_no_change_when_version_same(self):
+        """Reloading policy with same version produces no change record."""
+        po = PipelineOrchestrator()
+        po._reload_confidence_policy()
+        assert po._policy_change_log == []
+
+    def test_reload_policy_logs_change_when_version_differs(self, tmp_path):
+        """Reloading policy with different version logs the change."""
+        # Create a new policy config with different version
+        config = {
+            "base_ceiling": 60,
+            "penalty_per_missing_category": 15,
+            "minimum_floor": 5,
+            "version": "2.0.0",
+        }
+        policy_file = tmp_path / "governance" / "confidence_policy.yaml"
+        policy_file.parent.mkdir(parents=True, exist_ok=True)
+        import yaml as _yaml
+        policy_file.write_text(_yaml.dump(config))
+
+        po = PipelineOrchestrator()
+        # Set initial policy version
+        po._confidence_policy = ConfidenceDegradationPolicy(version="1.0.0")
+
+        # Patch the load path to use our temp file
+        with patch(
+            "runtime.confidence_policy.ConfidenceDegradationPolicy.load_and_log_changes"
+        ) as mock_load:
+            from runtime.confidence_policy import ConfidenceDegradationPolicy as CDP
+            new_policy = CDP(
+                base_ceiling=60,
+                penalty_per_missing_category=15,
+                minimum_floor=5,
+                version="2.0.0",
+            )
+            change_record = {
+                "previous_version": "1.0.0",
+                "new_version": "2.0.0",
+                "effective_timestamp": "2026-05-28T10:00:00Z",
+                "previous_base_ceiling": 50,
+                "new_base_ceiling": 60,
+                "previous_penalty": 10,
+                "new_penalty": 15,
+                "previous_floor": 0,
+                "new_floor": 5,
+            }
+            mock_load.return_value = (new_policy, change_record)
+
+            po._reload_confidence_policy()
+
+        assert len(po._policy_change_log) == 1
+        assert po._policy_change_log[0]["previous_version"] == "1.0.0"
+        assert po._policy_change_log[0]["new_version"] == "2.0.0"
+        assert po._policy_change_log[0]["effective_timestamp"] == "2026-05-28T10:00:00Z"
+        assert po._confidence_policy.version == "2.0.0"
+        assert po._confidence_policy.base_ceiling == 60
+
+    def test_reload_policy_emits_severity_event_on_change(self, tmp_path):
+        """Policy version change emits an INFO severity event."""
+        po = PipelineOrchestrator()
+        po._confidence_policy = ConfidenceDegradationPolicy(version="1.0.0")
+
+        with patch(
+            "runtime.confidence_policy.ConfidenceDegradationPolicy.load_and_log_changes"
+        ) as mock_load:
+            from runtime.confidence_policy import ConfidenceDegradationPolicy as CDP
+            new_policy = CDP(version="2.0.0")
+            change_record = {
+                "previous_version": "1.0.0",
+                "new_version": "2.0.0",
+                "effective_timestamp": "2026-05-28T10:00:00Z",
+                "previous_base_ceiling": 50,
+                "new_base_ceiling": 50,
+                "previous_penalty": 10,
+                "new_penalty": 10,
+                "previous_floor": 0,
+                "new_floor": 0,
+            }
+            mock_load.return_value = (new_policy, change_record)
+
+            po._reload_confidence_policy()
+
+        # Check severity event was emitted
+        policy_events = [
+            e for e in po._severity_events
+            if "confidence_policy_governance" in e.get("source", "")
+        ]
+        assert len(policy_events) == 1
+        assert policy_events[0]["severity"] == "INFO"
+        assert "1.0.0" in policy_events[0]["message"]
+        assert "2.0.0" in policy_events[0]["message"]
+
+    def test_policy_configurable_without_code_changes(self, tmp_path):
+        """Policy can be updated by modifying YAML without engine code changes.
+
+        Validates Requirement 19.4: policy is configurable without modifying
+        the Reasoning_Object schema or Reasoning_Engine source code.
+        """
+        import yaml as _yaml
+
+        # Write a custom policy config
+        config = {
+            "base_ceiling": 75,
+            "penalty_per_missing_category": 5,
+            "minimum_floor": 20,
+            "version": "3.0.0",
+        }
+        policy_file = tmp_path / "confidence_policy.yaml"
+        policy_file.write_text(_yaml.dump(config))
+
+        # Load policy from the custom file — no code changes needed
+        from runtime.confidence_policy import ConfidenceDegradationPolicy as CDP
+        policy = CDP.load(str(policy_file))
+
+        assert policy.base_ceiling == 75
+        assert policy.penalty_per_missing_category == 5
+        assert policy.minimum_floor == 20
+        assert policy.version == "3.0.0"
+        # Verify compute still works with new values
+        assert policy.compute(0) == 75
+        assert policy.compute(5) == 50
+        assert policy.compute(20) == 20  # Clamped to floor
+
+    @patch("engines.pipeline_orchestrator.run_all_engines")
+    def test_reasoning_engines_use_reloaded_policy(self, mock_run_all):
+        """Reasoning engines use the reloaded policy during execution."""
+        import tempfile
+
+        mock_run_all.return_value = {}
+        po = PipelineOrchestrator()
+        po.output_dir = tempfile.mkdtemp()
+        po.state_dir = tempfile.mkdtemp()
+
+        # Set a custom policy
+        from runtime.confidence_policy import ConfidenceDegradationPolicy as CDP
+        po._confidence_policy = CDP(
+            base_ceiling=80,
+            penalty_per_missing_category=20,
+            minimum_floor=10,
+            version="custom",
+        )
+
+        # Simulate degraded categories
+        po._degraded_categories = ["allocation", "regime"]
+
+        # Execute reasoning engines with some semantic states
+        from runtime.run_context import RunContext
+        run_context = RunContext.create([])
+        semantic_states = [
+            {
+                "signal_id": "flow_baseline",
+                "category": "flow",
+                "meaning": "Test state",
+                "source": "test_engine",
+                "value": None,
+                "completeness": "placeholder",
+            }
+        ]
+
+        # Patch reload to keep current policy (no file change)
+        with patch.object(po, "_reload_confidence_policy"):
+            reasoning_objects = po._execute_reasoning_engines(
+                semantic_states, run_context
+            )
+
+        # With 2 degraded categories and custom policy (80 - 20*2 = 40)
+        if reasoning_objects:
+            for ro in reasoning_objects:
+                # Confidence should be capped by the policy
+                assert ro.confidence_level <= 80

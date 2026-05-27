@@ -149,3 +149,135 @@ class TestConfidenceDegradationLoad:
             assert policy.penalty_per_missing_category == 10
             assert policy.minimum_floor == 0
             assert policy.version == "1.0.0"
+
+
+class TestConfidenceDegradationLoadAndLogChanges:
+    """Tests for the load_and_log_changes() class method (Requirement 19.5)."""
+
+    def test_no_change_when_versions_match(self):
+        """When previous and new policy have same version, no change record."""
+        config = {
+            "base_ceiling": 50,
+            "penalty_per_missing_category": 10,
+            "minimum_floor": 0,
+            "version": "1.0.0",
+        }
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
+            yaml.dump(config, f)
+            tmp_path = f.name
+
+        try:
+            previous = ConfidenceDegradationPolicy(version="1.0.0")
+            new_policy, change_record = ConfidenceDegradationPolicy.load_and_log_changes(
+                config_path=tmp_path, previous_policy=previous
+            )
+            assert change_record is None
+            assert new_policy.version == "1.0.0"
+        finally:
+            os.unlink(tmp_path)
+
+    def test_change_record_when_version_differs(self):
+        """When version changes, a change record is produced."""
+        config = {
+            "base_ceiling": 60,
+            "penalty_per_missing_category": 15,
+            "minimum_floor": 5,
+            "version": "2.0.0",
+        }
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
+            yaml.dump(config, f)
+            tmp_path = f.name
+
+        try:
+            previous = ConfidenceDegradationPolicy(
+                base_ceiling=50,
+                penalty_per_missing_category=10,
+                minimum_floor=0,
+                version="1.0.0",
+            )
+            new_policy, change_record = ConfidenceDegradationPolicy.load_and_log_changes(
+                config_path=tmp_path, previous_policy=previous
+            )
+            assert change_record is not None
+            assert change_record["previous_version"] == "1.0.0"
+            assert change_record["new_version"] == "2.0.0"
+            assert "effective_timestamp" in change_record
+            assert change_record["previous_base_ceiling"] == 50
+            assert change_record["new_base_ceiling"] == 60
+            assert change_record["previous_penalty"] == 10
+            assert change_record["new_penalty"] == 15
+            assert change_record["previous_floor"] == 0
+            assert change_record["new_floor"] == 5
+        finally:
+            os.unlink(tmp_path)
+
+    def test_change_record_has_iso_timestamp(self):
+        """Effective timestamp is in ISO 8601 UTC format."""
+        config = {"version": "3.0.0"}
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
+            yaml.dump(config, f)
+            tmp_path = f.name
+
+        try:
+            previous = ConfidenceDegradationPolicy(version="1.0.0")
+            _, change_record = ConfidenceDegradationPolicy.load_and_log_changes(
+                config_path=tmp_path, previous_policy=previous
+            )
+            assert change_record is not None
+            # Verify ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
+            ts = change_record["effective_timestamp"]
+            assert ts.endswith("Z")
+            assert "T" in ts
+            assert len(ts) == 20
+        finally:
+            os.unlink(tmp_path)
+
+    def test_no_previous_policy_returns_no_change(self):
+        """When previous_policy is None, no change record is produced."""
+        config = {"version": "2.0.0"}
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
+            yaml.dump(config, f)
+            tmp_path = f.name
+
+        try:
+            new_policy, change_record = ConfidenceDegradationPolicy.load_and_log_changes(
+                config_path=tmp_path, previous_policy=None
+            )
+            assert change_record is None
+            assert new_policy.version == "2.0.0"
+        finally:
+            os.unlink(tmp_path)
+
+    def test_missing_file_returns_default_no_change(self):
+        """When config file is missing, returns default policy with no change."""
+        previous = ConfidenceDegradationPolicy(version="1.0.0")
+        new_policy, change_record = ConfidenceDegradationPolicy.load_and_log_changes(
+            config_path="/nonexistent/path.yaml", previous_policy=previous
+        )
+        assert change_record is None
+        assert new_policy.version == "1.0.0"
+        assert new_policy.base_ceiling == 50
+
+    def test_new_policy_values_are_loaded_correctly(self):
+        """Verify the returned policy has the new values from config."""
+        config = {
+            "base_ceiling": 80,
+            "penalty_per_missing_category": 20,
+            "minimum_floor": 10,
+            "version": "2.1.0",
+        }
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
+            yaml.dump(config, f)
+            tmp_path = f.name
+
+        try:
+            previous = ConfidenceDegradationPolicy(version="1.0.0")
+            new_policy, _ = ConfidenceDegradationPolicy.load_and_log_changes(
+                config_path=tmp_path, previous_policy=previous
+            )
+            assert new_policy.base_ceiling == 80
+            assert new_policy.penalty_per_missing_category == 20
+            assert new_policy.minimum_floor == 10
+            assert new_policy.version == "2.1.0"
+        finally:
+            os.unlink(tmp_path)

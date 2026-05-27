@@ -194,6 +194,7 @@ class PipelineOrchestrator:
         self._generated_artifacts: list[str] = []
         self._component_states: list[RuntimeState] = []
         self._confidence_policy = ConfidenceDegradationPolicy.load()
+        self._policy_change_log: list[dict] = []
 
         self._load_config()
 
@@ -212,6 +213,32 @@ class PipelineOrchestrator:
                 )
         except (yaml.YAMLError, OSError) as e:
             logger.error("Failed to load config from %s: %s", self.config_path, e)
+
+    def _reload_confidence_policy(self) -> None:
+        """Reload confidence degradation policy from governance config.
+
+        Detects version changes and logs them with previous version,
+        new version, and effective timestamp (Requirement 19.5).
+        This allows policy updates without modifying schema or engine
+        source code (Requirement 19.4).
+        """
+        new_policy, change_record = ConfidenceDegradationPolicy.load_and_log_changes(
+            config_path="governance/confidence_policy.yaml",
+            previous_policy=self._confidence_policy,
+        )
+
+        if change_record is not None:
+            self._policy_change_log.append(change_record)
+            self._emit_severity_event(
+                Severity.INFO,
+                f"Confidence degradation policy updated: "
+                f"version {change_record['previous_version']} → "
+                f"{change_record['new_version']} "
+                f"(effective: {change_record['effective_timestamp']})",
+                source="pipeline_orchestrator.confidence_policy_governance",
+            )
+
+        self._confidence_policy = new_policy
 
     def execute(self, input_files: list[str] | None = None) -> PipelineResult:
         """Full pipeline execution with 10-step chain-compliant flow.
@@ -691,6 +718,9 @@ class PipelineOrchestrator:
         full semantic coverage, produces proper reasoning. For placeholder
         categories, produces degraded reasoning with reduced confidence.
 
+        Reloads the ConfidenceDegradationPolicy from governance config before
+        applying it, logging any version changes (Requirement 19.4, 19.5).
+
         Args:
             semantic_states: List of semantic state dicts from Level 2.
             run_context: The active RunContext.
@@ -699,6 +729,10 @@ class PipelineOrchestrator:
             List of ReasoningObject instances.
         """
         logger.info("Step 5: Executing Reasoning Engines (Level 3)")
+
+        # Reload policy from config — detects and logs version changes (Req 19.4, 19.5)
+        self._reload_confidence_policy()
+
         reasoning_objects: list[ReasoningObject] = []
 
         now = datetime.now(timezone.utc)
