@@ -179,6 +179,8 @@ class TestProvenanceParseability:
 
         For any SectionProvenance instance, serializing to YAML and parsing
         back produces data that matches the original field values.
+        Note: to_yaml() intentionally sorts identifier lists for deterministic
+        output (HARDENING requirement), so we compare against sorted lists.
         """
         yaml_output = provenance.to_yaml()
         parsed = yaml.safe_load(yaml_output)
@@ -187,13 +189,13 @@ class TestProvenanceParseability:
             f"section_name mismatch after round-trip: "
             f"expected={provenance.section_name!r}, got={parsed['section_name']!r}"
         )
-        assert parsed["reasoning_object_ids"] == provenance.reasoning_object_ids, (
+        assert parsed["reasoning_object_ids"] == sorted(provenance.reasoning_object_ids), (
             f"reasoning_object_ids mismatch after round-trip"
         )
-        assert parsed["semantic_state_ids"] == provenance.semantic_state_ids, (
+        assert parsed["semantic_state_ids"] == sorted(provenance.semantic_state_ids), (
             f"semantic_state_ids mismatch after round-trip"
         )
-        assert parsed["signal_engine_ids"] == provenance.signal_engine_ids, (
+        assert parsed["signal_engine_ids"] == sorted(provenance.signal_engine_ids), (
             f"signal_engine_ids mismatch after round-trip"
         )
         assert parsed["completeness_state"] == provenance.completeness_state, (

@@ -1,0 +1,14 @@
+artifacts:
+- allowed_readers:
+  - ALL
+  allowed_writers:
+  - SIGNALS
+  artifact_id: test_artifact_1
+  artifact_type: ENGINE
+  created_date: '2026-01-01'
+  file_path: test/file1.py
+  last_modified: '2026-01-01'
+  lifecycle_status: active
+  owner_role: SIGNALS domain owner
+  primary_domain: SIGNALS
+  ssot_relationship: implementation

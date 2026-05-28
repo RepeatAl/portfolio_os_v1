@@ -419,44 +419,79 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     - All property tests pass (`.venv/bin/python -m pytest tests/ -v`)
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 10. Phase D Preflight — Verify Compatibility Cleanup Prerequisites
-  - [~] 10.1 Inspect briefing file compatibility and downstream consumers
+- [x] 10. Phase D Preflight — Verify Compatibility Cleanup Prerequisites
+  - [x] 10.1 Inspect briefing file compatibility and downstream consumers
     - Verify all 14 briefing `.txt` files still exist on disk (coexistence during transition)
     - Identify any downstream consumers of briefing files (scripts, imports, references)
     - Verify artifact registry coverage — count registered vs unregistered artifacts
     - Confirm `.domainization/artifact_registry.yaml` structure supports deprecation fields
     - _Requirements: 2.5, 3.1, 25.1_
 
-- [ ] 11. Phase D — Compatibility Cleanup
-  - [~] 11.1 Implement briefing file deprecation with sunset governance
-    - **Infrastructure:** EXTEND `.domainization/artifact_registry.yaml` entries for briefing files; CREATE sunset logic in `governance/sunset_governance.py`
-    - Inspect existing briefing file entries in artifact registry
-    - Annotate each legacy Briefing_File in Artifact_Registry with: deprecation_start_date, sunset_target_date, downstream_dependency_count
-    - Expose in health report: age since deprecation, remaining days until sunset, current dependency count
-    - Implement sunset logic: stop generating when sunset_target_date reached AND dependency_count=0
-    - Implement sunset-blocked logic: continue generating + critical warning when sunset reached but dependencies remain
-    - Allow legacy files to coexist during Observability_Mode with deprecation warnings
+- [x] 11. Phase D — Compatibility Cleanup
+  - [x] 11.1 Extend REPORT_OUT lifecycle model with deprecation and sunset states (HARDENING 11)
+    - **Infrastructure:** EXTEND `.domainization/lifecycle_state_machine.yaml` REPORT_OUT section
+    - **HARDENING 11 — LIFECYCLE MODEL EXTENSION:** REPORT_OUT currently only supports `generated → current → archived`. This is insufficient for governance-aware deprecation.
+    - Extend REPORT_OUT states to: `generated`, `current`, `deprecated`, `sunset_pending`, `archived`, `superseded`
+    - Add transitions: `current → deprecated` (condition: "Replaced by chain-compliant output"), `deprecated → sunset_pending` (condition: "Sunset target date reached, evaluating dependencies"), `sunset_pending → archived` (condition: "Zero downstream dependencies confirmed"), `current → superseded` (condition: "Replaced by structurally different artifact type")
+    - Add `deprecated` and `sunset_pending` to `modifiable_states` (metadata updates allowed during sunset evaluation)
+    - Add `archived` and `superseded` to `read_only_states`
+    - Verify no existing REPORT_OUT artifacts break under new state machine (all currently `current` — valid in new model)
+    - _Requirements: 2.5, 25.1_
+
+  - [x] 11.2 Implement sunset governance fields and policy (`governance/sunset_governance.py`) (HARDENING 12)
+    - **Infrastructure:** CREATE `governance/sunset_governance.py`; EXTEND `.domainization/artifact_registry.yaml` schema
+    - **HARDENING 12 — SUNSET GOVERNANCE:** Mandatory deprecation governance fields prevent artifact zombie sprawl.
+    - Add optional deprecation governance fields to artifact registry schema: `deprecated_date` (ISO 8601), `sunset_date` (ISO 8601), `replacement_artifact` (artifact_id reference), `deprecation_reason` (string, max 200 chars), `compatibility_impact` (enum: none, minor, breaking)
+    - Implement `SunsetGovernance` class in `governance/sunset_governance.py` with 4-phase sunset model:
+      - Phase 1 (WARNING_ONLY): `deprecated_date` set, artifact still generated, deprecation warning emitted
+      - Phase 2 (REPLACEMENT_PATH): warning + replacement_artifact reference provided to consumers
+      - Phase 3 (RUNTIME_DISABLED): artifact generation stops IF `downstream_dependency_count == 0`; continues + CRITICAL warning if dependencies remain (sunset-blocked)
+      - Phase 4 (ARCHIVED): lifecycle_status transitions to `archived`, artifact frozen
+    - Implement `evaluate_sunset_phase(artifact_id)` returning current phase based on dates and dependency count
+    - Implement `get_sunset_report()` returning all artifacts in deprecation pipeline with phase, age, remaining days
+    - Annotate each of the 15 legacy Briefing_Files with: `deprecated_date`, `sunset_date`, `replacement_artifact`, `deprecation_reason`, `compatibility_impact`
     - **HARDENING 6 — ENGINE_RUNNER COMPATIBILITY:** `engine_runner.py` remains functional, emits deprecation warnings for direct briefing outputs
     - **Registry update:** Add `governance/sunset_governance.py` to `.domainization/artifact_registry.yaml`
     - _Requirements: 2.5, 25.1, 25.2, 25.3, 25.4_
 
-  - [~] 11.2 Write property test for Sunset Governance Behavior
+  - [x] 11.3 Write property test for Sunset Governance Behavior
     - **Property 22: Sunset Governance Behavior**
     - **Validates: Requirements 25.3, 25.4**
-    - Test that files at sunset with zero deps stop generating; files at sunset with deps continue + critical warning
-    - Hypothesis generates random sunset dates and dependency counts; verify behavior matches policy
+    - Test that Phase 1→2→3→4 transitions follow date and dependency rules
+    - Test that files at sunset with zero deps transition to RUNTIME_DISABLED; files at sunset with deps remain in sunset-blocked state + CRITICAL warning
+    - Test that phase evaluation is deterministic given same dates and dependency counts
+    - Hypothesis generates random sunset dates, dependency counts, and current dates; verify phase assignment matches policy
 
-  - [~] 11.3 Register 13 unregistered artifacts
-    - **Infrastructure:** EXTEND `.domainization/artifact_registry.yaml`
+  - [x] 11.4 Evaluate REPORT_OUT type splitting (HARDENING 13 — evaluation only)
+    - **Infrastructure:** CREATE `reports/report_out_type_evaluation.md` (evaluation document, NOT implementation)
+    - **HARDENING 13 — REPORT_OUT SEMANTIC BREADTH:** REPORT_OUT currently covers 15 briefing files, daily_report.md, and health reports — semantically too broad.
+    - Evaluate whether REPORT_OUT should split into sub-types:
+      - `REPORT_RUNTIME_OUTPUT` — chain-compliant daily_report.md and provenance sidecars
+      - `GOVERNANCE_BRIEFING` — legacy briefing .txt files (deprecated path)
+      - `HISTORICAL_REPORT` — archived reports and snapshots
+      - `SNAPSHOT_OUTPUT` — semantic state snapshots and delta logs
+      - `TRANSIENT_RUNTIME_OUTPUT` — intermediate pipeline artifacts
+    - Document: current artifact count per proposed sub-type, migration impact, registry schema changes needed, backward compatibility risks
+    - Produce recommendation: split now, split later, or keep unified with tags
+    - **NOTE:** This is an EVALUATION task. Do NOT implement the split. Document findings only.
+    - _Requirements: 16.1, 16.2_
+
+  - [x] 11.5 Register unregistered artifacts and implement registration enforcement (HARDENING 14)
+    - **Infrastructure:** EXTEND `.domainization/artifact_registry.yaml`; EXTEND existing `.domainization/src/validation_orchestrator.py`
+    - **HARDENING 14 — UNREGISTERED ARTIFACT GOVERNANCE:** 40+ unregistered files is a governance trigger. Growth must stop.
     - Inspect existing `.domainization/artifact_registry.yaml` — identify the 13 unregistered artifacts from baseline health report
     - Add all 13 currently unregistered artifacts with all required schema fields: artifact_id, file_path, primary_domain, artifact_type, lifecycle_status, created_date, last_modified, owner_role, ssot_relationship, allowed_writers, allowed_readers, metadata_source, registry_mode, dependencies, report_value
     - Register any new artifacts created during this feature implementation that are not yet registered
-    - Implement Registration_Validator emitting warnings for unregistered artifacts
+    - Implement artifact registration enforcement policy in `.domainization/src/validation_orchestrator.py`:
+      - All new `runtime/` and `governance/` artifacts REQUIRE registration before merge
+      - Test files (`tests/`) use simplified registration class (artifact_id, file_path, primary_domain, artifact_type only)
+      - Transient artifacts explicitly marked with `registry_mode: transient_exempt`
+      - Emit CI-compatible warning if unregistered artifact count increases from baseline
     - **HARDENING 1 — EXISTING INFRASTRUCTURE CHECK:** EXTEND existing `.domainization/src/validation_orchestrator.py` for registration validation (do not create duplicate validator)
     - **Registry update:** Self-referential — registry entries added to `.domainization/artifact_registry.yaml`
     - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-  - [~] 11.4 Add report_value metadata to all artifacts (100% coverage)
+  - [x] 11.6 Add report_value metadata to all artifacts (100% coverage)
     - **Infrastructure:** EXTEND `.domainization/artifact_registry.yaml`; EXTEND existing `.domainization/src/report_value_detector.py`
     - Inspect existing `.domainization/src/report_value_detector.py` — confirm `assess_artifact()`, `detect_missing_report_value()`, `_is_speculative_claim()` methods exist and can be reused
     - Add report_value field (category + justification) to every registered artifact
@@ -465,27 +500,32 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     - Achieve 100% report_value field population
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6_
 
-  - [~] 11.5 Write property test for Report Value Validation
+  - [x] 11.7 Write property test for Report Value Validation
     - **Property 6: Report Value Validation**
     - **Validates: Requirements 4.2, 4.4**
     - Test that invalid categories are flagged and speculative language patterns are detected
     - Hypothesis generates random category strings and justification text; verify detection accuracy
 
-  - [~] 11.6 Observability polish (health report integration)
+  - [x] 11.8 Observability polish (health report integration)
     - **Infrastructure:** EXTEND existing `.domainization/src/health_reporter.py` (do not create new health reporter)
     - Inspect existing `.domainization/src/health_reporter.py` — confirm `generate_health_report()`, `get_report_value_health_score()`, `get_runtime_flow_analysis()` methods
     - Integrate governance events into existing health report
+    - Integrate sunset governance report into health report (deprecated artifacts, sunset phases, blocked sunsets)
     - Ensure all validators emit structured events with severity, description, component, timestamp
     - Wire state transitions to include previous state, new state, reason, timestamp
     - Verify zero forbidden flows, zero unregistered artifacts, 100% report_value coverage in health report
     - _Requirements: 1.5, 3.4, 4.6, 17.4, 18.4_
 
-- [~] 12. Phase D Output Contract Verification (Final)
+- [x] 12. Phase D Output Contract Verification (Final)
   - Verify all Phase D outputs meet HARDENING 9 contract:
-    - Legacy briefings marked deprecated in artifact registry (deprecation_start_date, sunset_target_date populated)
+    - REPORT_OUT lifecycle model extended: `generated → current → deprecated → sunset_pending → archived` + `superseded` (HARDENING 11)
+    - Sunset governance operational: all 15 briefings annotated with `deprecated_date`, `sunset_date`, `replacement_artifact`, `deprecation_reason`, `compatibility_impact` (HARDENING 12)
+    - Sunset phases functional: Phase 1→2→3→4 transitions verified by property test (HARDENING 12)
+    - REPORT_OUT type evaluation document produced with recommendation (HARDENING 13)
+    - Registration enforcement policy active: new runtime/governance artifacts require registration, CI warning on count increase (HARDENING 14)
     - Registry complete: zero unregistered-artifact warnings in health report
     - report_value tracked: 100% field population, zero speculative justifications
-    - Observability updated: health report shows zero forbidden flows, full coverage
+    - Observability updated: health report shows zero forbidden flows, full coverage, sunset status
     - **HARDENING 6 verification:** `engine_runner.py` still functional (backward compat preserved)
     - All property tests pass (`.venv/bin/python -m pytest tests/ -v`)
   - Ensure all tests pass, ask the user if questions arise.
@@ -495,6 +535,11 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
 - **HARDENING 2 — PROPERTY TESTS ARE MANDATORY:** Property tests are required before phase completion. They validate canonical runtime guarantees. They are NOT optional.
 - **HARDENING 3 — REGISTRY UPDATED CONTINUOUSLY:** Every task creating a canonical artifact includes a registry update substep. Do NOT batch registry updates to Phase D.
 - **HARDENING 10 — NO FRAMEWORK ESCALATION:** No plugin architecture, event bus, generic runtime kernel, dynamic policy engine, distributed orchestration, async scheduler, dashboard layer, email delivery. Phase ends at local deterministic `daily_report.md`.
+- **HARDENING 11 — LIFECYCLE MODEL EXTENSION:** REPORT_OUT lifecycle must support full deprecation flow: `generated → current → deprecated → sunset_pending → archived` + `superseded`. `deprecated ≠ archived`.
+- **HARDENING 12 — SUNSET GOVERNANCE:** Mandatory 4-phase sunset model (WARNING_ONLY → REPLACEMENT_PATH → RUNTIME_DISABLED → ARCHIVED). Prevents artifact zombie sprawl. Requires `deprecated_date`, `sunset_date`, `replacement_artifact`, `deprecation_reason`, `compatibility_impact` fields.
+- **HARDENING 13 — REPORT_OUT SEMANTIC BREADTH:** REPORT_OUT is semantically too broad for 15+ heterogeneous artifacts. Evaluate sub-type splitting (evaluation only, not implementation in this phase).
+- **HARDENING 14 — UNREGISTERED ARTIFACT GOVERNANCE:** 40+ unregistered files triggers enforcement policy. All new runtime/governance artifacts require registration. CI warning on count increase. Tests use simplified registration. Transient artifacts explicitly marked.
+- **HARDENING 15 — DEPRECATED ≠ IGNORED:** Deprecated artifacts MUST NOT emit warnings forever. They progress through sunset phases with clear terminal state. Pipeline behavior changes at each phase boundary.
 - Each task references specific requirements for traceability
 - Checkpoints ensure incremental validation between phases with explicit output contracts (HARDENING 9)
 - Phase preflights (HARDENING 4) verify prerequisites before each phase begins
@@ -534,9 +579,10 @@ All code is Python 3.13.7, executed via `.venv/bin/python`. Tests use `.venv/bin
     { "id": 17, "tasks": ["8.2", "8.4", "8.5"] },
     { "id": 18, "tasks": ["8.6", "8.7", "8.8"] },
     { "id": 19, "tasks": ["10.1"] },
-    { "id": 20, "tasks": ["11.1", "11.3"] },
-    { "id": 21, "tasks": ["11.2", "11.4"] },
-    { "id": 22, "tasks": ["11.5", "11.6"] }
+    { "id": 20, "tasks": ["11.1"] },
+    { "id": 21, "tasks": ["11.2", "11.4", "11.5"] },
+    { "id": 22, "tasks": ["11.3", "11.6"] },
+    { "id": 23, "tasks": ["11.7", "11.8"] }
   ]
 }
 ```
