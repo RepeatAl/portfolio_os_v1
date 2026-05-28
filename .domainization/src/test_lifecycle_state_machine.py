@@ -212,11 +212,11 @@ class TestReportOutStateMachine:
     """Test REPORT_OUT artifact type state machine"""
     
     def test_report_out_has_correct_states(self):
-        """Test REPORT_OUT has generated, current, archived states"""
+        """Test REPORT_OUT has extended lifecycle states for governance-aware deprecation (HARDENING 11)"""
         sm = load_lifecycle_state_machines()
         report = sm['artifact_types']['REPORT_OUT']
         
-        expected_states = ['generated', 'current', 'archived']
+        expected_states = ['generated', 'current', 'deprecated', 'sunset_pending', 'archived', 'superseded']
         assert set(report['states']) == set(expected_states)
     
     def test_report_out_initial_state_is_generated(self):
@@ -226,14 +226,73 @@ class TestReportOutStateMachine:
         
         assert report['initial_state'] == 'generated'
     
-    def test_report_out_all_states_readonly(self):
+    def test_report_out_modifiable_states(self):
+        """Test REPORT_OUT deprecated and sunset_pending are modifiable (metadata updates during sunset evaluation)"""
+        sm = load_lifecycle_state_machines()
+        report = sm['artifact_types']['REPORT_OUT']
+        
+        assert set(report['modifiable_states']) == {'deprecated', 'sunset_pending'}
+    
+    def test_report_out_regenerable_states(self):
         """Test REPORT_OUT has regenerable states for daily regeneration"""
         sm = load_lifecycle_state_machines()
         report = sm['artifact_types']['REPORT_OUT']
         
-        assert len(report['modifiable_states']) == 0
         assert set(report['regenerable_states']) == {'generated', 'current'}
-        assert set(report['read_only_states']) == {'archived'}
+    
+    def test_report_out_read_only_states(self):
+        """Test REPORT_OUT archived and superseded are read-only"""
+        sm = load_lifecycle_state_machines()
+        report = sm['artifact_types']['REPORT_OUT']
+        
+        assert set(report['read_only_states']) == {'archived', 'superseded'}
+    
+    def test_report_out_deprecation_transition(self):
+        """Test REPORT_OUT can transition from current to deprecated"""
+        sm = load_lifecycle_state_machines()
+        report = sm['artifact_types']['REPORT_OUT']
+        
+        transitions = [(t['from'], t['to']) for t in report['transitions']]
+        assert ('current', 'deprecated') in transitions
+    
+    def test_report_out_sunset_pending_transition(self):
+        """Test REPORT_OUT can transition from deprecated to sunset_pending"""
+        sm = load_lifecycle_state_machines()
+        report = sm['artifact_types']['REPORT_OUT']
+        
+        transitions = [(t['from'], t['to']) for t in report['transitions']]
+        assert ('deprecated', 'sunset_pending') in transitions
+    
+    def test_report_out_sunset_to_archived_transition(self):
+        """Test REPORT_OUT can transition from sunset_pending to archived"""
+        sm = load_lifecycle_state_machines()
+        report = sm['artifact_types']['REPORT_OUT']
+        
+        transitions = [(t['from'], t['to']) for t in report['transitions']]
+        assert ('sunset_pending', 'archived') in transitions
+    
+    def test_report_out_superseded_transition(self):
+        """Test REPORT_OUT can transition from current to superseded"""
+        sm = load_lifecycle_state_machines()
+        report = sm['artifact_types']['REPORT_OUT']
+        
+        transitions = [(t['from'], t['to']) for t in report['transitions']]
+        assert ('current', 'superseded') in transitions
+    
+    def test_report_out_legacy_archival_transition(self):
+        """Test REPORT_OUT retains legacy current to archived transition"""
+        sm = load_lifecycle_state_machines()
+        report = sm['artifact_types']['REPORT_OUT']
+        
+        transitions = [(t['from'], t['to']) for t in report['transitions']]
+        assert ('current', 'archived') in transitions
+    
+    def test_report_out_current_state_valid(self):
+        """Test that 'current' remains a valid state (existing artifacts won't break)"""
+        sm = load_lifecycle_state_machines()
+        report = sm['artifact_types']['REPORT_OUT']
+        
+        assert 'current' in report['states']
 
 
 class TestDataStateMachines:

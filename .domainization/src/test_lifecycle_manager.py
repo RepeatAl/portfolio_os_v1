@@ -197,14 +197,19 @@ class TestLifecycleManagerModifiability:
         assert not manager.is_modifiable('ENGINE', 'deprecated')
     
     def test_report_out_not_modifiable(self):
-        """Test that REPORT_OUT artifacts are never modifiable"""
+        """Test that REPORT_OUT generated/current/archived states are not modifiable"""
         manager = LifecycleManager()
         manager.load()
         
-        # REPORT_OUT: all states are read-only (generated reports)
+        # REPORT_OUT: generated, current, archived are NOT modifiable
         assert not manager.is_modifiable('REPORT_OUT', 'generated')
         assert not manager.is_modifiable('REPORT_OUT', 'current')
         assert not manager.is_modifiable('REPORT_OUT', 'archived')
+        # HARDENING 11: deprecated and sunset_pending ARE modifiable (metadata updates during sunset evaluation)
+        assert manager.is_modifiable('REPORT_OUT', 'deprecated')
+        assert manager.is_modifiable('REPORT_OUT', 'sunset_pending')
+        # superseded is read-only
+        assert not manager.is_modifiable('REPORT_OUT', 'superseded')
 
 
 class TestLifecycleManagerInitialState:

@@ -70,12 +70,18 @@ artifact_types:
       - deprecated
 
   # REPORT_OUT: Generated human-readable reports
+  # HARDENING 11 — LIFECYCLE MODEL EXTENSION: Extended for governance-aware deprecation.
+  # Supports full sunset flow: generated → current → deprecated → sunset_pending → archived
+  # Plus superseded path for structurally replaced artifacts.
   REPORT_OUT:
     description: "Text reports generated for portfolio managers"
     states:
       - generated
       - current
+      - deprecated
+      - sunset_pending
       - archived
+      - superseded
     initial_state: generated
     transitions:
       - from: generated
@@ -83,13 +89,28 @@ artifact_types:
         condition: "Becomes the latest version of the report"
       - from: current
         to: archived
-        condition: "Superseded by newer report"
-    modifiable_states: []
+        condition: "Superseded by newer report (legacy direct archival)"
+      - from: current
+        to: deprecated
+        condition: "Replaced by chain-compliant output"
+      - from: current
+        to: superseded
+        condition: "Replaced by structurally different artifact type"
+      - from: deprecated
+        to: sunset_pending
+        condition: "Sunset target date reached, evaluating dependencies"
+      - from: sunset_pending
+        to: archived
+        condition: "Zero downstream dependencies confirmed"
+    modifiable_states:
+      - deprecated
+      - sunset_pending
     regenerable_states:
       - generated
       - current
     read_only_states:
       - archived
+      - superseded
 
   # DATA_IN: Input data files consumed by the system
   DATA_IN:
