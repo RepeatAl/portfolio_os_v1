@@ -3,12 +3,18 @@ Validation Orchestrator
 
 Runs all 5 validation observers and generates comprehensive observability report.
 Operates in observability mode: warnings only, never blocks.
+
+Extended with artifact registration enforcement policy (HARDENING 14):
+- All new runtime/ and governance/ artifacts REQUIRE registration before merge
+- Test files (tests/) use simplified registration class
+- Transient artifacts explicitly marked with registry_mode: transient_exempt
+- Emits CI-compatible warning if unregistered artifact count increases from baseline
 """
 
 import time
 from pathlib import Path
-from typing import List, Optional, Dict
-from dataclasses import dataclass
+from typing import List, Optional, Dict, Set
+from dataclasses import dataclass, field
 
 from artifact_registry import ArtifactRegistry
 from domain_registry import DomainRegistry
@@ -18,7 +24,87 @@ from observer_domain_assignment import DomainAssignmentValidator
 from observer_lifecycle import LifecycleValidator
 from observer_boundary_awareness import BoundaryAwarenessValidator
 from observer_ssot_consistency import SSOTConsistencyValidator
-from validation_result import ValidationWarning, ValidationResult
+from validation_result import ValidationWarning, ValidationResult, WarningCodes
+
+
+# Registration enforcement warning codes (W800-W899)
+W800_REGISTRATION_REQUIRED = "W800"
+W801_UNREGISTERED_COUNT_INCREASE = "W801"
+W802_SIMPLIFIED_REGISTRATION_MISSING = "W802"
+
+
+@dataclass
+class RegistrationEnforcementPolicy:
+    """Artifact registration enforcement policy (HARDENING 14).
+    
+    Defines which artifacts require full registration, simplified registration,
+    or are exempt from registration requirements.
+    """
+    
+    # Directories requiring full registration before merge
+    full_registration_dirs: List[str] = field(default_factory=lambda: [
+        "runtime/",
+        "governance/",
+    ])
+    
+    # Directories using simplified registration (artifact_id, file_path, primary_domain, artifact_type only)
+    simplified_registration_dirs: List[str] = field(default_factory=lambda: [
+        "tests/",
+    ])
+    
+    # File patterns explicitly exempt from registration
+    transient_exempt_patterns: List[str] = field(default_factory=lambda: [
+        "__pycache__/",
+        ".pytest_cache/",
+        "__init__.py",
+        ".coverage",
+        "*.pyc",
+    ])
+    
+    # Baseline unregistered artifact count (from health report 2026-05-26)
+    baseline_unregistered_count: int = 13
+    
+    def requires_full_registration(self, file_path: str) -> bool:
+        """Check if a file requires full registration with all schema fields."""
+        return any(file_path.startswith(d) for d in self.full_registration_dirs)
+    
+    def requires_simplified_registration(self, file_path: str) -> bool:
+        """Check if a file requires simplified registration (test files)."""
+        return any(file_path.startswith(d) for d in self.simplified_registration_dirs)
+    
+    def is_transient_exempt(self, file_path: str) -> bool:
+        """Check if a file is explicitly exempt from registration."""
+        for pattern in self.transient_exempt_patterns:
+            if pattern.endswith("/"):
+                if pattern.rstrip("/") in file_path:
+                    return True
+            elif pattern.startswith("*"):
+                if file_path.endswith(pattern[1:]):
+                    return True
+            elif pattern in file_path:
+                return True
+        return False
+
+
+@dataclass
+class RegistrationEnforcementResult:
+    """Result from registration enforcement validation."""
+    
+    warnings: List[ValidationWarning] = field(default_factory=list)
+    unregistered_count: int = 0
+    baseline_exceeded: bool = False
+    full_registration_violations: List[str] = field(default_factory=list)
+    simplified_registration_violations: List[str] = field(default_factory=list)
+    
+    @property
+    def ci_warning_message(self) -> Optional[str]:
+        """Generate CI-compatible warning message if baseline exceeded."""
+        if self.baseline_exceeded:
+            return (
+                f"::warning::HARDENING 14 - Unregistered artifact count ({self.unregistered_count}) "
+                f"exceeds baseline (13). Register new artifacts before merge."
+            )
+        return None
 
 
 @dataclass
@@ -198,3 +284,153 @@ class ValidationOrchestrator:
         
         observer = observers[observer_name]
         return observer.validate(changed_files)
+
+    def validate_registration_enforcement(
+        self,
+        changed_files: Optional[List[Path]] = None,
+        policy: Optional[RegistrationEnforcementPolicy] = None
+    ) -> RegistrationEnforcementResult:
+        """
+        Validate artifact registration enforcement policy (HARDENING 14).
+        
+        Checks that:
+        - All new runtime/ and governance/ artifacts are registered with full schema
+        - Test files (tests/) have at least simplified registration
+        - Transient artifacts are explicitly marked as exempt
+        - Unregistered artifact count does not exceed baseline
+        
+        Args:
+            changed_files: List of file paths that changed (relative to repo root).
+                          If None, validates all trackable files.
+            policy: Registration enforcement policy. Uses default if None.
+        
+        Returns:
+            RegistrationEnforcementResult with warnings and CI-compatible output
+        """
+        if policy is None:
+            policy = RegistrationEnforcementPolicy()
+        
+        result = RegistrationEnforcementResult()
+        
+        # Ensure registry is loaded
+        if not self.artifact_registry._loaded:
+            self.artifact_registry.load()
+        
+        # Get registered file paths
+        registered_files = self._get_registered_file_paths()
+        
+        # Get files to check
+        if changed_files is None:
+            files_to_check = self._get_trackable_files_for_enforcement()
+        else:
+            files_to_check = [str(f) for f in changed_files]
+        
+        # Track unregistered count
+        unregistered_files = []
+        
+        for file_path in files_to_check:
+            # Skip transient-exempt files
+            if policy.is_transient_exempt(file_path):
+                continue
+            
+            # Check if registered
+            if file_path not in registered_files:
+                unregistered_files.append(file_path)
+                
+                # Check enforcement level
+                if policy.requires_full_registration(file_path):
+                    result.full_registration_violations.append(file_path)
+                    result.warnings.append(ValidationWarning(
+                        observer_name="RegistrationEnforcement",
+                        artifact_id=None,
+                        file_path=file_path,
+                        warning_code=W800_REGISTRATION_REQUIRED,
+                        warning_message=(
+                            f"Runtime/governance artifact requires full registration before merge"
+                        ),
+                        suggestion=(
+                            f"Register {file_path} in .domainization/artifact_registry.yaml "
+                            f"with all required schema fields"
+                        ),
+                        severity="high"
+                    ))
+                elif policy.requires_simplified_registration(file_path):
+                    result.simplified_registration_violations.append(file_path)
+                    result.warnings.append(ValidationWarning(
+                        observer_name="RegistrationEnforcement",
+                        artifact_id=None,
+                        file_path=file_path,
+                        warning_code=W802_SIMPLIFIED_REGISTRATION_MISSING,
+                        warning_message=(
+                            f"Test file requires simplified registration "
+                            f"(artifact_id, file_path, primary_domain, artifact_type)"
+                        ),
+                        suggestion=(
+                            f"Add simplified registration for {file_path} in "
+                            f".domainization/artifact_registry.yaml"
+                        ),
+                        severity="medium"
+                    ))
+        
+        # Check baseline count
+        result.unregistered_count = len(unregistered_files)
+        if result.unregistered_count > policy.baseline_unregistered_count:
+            result.baseline_exceeded = True
+            result.warnings.append(ValidationWarning(
+                observer_name="RegistrationEnforcement",
+                artifact_id=None,
+                file_path=None,
+                warning_code=W801_UNREGISTERED_COUNT_INCREASE,
+                warning_message=(
+                    f"Unregistered artifact count ({result.unregistered_count}) exceeds "
+                    f"baseline ({policy.baseline_unregistered_count}). "
+                    f"Growth must stop per HARDENING 14."
+                ),
+                suggestion=(
+                    "Register all new artifacts before merge. "
+                    "Use full registration for runtime/governance, "
+                    "simplified for tests, transient_exempt for internal files."
+                ),
+                severity="high"
+            ))
+        
+        return result
+
+    def _get_registered_file_paths(self) -> Set[str]:
+        """Get set of all registered file paths from the artifact registry."""
+        artifacts = self.artifact_registry.list_all_artifacts()
+        return {artifact.file_path for artifact in artifacts}
+
+    def _get_trackable_files_for_enforcement(self) -> List[str]:
+        """
+        Get all files in runtime/, governance/, and tests/ directories
+        that are subject to registration enforcement.
+        """
+        trackable_files = []
+        
+        enforcement_dirs = ["runtime/", "governance/", "tests/"]
+        
+        if self.repo_root is None:
+            domainization_dir = Path(__file__).parent.parent
+            repo_root = domainization_dir.parent
+        else:
+            repo_root = Path(self.repo_root)
+        
+        for enforcement_dir in enforcement_dirs:
+            dir_path = repo_root / enforcement_dir
+            if not dir_path.exists():
+                continue
+            
+            for file_path in dir_path.rglob("*"):
+                if file_path.is_dir():
+                    continue
+                
+                rel_path = str(file_path.relative_to(repo_root))
+                
+                # Skip __pycache__ and .pytest_cache
+                if "__pycache__" in rel_path or ".pytest_cache" in rel_path:
+                    continue
+                
+                trackable_files.append(rel_path)
+        
+        return trackable_files
