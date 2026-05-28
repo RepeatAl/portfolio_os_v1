@@ -11,8 +11,21 @@ from engines.delta_engine import run_delta_engine
 from engines.morning_briefing_engine import run_morning_briefing_engine
 from engines.visual_engine import run_visual_engine
 
+import warnings
+
+# HARDENING 6 — ENGINE_RUNNER COMPATIBILITY:
+# engine_runner.py remains functional but emits deprecation warnings
+# for direct briefing outputs. Use pipeline_orchestrator.py for
+# chain-compliant execution.
+_DEPRECATION_MSG = (
+    "engine_runner.run_all_engines() produces direct briefing outputs that "
+    "bypass the canonical chain (SIGNALS → SEMANTICS → REASONING → REPORT). "
+    "Use engines.pipeline_orchestrator.PipelineOrchestrator.execute() instead."
+)
+
 
 def run_all_engines(portfolio_data=None, risk_profile=None):
+    warnings.warn(_DEPRECATION_MSG, DeprecationWarning, stacklevel=2)
     print("\n=== PORTFOLIO OS START ===")
 
     # --- ALLOCATION ---
