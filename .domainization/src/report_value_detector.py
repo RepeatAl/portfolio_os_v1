@@ -416,3 +416,122 @@ class ReportValueDetector:
             True if the category is in the allowed list
         """
         return category.strip().lower() in self.allowed_categories
+
+    def validate_registry_file(
+        self, registry_path: str = ".domainization/artifact_registry.yaml"
+    ) -> Dict[str, object]:
+        """
+        Load and validate the artifact registry YAML file for report_value compliance.
+
+        Validates every artifact in the registry against the 10 accepted categories,
+        flags speculative language, and reports missing/empty report_value fields.
+
+        This is the canonical wiring point between the Report_Value_Detector and
+        the artifact registry file on disk.
+
+        Args:
+            registry_path: Path to the artifact_registry.yaml file
+
+        Returns:
+            Dictionary with validation results:
+                - total_artifacts: int
+                - valid_count: int
+                - missing_report_value: list of artifact_ids missing the field
+                - invalid_categories: list of (artifact_id, category) tuples
+                - speculative_justifications: list of (artifact_id, keyword) tuples
+                - empty_fields: list of artifact_ids with empty category or justification
+                - coverage_percentage: float
+                - is_compliant: bool (True if 100% valid coverage)
+
+        Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6
+        """
+        from pathlib import Path
+
+        try:
+            import yaml
+        except ImportError:
+            raise ImportError("PyYAML is required for registry validation")
+
+        registry_file = Path(registry_path)
+        if not registry_file.exists():
+            raise FileNotFoundError(f"Registry file not found: {registry_path}")
+
+        with open(registry_file, "r") as f:
+            data = yaml.safe_load(f)
+
+        artifacts = data.get("artifacts", [])
+        if not artifacts:
+            return {
+                "total_artifacts": 0,
+                "valid_count": 0,
+                "missing_report_value": [],
+                "invalid_categories": [],
+                "speculative_justifications": [],
+                "empty_fields": [],
+                "coverage_percentage": 0.0,
+                "is_compliant": True,
+            }
+
+        missing_report_value: List[str] = []
+        invalid_categories: List[tuple] = []
+        speculative_justifications: List[tuple] = []
+        empty_fields: List[str] = []
+        valid_count = 0
+
+        for artifact in artifacts:
+            artifact_id = artifact.get("artifact_id", "UNKNOWN")
+            report_value = artifact.get("report_value")
+
+            # Check missing report_value (Requirement 4.5)
+            if report_value is None:
+                missing_report_value.append(artifact_id)
+                continue
+
+            # Extract category and justification
+            category = ""
+            justification = ""
+            if isinstance(report_value, dict):
+                category = report_value.get("category", "").strip()
+                justification = report_value.get("justification", "").strip()
+            elif isinstance(report_value, str):
+                category = report_value.strip()
+
+            # Check empty fields (Requirement 4.5)
+            if not category or not justification:
+                empty_fields.append(artifact_id)
+                continue
+
+            # Validate category against 10 accepted categories (Requirement 4.2, 4.3)
+            if category.lower() not in self.allowed_categories:
+                invalid_categories.append((artifact_id, category))
+                continue
+
+            # Check speculative language (Requirement 4.4)
+            if self._is_speculative_claim(justification):
+                for keyword in self.speculative_keywords:
+                    if keyword in justification.lower():
+                        speculative_justifications.append((artifact_id, keyword))
+                        break
+                continue
+
+            valid_count += 1
+
+        total = len(artifacts)
+        coverage = (total - len(missing_report_value)) / total * 100.0 if total > 0 else 0.0
+        is_compliant = (
+            len(missing_report_value) == 0
+            and len(invalid_categories) == 0
+            and len(speculative_justifications) == 0
+            and len(empty_fields) == 0
+        )
+
+        return {
+            "total_artifacts": total,
+            "valid_count": valid_count,
+            "missing_report_value": missing_report_value,
+            "invalid_categories": invalid_categories,
+            "speculative_justifications": speculative_justifications,
+            "empty_fields": empty_fields,
+            "coverage_percentage": coverage,
+            "is_compliant": is_compliant,
+        }
