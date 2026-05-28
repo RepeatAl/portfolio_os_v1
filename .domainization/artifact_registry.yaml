@@ -2951,8 +2951,8 @@ artifacts:
     - governance
     - phase-c
 
-- artifact_id: phase_c_output_contract_verification_md
-  file_path: .kiro/specs/report-runtime-integrity/phase_c_output_contract_verification.md
+- artifact_id: semantic_expansion_verification_md
+  file_path: .kiro/specs/report-runtime-integrity/semantic_expansion_verification.md
   primary_domain: GOV
   artifact_type: REPORT
   lifecycle_status: canonical
@@ -2973,8 +2973,8 @@ artifacts:
     - verification
     - phase-c
 
-- artifact_id: readme_phase_c_semantic_expansion_md
-  file_path: .kiro/specs/report-runtime-integrity/README_phase_c_semantic_expansion.md
+- artifact_id: readme_semantic_expansion_implementation_md
+  file_path: .kiro/specs/report-runtime-integrity/README_semantic_expansion_implementation.md
   primary_domain: GOV
   artifact_type: REPORT
   lifecycle_status: canonical

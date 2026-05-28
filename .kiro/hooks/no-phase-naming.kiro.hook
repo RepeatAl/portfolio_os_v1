@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Block Phase Naming",
+  "description": "Prevents creation of files or artifacts with generic \"phase\" prefixes (e.g., phase_a_, phase_b_, phase_d_). File names must describe their content, not their implementation sequence.",
+  "version": "1",
+  "when": {
+    "type": "preToolUse",
+    "toolTypes": [
+      "write"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "NAMING GATE CHECK: Before writing this file, verify the file path does NOT contain \"phase\" as a naming prefix (e.g., \"phase_a_\", \"phase_b_\", \"phase_c_\", \"phase_d_\", \"phase_13_\", \"phaseXX\"). File names must describe their CONTENT, not their implementation sequence. If the path contains a \"phase\" prefix, STOP and rename the file to describe what it actually contains. Examples: \"phase_d_output_contract_verification.md\" should be \"compatibility_cleanup_verification.md\". \"phase_c_output_contract_verification.md\" should be \"semantic_expansion_verification.md\". If the file name does NOT contain a phase prefix, proceed normally."
+  }
+}

@@ -61,9 +61,9 @@ Phase A (Foundation: Data Contracts) and Phase B (Chain Runtime: Execute the Cha
 
 | File | Purpose |
 |------|---------|
-| `README_phase_a_foundation_data_contracts.md` | Phase A architecture + components |
-| `README_phase_b_chain_runtime.md` | Phase B architecture + HARDENING 5 gates |
-| `phase_b_preflight_signal_report_shortcuts.md` | 16 forbidden flows documented |
+| `README_foundation_data_contracts.md` | Foundation architecture + components |
+| `README_chain_runtime_execution.md` | Chain runtime architecture + HARDENING 5 gates |
+| `preflight_signal_report_shortcuts_analysis.md` | 16 forbidden flows documented |
 
 ---
 
