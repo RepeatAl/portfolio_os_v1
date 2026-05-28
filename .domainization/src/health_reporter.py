@@ -8,12 +8,19 @@ Generates comprehensive health reports showing:
 - Report-value health score
 - Infrastructure drift percentage
 - Violations and recommendations
+- Governance events (severity, description, component, timestamp)
+- Sunset governance status (deprecated artifacts, sunset phases, blocked sunsets)
+- State transitions (previous state, new state, reason, timestamp)
+- Integrity verification (zero forbidden flows, zero unregistered artifacts, 100% report_value)
+
+Requirements: 1.5, 3.4, 4.6, 17.4, 18.4
 """
 
+import sys
 import yaml
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
-from datetime import datetime
+from datetime import datetime, timezone
 from collections import defaultdict
 
 from artifact_registry import ArtifactRegistry
@@ -22,6 +29,15 @@ from lifecycle_manager import LifecycleManager
 from violation_detector import ViolationDetector
 from report_value_detector import ReportValueDetector, ReportValueHealthScore
 from runtime_flow_detector import RuntimeFlowDetector, FlowStatus, FlowDetectionResult
+
+# Add project root to path for runtime/governance imports
+_project_root = Path(__file__).parent.parent.parent
+if str(_project_root) not in sys.path:
+    sys.path.insert(0, str(_project_root))
+
+from governance.sunset_governance import SunsetGovernance, SunsetPhase, SunsetReportEntry
+from runtime.severity_taxonomy import Severity, SEVERITY_DEFINITIONS
+from runtime.runtime_state_model import RuntimeState, IntegrityDimension, aggregate_pipeline_state
 
 
 class HealthReporter:
@@ -64,7 +80,69 @@ class HealthReporter:
             lifecycle_manager=self.lifecycle_manager,
             repo_root=self.repo_root
         )
+        
+        # Governance event log — structured events with severity, description,
+        # component, and timestamp (Req 17.4, 18.4)
+        self._governance_events: List[Dict] = []
+        
+        # State transition log — previous state, new state, reason, timestamp (Req 18.4)
+        self._state_transitions: List[Dict] = []
+        
+        # Current runtime state for the health reporter component
+        self._current_state: str = RuntimeState.HEALTHY
     
+    def _emit_governance_event(
+        self, severity: Severity, description: str, component: str
+    ) -> Dict:
+        """Emit a structured governance event.
+
+        Every governance event includes severity, description, component identifier,
+        and timestamp per Requirements 17.4, 18.4.
+
+        Args:
+            severity: Canonical severity level from the severity taxonomy.
+            description: Human-readable description of the event.
+            component: Identifier of the component emitting the event.
+
+        Returns:
+            The structured event dictionary that was recorded.
+        """
+        event = {
+            "severity": severity.name,
+            "severity_level": int(severity),
+            "description": description,
+            "component": component,
+            "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        }
+        self._governance_events.append(event)
+        return event
+
+    def _record_state_transition(
+        self, previous_state: str, new_state: str, reason: str
+    ) -> Dict:
+        """Record a runtime state transition.
+
+        State transitions include previous state, new state, reason, and timestamp
+        per Requirement 18.4.
+
+        Args:
+            previous_state: The state before the transition.
+            new_state: The state after the transition.
+            reason: Human-readable reason for the transition.
+
+        Returns:
+            The structured transition dictionary that was recorded.
+        """
+        transition = {
+            "previous_state": previous_state,
+            "new_state": new_state,
+            "reason": reason,
+            "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        }
+        self._state_transitions.append(transition)
+        self._current_state = new_state
+        return transition
+
     def generate_health_report(self, include_violations: bool = True) -> Dict:
         """
         Generate comprehensive health report
@@ -122,6 +200,16 @@ class HealthReporter:
         report['summary']['total_flows_detected'] = flow_analysis.get('total_flows', 0)
         report['summary']['forbidden_flows_detected'] = flow_analysis.get('forbidden_flows', 0)
         
+        # Add sunset governance report (Req 25.1, 25.2)
+        sunset_report = self.get_sunset_governance_report()
+        report['sunset_governance'] = sunset_report
+        report['summary']['deprecated_artifacts'] = sunset_report.get('total_deprecated', 0)
+        report['summary']['sunset_blocked_count'] = sunset_report.get('sunset_blocked_count', 0)
+        
+        # Add integrity verification summary (Req 1.5, 3.4, 4.6)
+        integrity = self.get_integrity_verification()
+        report['integrity_verification'] = integrity
+        
         # Add violations if requested
         if include_violations:
             violations = self.violation_detector.detect_all_violations()
@@ -143,6 +231,14 @@ class HealthReporter:
             
             # Generate recommendations based on violations
             report['recommendations'] = self._generate_recommendations(violations)
+        
+        # Add governance events log (Req 17.4, 18.4)
+        report['governance_events'] = list(self._governance_events)
+        report['summary']['total_governance_events'] = len(self._governance_events)
+        
+        # Add state transitions log (Req 18.4)
+        report['state_transitions'] = list(self._state_transitions)
+        report['summary']['total_state_transitions'] = len(self._state_transitions)
         
         return report
     
@@ -356,7 +452,192 @@ class HealthReporter:
             "authority_chain_status": "healthy" if forbidden_count == 0 else "violations_detected",
             "execution_time_ms": round(execution_time, 2),
         }
-    
+
+    def get_sunset_governance_report(self) -> Dict:
+        """
+        Generate sunset governance report for deprecated artifacts.
+
+        Integrates the SunsetGovernance module to provide visibility into:
+        - All deprecated artifacts and their current sunset phase
+        - Sunset-blocked artifacts (at sunset date but dependencies remain)
+        - Age since deprecation and remaining days until sunset
+        - Phase distribution across the deprecation pipeline
+
+        Requirements: 25.1, 25.2
+
+        Returns:
+            Dictionary containing sunset governance metrics:
+            - total_deprecated: Count of artifacts in deprecation pipeline
+            - phase_distribution: Breakdown by sunset phase
+            - sunset_blocked_count: Count of sunset-blocked artifacts
+            - sunset_blocked_artifacts: List of blocked artifact details
+            - deprecated_artifacts: List of all deprecated artifact details
+        """
+        registry_path = self.repo_root / ".domainization" / "artifact_registry.yaml"
+
+        try:
+            sunset_gov = SunsetGovernance(registry_path=str(registry_path))
+            sunset_entries = sunset_gov.get_sunset_report()
+        except Exception as e:
+            self._emit_governance_event(
+                Severity.WARNING,
+                f"Failed to load sunset governance: {e}",
+                "health_reporter.get_sunset_governance_report",
+            )
+            return {
+                "total_deprecated": 0,
+                "phase_distribution": {},
+                "sunset_blocked_count": 0,
+                "sunset_blocked_artifacts": [],
+                "deprecated_artifacts": [],
+                "error": str(e),
+            }
+
+        # Build phase distribution
+        phase_distribution: Dict[str, int] = defaultdict(int)
+        sunset_blocked_artifacts: List[Dict] = []
+        deprecated_artifacts: List[Dict] = []
+
+        for entry in sunset_entries:
+            phase_distribution[entry.phase.value] += 1
+
+            artifact_detail = {
+                "artifact_id": entry.artifact_id,
+                "phase": entry.phase.value,
+                "deprecated_date": entry.deprecated_date,
+                "sunset_date": entry.sunset_date,
+                "replacement_artifact": entry.replacement_artifact,
+                "deprecation_reason": entry.deprecation_reason,
+                "compatibility_impact": entry.compatibility_impact,
+                "age_days": entry.age_days,
+                "remaining_days": entry.remaining_days,
+                "downstream_dependency_count": entry.downstream_dependency_count,
+                "sunset_blocked": entry.sunset_blocked,
+            }
+            deprecated_artifacts.append(artifact_detail)
+
+            if entry.sunset_blocked:
+                sunset_blocked_artifacts.append(artifact_detail)
+                # Emit governance event for sunset-blocked artifacts
+                self._emit_governance_event(
+                    Severity.CRITICAL,
+                    f"Artifact '{entry.artifact_id}' is sunset-blocked: "
+                    f"{entry.downstream_dependency_count} downstream dependencies remain",
+                    "health_reporter.get_sunset_governance_report",
+                )
+
+        total_deprecated = len(sunset_entries)
+
+        # Emit informational event about sunset governance status
+        if total_deprecated > 0:
+            self._emit_governance_event(
+                Severity.INFO,
+                f"Sunset governance: {total_deprecated} artifacts in deprecation pipeline, "
+                f"{len(sunset_blocked_artifacts)} sunset-blocked",
+                "health_reporter.get_sunset_governance_report",
+            )
+
+        return {
+            "total_deprecated": total_deprecated,
+            "phase_distribution": dict(phase_distribution),
+            "sunset_blocked_count": len(sunset_blocked_artifacts),
+            "sunset_blocked_artifacts": sunset_blocked_artifacts,
+            "deprecated_artifacts": deprecated_artifacts,
+        }
+
+    def get_integrity_verification(self) -> Dict:
+        """
+        Verify key integrity metrics for the health report.
+
+        Checks three critical integrity conditions:
+        1. Zero forbidden flows (Req 1.5)
+        2. Zero unregistered artifacts (Req 3.4)
+        3. 100% report_value coverage (Req 4.6)
+
+        Emits governance events for any integrity failures and records
+        state transitions when integrity degrades.
+
+        Returns:
+            Dictionary containing integrity verification results:
+            - zero_forbidden_flows: Boolean indicating no forbidden flows
+            - zero_unregistered_artifacts: Boolean indicating full registration
+            - full_report_value_coverage: Boolean indicating 100% coverage
+            - overall_integrity_state: RuntimeState string
+            - details: Dict with specific metrics
+        """
+        previous_state = self._current_state
+
+        # Check forbidden flows
+        flow_analysis = self.get_runtime_flow_analysis()
+        forbidden_flows = flow_analysis.get("forbidden_flows", 0)
+        zero_forbidden_flows = forbidden_flows == 0
+
+        # Check unregistered artifacts
+        violations = self.violation_detector.detect_all_violations()
+        unregistered_count = sum(
+            1 for v in violations if v.violation_type == "unregistered"
+        )
+        zero_unregistered = unregistered_count == 0
+
+        # Check report_value coverage
+        report_value_health = self.get_report_value_health_score()
+        valid_percentage = report_value_health.get("valid_percentage", 0.0)
+        full_report_value_coverage = valid_percentage == 100.0
+
+        # Determine overall integrity state
+        if zero_forbidden_flows and zero_unregistered and full_report_value_coverage:
+            overall_state = RuntimeState.HEALTHY
+        elif forbidden_flows > 0:
+            overall_state = RuntimeState.CANONICAL_BREAK
+            self._emit_governance_event(
+                Severity.CANONICAL_BREAK,
+                f"{forbidden_flows} forbidden Signal-to-Report flows detected",
+                "health_reporter.get_integrity_verification",
+            )
+        elif unregistered_count > 0:
+            overall_state = RuntimeState.DEGRADED
+            self._emit_governance_event(
+                Severity.WARNING,
+                f"{unregistered_count} unregistered artifacts detected",
+                "health_reporter.get_integrity_verification",
+            )
+        else:
+            overall_state = RuntimeState.DEGRADED
+            self._emit_governance_event(
+                Severity.WARNING,
+                f"Report value coverage at {valid_percentage:.1f}% (target: 100%)",
+                "health_reporter.get_integrity_verification",
+            )
+
+        # Record state transition if state changed
+        if str(overall_state) != str(previous_state):
+            reason_parts = []
+            if not zero_forbidden_flows:
+                reason_parts.append(f"{forbidden_flows} forbidden flows")
+            if not zero_unregistered:
+                reason_parts.append(f"{unregistered_count} unregistered artifacts")
+            if not full_report_value_coverage:
+                reason_parts.append(f"report_value coverage {valid_percentage:.1f}%")
+            reason = "; ".join(reason_parts) if reason_parts else "All integrity checks passed"
+
+            self._record_state_transition(
+                previous_state=str(previous_state),
+                new_state=str(overall_state),
+                reason=reason,
+            )
+
+        return {
+            "zero_forbidden_flows": zero_forbidden_flows,
+            "zero_unregistered_artifacts": zero_unregistered,
+            "full_report_value_coverage": full_report_value_coverage,
+            "overall_integrity_state": str(overall_state),
+            "details": {
+                "forbidden_flow_count": forbidden_flows,
+                "unregistered_artifact_count": unregistered_count,
+                "report_value_valid_percentage": valid_percentage,
+            },
+        }
+
     def _generate_recommendations(self, violations: List) -> List[Dict]:
         """
         Generate recommendations based on violations
@@ -602,6 +883,126 @@ class HealthReporter:
                 lines.append(f"  Rationale: {rec['rationale']}")
                 lines.append("")
         
+        # Sunset Governance (Req 25.1, 25.2)
+        if 'sunset_governance' in report:
+            sg = report['sunset_governance']
+            lines.append("SUNSET GOVERNANCE")
+            lines.append("-" * 80)
+            lines.append(f"Total Deprecated Artifacts:  {sg.get('total_deprecated', 0)}")
+            lines.append(f"Sunset-Blocked Artifacts:    {sg.get('sunset_blocked_count', 0)}")
+            lines.append("")
+
+            # Phase distribution
+            phase_dist = sg.get('phase_distribution', {})
+            if phase_dist:
+                lines.append("Phase Distribution:")
+                for phase, count in sorted(phase_dist.items()):
+                    lines.append(f"  - {phase}: {count}")
+                lines.append("")
+
+            # Sunset-blocked details
+            blocked = sg.get('sunset_blocked_artifacts', [])
+            if blocked:
+                lines.append("Sunset-Blocked Artifacts (CRITICAL):")
+                for artifact in blocked[:10]:
+                    lines.append(
+                        f"  🔴 {artifact['artifact_id']} — "
+                        f"{artifact['downstream_dependency_count']} deps remaining"
+                    )
+                    if artifact.get('deprecation_reason'):
+                        lines.append(f"     Reason: {artifact['deprecation_reason']}")
+                lines.append("")
+
+            # Deprecated artifact summary
+            deprecated = sg.get('deprecated_artifacts', [])
+            if deprecated and not blocked:
+                lines.append("Deprecated Artifacts:")
+                for artifact in deprecated[:10]:
+                    remaining = artifact.get('remaining_days')
+                    remaining_str = f"{remaining} days remaining" if remaining is not None else "no sunset date"
+                    lines.append(
+                        f"  ⚠ {artifact['artifact_id']} [{artifact['phase']}] — "
+                        f"age: {artifact['age_days']} days, {remaining_str}"
+                    )
+                if len(deprecated) > 10:
+                    lines.append(f"  ... and {len(deprecated) - 10} more")
+                lines.append("")
+
+        # Integrity Verification (Req 1.5, 3.4, 4.6)
+        if 'integrity_verification' in report:
+            iv = report['integrity_verification']
+            lines.append("INTEGRITY VERIFICATION")
+            lines.append("-" * 80)
+            lines.append(f"Overall Integrity State:     {iv.get('overall_integrity_state', 'unknown').upper()}")
+            lines.append("")
+
+            check_icon = lambda passed: "✓" if passed else "✗"
+            lines.append(f"  {check_icon(iv.get('zero_forbidden_flows', False))} Zero Forbidden Flows")
+            lines.append(f"  {check_icon(iv.get('zero_unregistered_artifacts', False))} Zero Unregistered Artifacts")
+            lines.append(f"  {check_icon(iv.get('full_report_value_coverage', False))} 100% Report Value Coverage")
+            lines.append("")
+
+            details = iv.get('details', {})
+            if details:
+                lines.append("Details:")
+                lines.append(f"  Forbidden Flows:           {details.get('forbidden_flow_count', 0)}")
+                lines.append(f"  Unregistered Artifacts:    {details.get('unregistered_artifact_count', 0)}")
+                lines.append(f"  Report Value Coverage:     {details.get('report_value_valid_percentage', 0.0):.1f}%")
+            lines.append("")
+
+        # Governance Events (Req 17.4, 18.4)
+        if 'governance_events' in report and report['governance_events']:
+            events = report['governance_events']
+            lines.append("GOVERNANCE EVENTS")
+            lines.append("-" * 80)
+            lines.append(f"Total Events: {len(events)}")
+            lines.append("")
+
+            for event in events[:20]:
+                severity_icon = {
+                    'INFO': '🔵',
+                    'WARNING': '🟡',
+                    'DEGRADED': '🟠',
+                    'CRITICAL': '🔴',
+                    'CANONICAL_BREAK': '⛔',
+                    'DETERMINISTIC_FAILURE': '💀',
+                }.get(event.get('severity', ''), '⚪')
+
+                lines.append(
+                    f"  {severity_icon} [{event.get('severity', 'UNKNOWN')}] "
+                    f"{event.get('description', '')}"
+                )
+                lines.append(
+                    f"     Component: {event.get('component', 'unknown')} | "
+                    f"Time: {event.get('timestamp', 'unknown')}"
+                )
+                lines.append("")
+
+            if len(events) > 20:
+                lines.append(f"  ... and {len(events) - 20} more events")
+                lines.append("")
+
+        # State Transitions (Req 18.4)
+        if 'state_transitions' in report and report['state_transitions']:
+            transitions = report['state_transitions']
+            lines.append("STATE TRANSITIONS")
+            lines.append("-" * 80)
+            lines.append(f"Total Transitions: {len(transitions)}")
+            lines.append("")
+
+            for transition in transitions[:10]:
+                lines.append(
+                    f"  {transition.get('previous_state', '?')} → "
+                    f"{transition.get('new_state', '?')}"
+                )
+                lines.append(f"     Reason: {transition.get('reason', 'unknown')}")
+                lines.append(f"     Time: {transition.get('timestamp', 'unknown')}")
+                lines.append("")
+
+            if len(transitions) > 10:
+                lines.append(f"  ... and {len(transitions) - 10} more transitions")
+                lines.append("")
+
         lines.append("=" * 80)
         
         return '\n'.join(lines)
