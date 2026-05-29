@@ -28,7 +28,7 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
-# Enforcement Mode
+# Enforcement Mode (Legacy — retained for backward compatibility)
 # -----------------------------------------------------------------------------
 # Controls how validation observers behave:
 #
@@ -45,6 +45,46 @@
 #                   established and MVP is stable.
 #
 enforcement_mode: observability
+
+# -----------------------------------------------------------------------------
+# Governance Enforcement Configuration (Req 7)
+# -----------------------------------------------------------------------------
+# Structured enforcement mode configuration for the governance runtime.
+# This section is the authoritative source for enforcement mode used by:
+#   - GateFramework (governance/gate_framework.py)
+#   - LifecycleEnforcer (governance/lifecycle_enforcer.py)
+#   - BoundaryEnforcer (governance/boundary_enforcer.py)
+#
+# Mode values:
+#   observability - Execute all checks, produce warnings only, never block.
+#                   All gates report results as informational. No commits or
+#                   pipeline executions are blocked.
+#
+#   soft          - Block on gates configured as blocking_in_soft, warn on
+#                   others. Invalid lifecycle transitions are rejected with
+#                   structured warnings. Boundary violations are rejected.
+#
+#   hard          - Block on all gates configured as blocking_in_soft or
+#                   blocking_in_hard. Full enforcement of lifecycle, boundary,
+#                   and deployment gates.
+#
+# Transition Criteria (auditable, config-driven):
+#
+#   observability → soft:
+#     - All property tests pass (full pytest suite green)
+#     - Deployment integrity score >= 4.0
+#     - Mutation audit ledger operational (no corruption events)
+#
+#   soft → hard:
+#     - 30 days in soft mode with zero enforcement overrides
+#     - All gates passing consistently (no timeout/skip patterns)
+#     - Shadow authority detector reports zero unregistered module writes
+#
+# Mode changes are recorded in the Mutation Audit Ledger with:
+#   timestamp, previous_mode, new_mode, actor, justification
+#
+governance_enforcement:
+  mode: observability
 
 # -----------------------------------------------------------------------------
 # System Phase
