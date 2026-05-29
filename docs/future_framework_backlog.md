@@ -448,3 +448,223 @@ Not through uncontrolled feature accumulation.
 Architecture first.
 
 Expansion second.
+
+
+---
+
+# P3 — GOVERNANCE RUNTIME HARDENINGS (DEFERRED)
+
+Deferred from governance-runtime-enforcement spec on 2026-05-29.
+CTO Decision: These create governance complexity without short-term portfolio value.
+Trigger for activation: Production incident or demonstrable risk requiring them.
+
+---
+
+## 21. Warning Governance System
+
+Status:
+Deferred (Scope Freeze 2026-05-29)
+
+Purpose:
+
+- warning suppression via baseline file (Req 20)
+- new warning escalation (Req 21)
+- warning deduplication with 50-unique cap (Req 22)
+- warning trend tracking over time (Req 23)
+- severity-to-enforcement-mode mapping (Req 24)
+
+Activation Trigger:
+Warning noise exceeds manual management capacity.
+
+Priority:
+P3
+
+---
+
+## 22. Governance Recursion Protection
+
+Status:
+Deferred (Scope Freeze 2026-05-29)
+
+Purpose:
+
+- max recursion depth of 1 for governance-meta artifacts (Req 30)
+- prevents infinite governance-on-governance loops
+
+Activation Trigger:
+Governance artifacts trigger recursive enforcement in production.
+
+Priority:
+P3
+
+---
+
+## 23. Enforcement Deadlock Prevention
+
+Status:
+Deferred (Scope Freeze 2026-05-29)
+
+Purpose:
+
+- deadlock detection via same-artifact matching (Req 35)
+- emergency override mechanism for USER/MIGRATION actors
+- override frequency tracking
+
+Activation Trigger:
+Hard enforcement mode is activated and deadlocks occur.
+
+Priority:
+P3
+
+---
+
+## 24. Transient Artifact Promotion Governance
+
+Status:
+Deferred (Scope Freeze 2026-05-29)
+
+Purpose:
+
+- explicit promotion before canonical persistence (Req 37)
+- boundary crossing detection
+- canonical requirements validation
+
+Activation Trigger:
+Transient artifacts silently cross canonical boundaries in production.
+
+Priority:
+P3
+
+---
+
+## 25. Governance Performance Budget
+
+Status:
+Deferred (Scope Freeze 2026-05-29)
+
+Purpose:
+
+- 15% overhead budget enforcement (Req 38)
+- priority-ordered check skipping when over budget
+- overhead measurement and reporting
+
+Activation Trigger:
+Governance overhead measurably impacts pipeline execution time.
+
+Priority:
+P3
+
+---
+
+## 26. Bounded Fail-Soft Degradation
+
+Status:
+Deferred (Scope Freeze 2026-05-29)
+
+Purpose:
+
+- time-bounded degradation tracking per component (Req 42)
+- escalation to CRITICAL after 5 consecutive degraded runs
+- GOVERNANCE_DEGRADATION_PERSISTENT after 10 runs
+
+Activation Trigger:
+Components remain degraded without alerting in production.
+
+Priority:
+P3
+
+---
+
+## 27. Governance Layer Complexity Budget
+
+Status:
+Deferred (Scope Freeze 2026-05-29)
+
+Purpose:
+
+- bounded governance module count max 25 (Req 43)
+- bounded config file count max 10
+- bounded state categories max 60
+- bounded enforcement paths max 15
+
+Activation Trigger:
+Governance layer exceeds manageable complexity without automated tracking.
+
+Priority:
+P3
+
+---
+
+## 28. Mutation Audit Ledger Rotation
+
+Status:
+Deferred (Scope Freeze 2026-05-29)
+
+Purpose:
+
+- deterministic archival at 1000 entries or 500KB (Req 44)
+- hash continuity chain between archives
+- transparent cross-archive queries
+
+Activation Trigger:
+Ledger file size impacts performance (years away at current volume).
+
+Priority:
+P3
+
+---
+
+## 29. Warning Baseline Decay and Revalidation
+
+Status:
+Deferred (Scope Freeze 2026-05-29)
+
+Purpose:
+
+- 90-day expiration for baseline entries (Req 45)
+- periodic revalidation requirement
+- baseline health reporting
+
+Activation Trigger:
+Warning baseline exists and grows stale.
+
+Priority:
+P3
+
+---
+
+## 30. Scoped Policy Version Domains
+
+Status:
+Deferred (Scope Freeze 2026-05-29)
+
+Purpose:
+
+- domain-scoped policy versioning (Req 46)
+- lifecycle, boundary, severity, warning, gate scopes
+- scoped change detection without global invalidation
+
+Activation Trigger:
+Global policy version changes cause unnecessary invalidation noise.
+
+Priority:
+P3
+
+---
+
+## 31. Temporary Authority Declarations
+
+Status:
+Deferred (Scope Freeze 2026-05-29)
+
+Purpose:
+
+- time-bounded write permission grants max 7 days (Req 47)
+- migration escape hatch for boundary enforcement
+- automatic expiration with audit logging
+
+Activation Trigger:
+Hard enforcement mode blocks legitimate migration operations.
+
+Priority:
+P3
