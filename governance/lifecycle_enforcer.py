@@ -4,19 +4,32 @@ Validates lifecycle transitions against the state machine, enforces read-only
 state protection, and gates regenerable state overwrites. Produces structured
 GateResult objects respecting the configured enforcement mode.
 
+Supports optional audit logging via MutationAuditLedger integration:
+when a ledger is connected, every enforce_transition() call emits a
+GOVERNANCE_EVENT with actor identity, policy version, and provenance.
+
 Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 9.1, 9.2, 9.3, 9.4, 10.1, 10.2, 10.3, 10.4
+              11.1, 11.2, 11.3, 11.4
 """
 
 from __future__ import annotations
 
 import logging
 import time
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import yaml
 
 from governance.gate_framework import GateResult
+
+if TYPE_CHECKING:
+    from governance.actor_identity import ActorIdentity
+    from governance.mutation_audit_ledger import MutationAuditLedger
+    from governance.policy_versioner import PolicyVersioner
+    from governance.state_provenance_tagger import StateProvenanceTagger
 
 logger = logging.getLogger(__name__)
 
@@ -36,12 +49,26 @@ class LifecycleEnforcer:
         enforcement_mode: Current enforcement mode (observability/soft/hard).
     """
 
-    def __init__(self, state_machine_path: str, enforcement_mode: str) -> None:
+    def __init__(
+        self,
+        state_machine_path: str,
+        enforcement_mode: str,
+        ledger: MutationAuditLedger | None = None,
+        policy_versioner: PolicyVersioner | None = None,
+        provenance_tagger: StateProvenanceTagger | None = None,
+    ) -> None:
         """Initialize the lifecycle enforcer.
 
         Args:
             state_machine_path: Path to the lifecycle_state_machine.yaml file.
             enforcement_mode: One of 'observability', 'soft', or 'hard'.
+            ledger: Optional MutationAuditLedger for audit logging.
+                    If provided, enforce_transition() emits GOVERNANCE_EVENT
+                    entries on every call.
+            policy_versioner: Optional PolicyVersioner for embedding the
+                              active governance policy version in ledger entries.
+            provenance_tagger: Optional StateProvenanceTagger for embedding
+                               governance state provenance in ledger entries.
 
         Raises:
             ValueError: If enforcement_mode is not valid.
@@ -57,6 +84,11 @@ class LifecycleEnforcer:
         self.enforcement_mode = enforcement_mode
         self.state_machine_path = Path(state_machine_path)
         self.state_machine: dict = self._load_state_machine()
+
+        # Optional audit logging integration (Req 11.1, 11.2, 11.3, 11.4)
+        self._ledger = ledger
+        self._policy_versioner = policy_versioner
+        self._provenance_tagger = provenance_tagger
 
     def _load_state_machine(self) -> dict:
         """Load and validate the lifecycle state machine YAML.
@@ -147,6 +179,96 @@ class LifecycleEnforcer:
         else:
             # Both soft and hard modes block invalid operations
             return "block"
+
+    def _emit_transition_audit_event(
+        self,
+        artifact_id: str,
+        artifact_type: str,
+        from_state: str,
+        to_state: str,
+        gate_result: GateResult,
+        actor: ActorIdentity | None = None,
+    ) -> None:
+        """Emit a GOVERNANCE_EVENT to the ledger for a lifecycle transition.
+
+        Called after every enforce_transition() invocation when a ledger is
+        connected. Includes actor identity, policy version, and provenance.
+
+        Args:
+            artifact_id: Identifier of the artifact being transitioned.
+            artifact_type: The artifact's type.
+            from_state: Current lifecycle state.
+            to_state: Requested target lifecycle state.
+            gate_result: The GateResult produced by enforce_transition().
+            actor: Optional ActorIdentity. If None, uses from_environment().
+        """
+        if self._ledger is None:
+            return
+
+        from governance.actor_identity import ActorIdentity
+        from governance.mutation_audit_ledger import LedgerEntry
+
+        # Resolve actor identity
+        if actor is None:
+            actor = ActorIdentity.from_environment()
+
+        # Resolve policy version
+        policy_version = "unknown"
+        if self._policy_versioner is not None:
+            try:
+                policy_version = self._policy_versioner.get_current_version()
+            except Exception as exc:
+                logger.warning("Failed to get policy version: %s", exc)
+
+        # Resolve provenance
+        provenance = "indeterminate"
+        if self._provenance_tagger is not None:
+            try:
+                provenance = self._provenance_tagger.get_current_provenance().value
+            except Exception as exc:
+                logger.warning("Failed to get provenance: %s", exc)
+
+        # Determine severity based on enforcement result
+        if gate_result.status == "pass" and gate_result.enforcement_action == "info":
+            severity = "INFO"
+        elif gate_result.enforcement_action == "warn":
+            severity = "WARNING"
+        else:
+            # block action
+            severity = "CRITICAL"
+
+        # Build ledger entry
+        entry = LedgerEntry(
+            entry_id=str(uuid.uuid4()),
+            event_type="GOVERNANCE_EVENT",
+            timestamp=datetime.now(timezone.utc).isoformat(),
+            actor=actor.to_dict(),
+            governance_policy_version=policy_version,
+            severity=severity,
+            details={
+                "artifact_id": artifact_id,
+                "artifact_type": artifact_type,
+                "from_state": from_state,
+                "to_state": to_state,
+                "validity": gate_result.status,
+                "enforcement_action": gate_result.enforcement_action,
+                "governance_state_provenance": provenance,
+            },
+        )
+
+        try:
+            self._ledger.append(entry)
+            logger.debug(
+                "Emitted lifecycle transition audit event: %s (%s -> %s)",
+                artifact_id,
+                from_state,
+                to_state,
+            )
+        except Exception as exc:
+            # Ledger failure must not break enforcement (fail-soft)
+            logger.warning(
+                "Failed to emit lifecycle transition audit event: %s", exc
+            )
 
     def validate_transition(
         self, artifact_id: str, artifact_type: str, from_state: str, to_state: str
@@ -244,7 +366,12 @@ class LifecycleEnforcer:
 
 
     def enforce_transition(
-        self, artifact_id: str, artifact_type: str, from_state: str, to_state: str
+        self,
+        artifact_id: str,
+        artifact_type: str,
+        from_state: str,
+        to_state: str,
+        actor: ActorIdentity | None = None,
     ) -> GateResult:
         """Enforce a lifecycle transition respecting the enforcement mode.
 
@@ -255,11 +382,16 @@ class LifecycleEnforcer:
         In hard mode, invalid transitions are rejected with an enforcement error
         (status=fail, enforcement_action=block).
 
+        When a ledger is connected, emits a GOVERNANCE_EVENT after every call
+        with actor identity, policy version, and provenance (Req 11.1-11.4).
+
         Args:
             artifact_id: Identifier of the artifact being transitioned.
             artifact_type: The artifact's type.
             from_state: Current lifecycle state.
             to_state: Requested target lifecycle state.
+            actor: Optional ActorIdentity for audit attribution. If None and
+                   a ledger is connected, uses ActorIdentity.from_environment().
 
         Returns:
             GateResult indicating whether the transition is permitted.
@@ -274,7 +406,7 @@ class LifecycleEnforcer:
             )
             if self.enforcement_mode == "observability":
                 logger.warning(detail_msg)
-                return GateResult(
+                result = GateResult(
                     gate_name="lifecycle_transition_enforcement",
                     status="pass",
                     enforcement_action="warn",
@@ -283,7 +415,7 @@ class LifecycleEnforcer:
                     timestamp=self._make_timestamp(),
                 )
             else:
-                return GateResult(
+                result = GateResult(
                     gate_name="lifecycle_transition_enforcement",
                     status="fail",
                     enforcement_action="block",
@@ -291,6 +423,10 @@ class LifecycleEnforcer:
                     details=[detail_msg],
                     timestamp=self._make_timestamp(),
                 )
+            self._emit_transition_audit_event(
+                artifact_id, artifact_type, from_state, to_state, result, actor
+            )
+            return result
 
         valid_transitions = self._get_valid_transitions(artifact_type)
         is_valid = (from_state, to_state) in valid_transitions
@@ -298,7 +434,7 @@ class LifecycleEnforcer:
         duration_ms = (time.perf_counter() - start_time) * 1000
 
         if is_valid:
-            return GateResult(
+            result = GateResult(
                 gate_name="lifecycle_transition_enforcement",
                 status="pass",
                 enforcement_action="info",
@@ -309,6 +445,10 @@ class LifecycleEnforcer:
                 ],
                 timestamp=self._make_timestamp(),
             )
+            self._emit_transition_audit_event(
+                artifact_id, artifact_type, from_state, to_state, result, actor
+            )
+            return result
 
         # Invalid transition — behavior depends on enforcement mode
         valid_from_current = [
@@ -322,7 +462,7 @@ class LifecycleEnforcer:
 
         if self.enforcement_mode == "observability":
             logger.warning(detail_msg)
-            return GateResult(
+            result = GateResult(
                 gate_name="lifecycle_transition_enforcement",
                 status="pass",
                 enforcement_action="warn",
@@ -332,7 +472,7 @@ class LifecycleEnforcer:
             )
         elif self.enforcement_mode == "soft":
             logger.warning(f"[SOFT BLOCK] {detail_msg}")
-            return GateResult(
+            result = GateResult(
                 gate_name="lifecycle_transition_enforcement",
                 status="fail",
                 enforcement_action="block",
@@ -343,7 +483,7 @@ class LifecycleEnforcer:
         else:
             # hard mode
             logger.error(f"[HARD BLOCK] {detail_msg}")
-            return GateResult(
+            result = GateResult(
                 gate_name="lifecycle_transition_enforcement",
                 status="fail",
                 enforcement_action="block",
@@ -351,6 +491,11 @@ class LifecycleEnforcer:
                 details=[detail_msg],
                 timestamp=self._make_timestamp(),
             )
+
+        self._emit_transition_audit_event(
+            artifact_id, artifact_type, from_state, to_state, result, actor
+        )
+        return result
 
     def enforce_read_only(
         self, artifact_id: str, artifact_type: str, current_state: str
