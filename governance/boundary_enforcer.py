@@ -9,13 +9,21 @@ Requirements: 16.1, 16.2, 16.3, 16.4, 16.5, 17.1, 17.2, 17.3, 17.4,
 
 from __future__ import annotations
 
+import logging
 import time
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import yaml
 
 from governance.gate_framework import GateResult
+
+if TYPE_CHECKING:
+    from governance.mutation_audit_ledger import MutationAuditLedger
+
+logger = logging.getLogger(__name__)
 
 # Artifact types considered canonical by default (fallback classification)
 CANONICAL_ARTIFACT_TYPES: frozenset[str] = frozenset({
@@ -55,6 +63,7 @@ class BoundaryEnforcer:
         artifact_registry_path: str,
         domain_registry_path: str,
         enforcement_mode: str,
+        ledger: MutationAuditLedger | None = None,
     ) -> None:
         """Initialize BoundaryEnforcer with registry paths and enforcement mode.
 
@@ -62,6 +71,9 @@ class BoundaryEnforcer:
             artifact_registry_path: Path to artifact_registry.yaml.
             domain_registry_path: Path to domain_registry.yaml.
             enforcement_mode: One of 'observability', 'soft', 'hard'.
+            ledger: Optional MutationAuditLedger for cross-domain interaction
+                    logging. If None, cross-domain interactions are not logged
+                    to the audit ledger (backward compatible).
 
         Raises:
             ValueError: If enforcement_mode is not valid.
@@ -76,6 +88,7 @@ class BoundaryEnforcer:
         self.enforcement_mode = enforcement_mode
         self.artifact_registry_path = artifact_registry_path
         self.domain_registry_path = domain_registry_path
+        self._ledger = ledger
 
         self.artifact_registry: list[dict] = self._load_artifact_registry()
         self.domain_registry: list[dict] = self._load_domain_registry()
@@ -344,6 +357,9 @@ class BoundaryEnforcer:
         Cross-domain interactions occur when a module in one domain reads
         or writes an artifact owned by a different domain.
 
+        When a ledger is connected, emits a GOVERNANCE_EVENT entry with
+        details about the cross-domain interaction.
+
         Behavior by enforcement mode:
         - observability: log as informational, never block
         - soft: log as informational, never block
@@ -405,7 +421,64 @@ class BoundaryEnforcer:
             # Read interactions are always informational (Req 19.3)
             result["enforcement_action"] = "info"
 
+        # Emit ledger entry for cross-domain interaction (Req 19.1)
+        self._emit_cross_domain_ledger_entry(result)
+
         return result
+
+    def _emit_cross_domain_ledger_entry(self, interaction: dict) -> None:
+        """Emit a GOVERNANCE_EVENT to the ledger for a cross-domain interaction.
+
+        Severity mapping:
+        - "INFO" for observability/soft mode interactions
+        - "WARNING" for hard mode violations (blocked interactions)
+
+        Args:
+            interaction: The interaction result dict from detect_cross_domain_interaction.
+        """
+        if self._ledger is None:
+            return
+
+        from governance.mutation_audit_ledger import LedgerEntry
+
+        # Determine severity based on enforcement action
+        if interaction.get("enforcement_action") == "block":
+            severity = "WARNING"
+        else:
+            severity = "INFO"
+
+        entry = LedgerEntry(
+            entry_id=str(uuid.uuid4()),
+            event_type="GOVERNANCE_EVENT",
+            timestamp=interaction.get("timestamp", datetime.now(timezone.utc).isoformat()),
+            actor={
+                "actor_type": "SYSTEM",
+                "actor_id": "boundary_enforcer",
+                "context": {"action": "cross_domain_interaction"},
+                "is_fallback": False,
+            },
+            governance_policy_version="unknown",
+            severity=severity,
+            details={
+                "source_domain": interaction["source_domain"],
+                "target_domain": interaction["target_domain"],
+                "artifact_id": interaction["artifact_id"],
+                "interaction_type": interaction["interaction_type"],
+            },
+        )
+
+        try:
+            self._ledger.append(entry)
+            logger.debug(
+                "Emitted cross-domain interaction ledger entry: %s -> %s (%s)",
+                interaction["source_domain"],
+                interaction["target_domain"],
+                interaction["artifact_id"],
+            )
+        except Exception as exc:
+            logger.warning(
+                "Failed to emit cross-domain ledger entry: %s", exc
+            )
 
     def classify_artifact(self, artifact_id: str) -> str:
         """Classify an artifact using runtime discovery with fallback.

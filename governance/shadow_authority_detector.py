@@ -15,11 +15,15 @@ Requirements: 40.1, 40.2, 40.3, 40.4, 40.5
 from __future__ import annotations
 
 import logging
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 import yaml
+
+if TYPE_CHECKING:
+    from governance.mutation_audit_ledger import MutationAuditLedger
 
 logger = logging.getLogger(__name__)
 
@@ -43,13 +47,17 @@ class ShadowAuthorityDetector:
     - Make enforcement decisions
     """
 
-    def __init__(self, artifact_registry_path: str) -> None:
+    def __init__(self, artifact_registry_path: str, ledger: MutationAuditLedger | None = None) -> None:
         """Initialize ShadowAuthorityDetector with artifact registry.
 
         Args:
             artifact_registry_path: Path to artifact_registry.yaml.
+            ledger: Optional MutationAuditLedger for shadow event recording.
+                    If None, shadow events are not logged to the audit ledger
+                    (backward compatible).
         """
         self.artifact_registry_path = artifact_registry_path
+        self._ledger = ledger
         self._artifact_registry: list[dict[str, Any]] = self._load_artifact_registry()
         self._artifact_index: dict[str, dict[str, Any]] = {
             a["artifact_id"]: a
@@ -160,7 +168,8 @@ class ShadowAuthorityDetector:
         """Record a shadow authority event (undeclared write detected).
 
         Creates a structured event record and appends it to the internal
-        event list for this run.
+        event list for this run. When a ledger is connected, also emits
+        a GOVERNANCE_EVENT entry to the audit ledger.
 
         Args:
             writing_module: Module path or identifier that performed the write.
@@ -196,7 +205,63 @@ class ShadowAuthorityDetector:
             event["authority_type"],
         )
 
+        # Emit ledger entry for shadow event (Req 40.1, 40.3)
+        self._emit_shadow_ledger_entry(event)
+
         return event
+
+    def _emit_shadow_ledger_entry(self, event: dict[str, Any]) -> None:
+        """Emit a GOVERNANCE_EVENT to the ledger for a shadow authority event.
+
+        Severity mapping:
+        - "INFO" for registered engine shadow authority (potentially legitimate)
+        - "WARNING" for unregistered module shadow authority (likely violation)
+
+        Args:
+            event: The shadow event dict from record_shadow_event.
+        """
+        if self._ledger is None:
+            return
+
+        from governance.mutation_audit_ledger import LedgerEntry
+
+        # Severity based on whether writer is registered engine or unregistered module
+        if event.get("is_registered_engine", False):
+            severity = "INFO"
+        else:
+            severity = "WARNING"
+
+        entry = LedgerEntry(
+            entry_id=str(uuid.uuid4()),
+            event_type="GOVERNANCE_EVENT",
+            timestamp=event.get("timestamp", datetime.now(timezone.utc).isoformat()),
+            actor={
+                "actor_type": "SYSTEM",
+                "actor_id": "shadow_authority_detector",
+                "context": {"action": "shadow_event_recording"},
+                "is_fallback": False,
+            },
+            governance_policy_version="unknown",
+            severity=severity,
+            details={
+                "writing_module": event["writing_module"],
+                "target_artifact_id": event["target_artifact_id"],
+                "declared_writers": event["declared_writers"],
+                "is_shadow": True,
+            },
+        )
+
+        try:
+            self._ledger.append(entry)
+            logger.debug(
+                "Emitted shadow authority ledger entry: %s -> %s",
+                event["writing_module"],
+                event["target_artifact_id"],
+            )
+        except Exception as exc:
+            logger.warning(
+                "Failed to emit shadow authority ledger entry: %s", exc
+            )
 
     def get_observation_report(self) -> dict[str, Any]:
         """Generate structured observation report for this run.
