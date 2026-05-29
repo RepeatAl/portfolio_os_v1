@@ -1,0 +1,29 @@
+schema_version: "1.0.0"
+components:
+  mutation_audit_ledger:
+    fail_mode: fail_soft
+    rationale: "Pipeline continues, degradation logged"
+  yaml_config_parser:
+    fail_mode:
+      observability: fail_soft
+      soft: fail_closed
+      hard: fail_closed
+    rationale: "Cannot enforce without governance truth"
+  boundary_enforcer:
+    fail_mode: fail_soft
+    rationale: "Pipeline continues, checks skipped"
+  warning_governor:
+    fail_mode: fail_open
+    rationale: "Pipeline continues without warning processing"
+  lifecycle_enforcer:
+    fail_mode:
+      observability: fail_soft
+      soft: fail_soft
+      hard: fail_closed
+    rationale: "Lifecycle paradox handling"
+  gate_framework:
+    fail_mode: fail_soft
+    rationale: "Individual gate failures don't collapse system"
+  policy_versioner:
+    fail_mode: fail_soft
+    rationale: "Version unknown but pipeline continues"
