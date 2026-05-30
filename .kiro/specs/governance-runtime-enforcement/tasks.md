@@ -303,7 +303,7 @@ This plan implements the governance runtime enforcement system after CTO-approve
     - If not cold-start: proceed with configured enforcement mode
     - _Requirements: 31.1, 31.2_
 
-- [~] 10. Final Verification — Output Contract
+- [x] 10. Final Verification — Output Contract
   - Ensure all tests pass, ask the user if questions arise.
   - Run: `.venv/bin/python -m pytest tests/ -v --tb=short`
   - Verify full integration: gate framework → lifecycle → boundary → ledger → policy versioner
