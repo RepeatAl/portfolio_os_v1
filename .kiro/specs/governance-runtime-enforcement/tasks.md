@@ -212,8 +212,8 @@ This plan implements the governance runtime enforcement system after CTO-approve
   - Verify enforcement mode logic across observability/soft/hard
   - Produce verification artifact
 
-- [ ] 7. Audit Ledger, Policy Versioning, and Shadow Authority
-  - [~] 7.1 Create `governance/mutation_audit_ledger.py` with LedgerEntry dataclass and MutationAuditLedger class
+- [x] 7. Audit Ledger, Policy Versioning, and Shadow Authority
+  - [x] 7.1 Create `governance/mutation_audit_ledger.py` with LedgerEntry dataclass and MutationAuditLedger class
     - Implement `LedgerEntry` dataclass with entry_id, event_type, timestamp, actor, governance_policy_version, severity, details
     - Implement `MutationAuditLedger.__init__(ledger_path)` with file creation on missing
     - Implement `append(entry)` with append-only YAML persistence
@@ -223,14 +223,14 @@ This plan implements the governance runtime enforcement system after CTO-approve
     - Support event types: REGISTRY_ADD, REGISTRY_MODIFY, REGISTRY_REMOVE, GOVERNANCE_EVENT, POLICY_CHANGE, SUNSET_TRANSITION
     - _Requirements: 12.1, 12.2, 12.3, 12.4, 12.5, 13.1, 13.2, 13.3, 13.4, 13.5, 14.1, 14.2, 14.3, 15.1, 15.2, 15.3_
 
-  - [~] 7.2 Create `governance/policy_versioner.py` with PolicyVersioner class
+  - [x] 7.2 Create `governance/policy_versioner.py` with PolicyVersioner class
     - Implement `compute_version()` as SHA-256 of combined sorted governance file contents
     - Implement `detect_change(previous_version)` returning boolean
     - Implement `get_current_version()` for embedding in GateResult and LedgerEntry
     - Define GOVERNANCE_FILES list: config.yaml, lifecycle_state_machine.yaml, domain_registry.yaml, confidence_policy.yaml
     - _Requirements: 34.1, 34.2, 34.3, 34.4, 34.5, 34.6_
 
-  - [~] 7.3 Create `governance/shadow_authority_detector.py` with ShadowAuthorityDetector class (OBSERVATION ONLY)
+  - [x] 7.3 Create `governance/shadow_authority_detector.py` with ShadowAuthorityDetector class (OBSERVATION ONLY)
     - Implement `check_write_authority(writing_module, target_artifact_id)` returning boolean
     - Implement `record_shadow_event(writing_module, target_artifact_id, declared_writers)` returning event dict
     - Implement `get_observation_report()` returning `{"unique_paths": int, "undeclared_writers": [...], "severity_recommendation": str}`
@@ -251,32 +251,32 @@ This plan implements the governance runtime enforcement system after CTO-approve
     - **Validates: Requirements 40.1, 40.3, 40.5**
     - File: `tests/test_property_shadow_authority_threshold.py`
 
-- [~] 8. Audit Ledger Verification — Output Contract
+- [x] 8. Audit Ledger Verification — Output Contract
   - Ensure all tests pass, ask the user if questions arise.
   - Run: `.venv/bin/python -m pytest tests/ -v --tb=short`
   - Verify mutation audit ledger, policy versioner, shadow authority detector all import and integrate
   - Verify ledger append-only behavior and corruption recovery
   - Produce verification artifact
 
-- [ ] 9. Integration Wiring
-  - [~] 9.1 Add enforcement mode configuration to `.domainization/config.yaml`
+- [x] 9. Integration Wiring
+  - [x] 9.1 Add enforcement mode configuration to `.domainization/config.yaml`
     - Add `governance_enforcement.mode` field (default: `observability`)
     - Add transition criteria documentation as YAML comments
     - Wire enforcement mode into GateFramework, LifecycleEnforcer, BoundaryEnforcer initialization
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5_
 
-  - [~] 9.2 Wire lifecycle transition audit logging
+  - [x] 9.2 Wire lifecycle transition audit logging
     - Connect LifecycleEnforcer to MutationAuditLedger
     - Emit GOVERNANCE_EVENT on every enforce_transition() call
     - Include actor identity, policy version, and provenance in ledger entries
     - _Requirements: 11.1, 11.2, 11.3, 11.4_
 
-  - [~] 9.3 Wire boundary enforcer to audit ledger
+  - [x] 9.3 Wire boundary enforcer to audit ledger
     - Connect BoundaryEnforcer to MutationAuditLedger for cross-domain interaction logging
     - Connect ShadowAuthorityDetector to MutationAuditLedger for shadow event recording
     - _Requirements: 19.1, 40.1, 40.3_
 
-  - [~] 9.4 Implement runtime invariant preservation validation
+  - [x] 9.4 Implement runtime invariant preservation validation
     - Create `governance/invariant_validator.py` with RuntimeInvariantValidator class
     - Validate runtime-owned invariants only:
       - INV-3: Chain_Model is SIGNALS(L1)->SEMANTICS(L2)->REASONING(L3)->REPORT(L4)
@@ -288,12 +288,16 @@ This plan implements the governance runtime enforcement system after CTO-approve
     - Note: INV-1, INV-2, INV-6, INV-9, INV-10 are Domainization-owned invariants — not validated here
     - _Requirements: 25.3, 25.4, 25.5, 25.7, 25.8_
 
-  - [~] 9.5 Implement anti-ontology proliferation constraint
-    - Add concept count validation: artifact types ≤ 10, governance dimensions ≤ 5, severity levels ≤ 6, total concepts ≤ 50
-    - Wire as a pre-registration check in boundary enforcer
+  - [x] 9.5 Implement ontology growth observability report
+    - Create `governance/ontology_growth_observer.py` with OntologyGrowthObserver class
+    - The module MUST: measure, report, trend
+    - The module MUST NOT: block, reject, enforce
+    - Output: current counts (artifact types, governance dimensions, severity levels, total concepts), growth rate, recommendation
+    - No pre-registration blocking — observation only
+    - CTO DIRECTIVE: This is an observation engine, not a constraint enforcer
     - _Requirements: 39.1, 39.2, 39.3, 39.4_
 
-  - [~] 9.6 Wire cold-start handler into pipeline initialization
+  - [x] 9.6 Wire cold-start handler into pipeline initialization
     - Check `is_cold_start()` at pipeline start
     - If cold-start: call `initialize(actor)`, force observability mode, tag provenance
     - If not cold-start: proceed with configured enforcement mode
