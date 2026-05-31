@@ -118,8 +118,8 @@ Lean delta layer implementation: 4 Python modules + 2 YAML data files extending 
     - Produce the Phase 2 verification report at `.domainization/reports/property_tests_verification_gate_task4.md`
     - _Requirements: 12.1, 12.2, 12.3, 12.4, 12.5_
 
-- [ ] 5. Integration and Wiring
-  - [ ] 5.2 Write unit tests for all 4 modules
+- [x] 5. Integration and Wiring
+  - [x] 5.2 Write unit tests for all 4 modules
     - `tests/test_influence_graph.py` — Valid/invalid YAML loading, missing fields, missing file, module exclusion on missing declaration
     - `tests/test_deployment_authority.py` — Valid/invalid YAML, role count validation, unvalidated deployment WARNING, final 3-pair forbidden set enforcement
     - `tests/test_transition_cooldown.py` — Config clamping (below min, above max, missing section), cooldown rejection message
@@ -128,7 +128,7 @@ Lean delta layer implementation: 4 Python modules + 2 YAML data files extending 
     - Include the final forbidden-pair decision (3 pairs) in deployment_authority unit tests
     - _Requirements: 1.2, 1.3, 4.4, 5.3, 6.4, 7.4, 9.4, 10.3_
 
-  - [ ] 5.1 Create tests/test_delta_non_interference.py
+  - [x] 5.1 Create tests/test_delta_non_interference.py
     - Verify existing enforcement modes (observability/soft/hard) behavior unchanged
     - Verify no new fail modes introduced beyond fail_open/fail_soft/fail_closed
     - Verify Mutation_Audit_Ledger schema unchanged (only additive event types)
@@ -137,7 +137,7 @@ Lean delta layer implementation: 4 Python modules + 2 YAML data files extending 
     - Verify no existing governance-runtime-enforcement behavior regresses
     - _Requirements: 11.1, 11.2, 11.3, 11.4, 11.5_
 
-  - [ ] 5.3 Wire initialization sequence
+  - [x] 5.3 Wire initialization sequence
     - Ensure governance init loads delta components in order: InfluenceGraph → DeploymentAuthority → TransitionCooldown → DomainLifecycleManager
     - Verify CRITICAL events halt init (influence graph cycles, topology violations)
     - Verify fail_soft components (cooldown, lifecycle) degrade gracefully
