@@ -6,42 +6,42 @@ Lean delta layer implementation: 4 Python modules + 2 YAML data files extending 
 
 ## Tasks
 
-- [ ] 1. Foundation: Data Files and Core Modules
-  - [ ] 1.1 Create governance influence declarations YAML
+- [x] 1. Foundation: Data Files and Core Modules
+  - [x] 1.1 Create governance influence declarations YAML
     - Create `.domainization/governance_influence_declarations.yaml` with schema_version, all 13 module declarations (influence_graph, deployment_authority, transition_cooldown, domain_lifecycle, gate_framework, lifecycle_enforcer, boundary_enforcer, warning_governor, mutation_audit_ledger, policy_versioner, fail_mode_registry, state_provenance_tagger, shadow_authority_detector)
     - Each module declares: module_id, read_dependencies, write_dependencies, influence_direction (upstream/downstream)
     - _Requirements: 1.1, 1.4_
 
-  - [ ] 1.2 Create deployment authority model YAML
+  - [x] 1.2 Create deployment authority model YAML
     - Create `.domainization/deployment_authority_model.yaml` with schema_version and exactly 3 roles: OWNER (mutate_governance, change_enforcement_mode), CI (deploy, accept_runtime_hash), RUNTIME (execute_override, change_fail_mode)
     - _Requirements: 4.1, 4.2, 4.3_
 
-  - [ ] 1.3 Implement governance/influence_graph.py
+  - [x] 1.3 Implement governance/influence_graph.py
     - Implement `InfluenceDirection` enum, `ModuleDependencyDeclaration` frozen dataclass, `CycleDetectionResult`, `DirectionalityViolation` dataclasses
     - Implement `GovernanceInfluenceGraph` class: `load_declarations()` from YAML, `validate_declaration()`, `build_graph()` adjacency list from write_dependencies, `detect_cycles()` via DFS, `enforce_directionality()` checking downstream-writes-upstream violations, `validate_at_init()` orchestrator
     - Emit CRITICAL events to Mutation_Audit_Ledger on cycle detection, missing declarations, directionality violations
     - _Requirements: 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 2.4, 3.1, 3.2, 3.3_
 
-  - [ ] 1.4 Implement governance/deployment_authority.py
+  - [x] 1.4 Implement governance/deployment_authority.py
     - Implement `AuthorityRole` enum (OWNER/CI/RUNTIME), `Authority` enum (6 authorities), `AuthorityAssignment` frozen dataclass, `DeployProvenance` dataclass
     - Implement `FORBIDDEN_AUTHORITY_PAIRS` constant, `DeploymentAuthorityModel` class: `load_model()` from YAML, `validate_topology()` checking forbidden pairs, `validate_at_init()`, `record_deploy_provenance()` appending to Mutation_Audit_Ledger with event_type `deployment_authorized`, `check_authority()`
     - Flag unvalidated deployments (is_validated=False) with WARNING severity
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 5.1, 5.2, 5.3, 5.4, 6.1, 6.2, 6.3, 6.4_
 
-  - [ ] 1.5 Implement governance/transition_cooldown.py
+  - [x] 1.5 Implement governance/transition_cooldown.py
     - Implement `CooldownConfig` dataclass (duration_hours: float, default 4.0, clamped [1.0, 24.0]), `CooldownState` dataclass with `remaining` property, `TransitionAttempt` dataclass
     - Implement `TransitionCooldown` class: `load_config()` from config.yaml `transition_hysteresis` section, `get_cooldown_state()` querying ledger for last successful transition, `attempt_transition()` enforcing cooldown with emergency bypass, `query_transition_history()`
     - Record both successful and rejected attempts to Mutation_Audit_Ledger with event_type `enforcement_mode_rollback`
     - Emergency overrides (is_emergency=True) bypass cooldown with mandatory bypass_reason audit
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 8.1, 8.2, 8.3, 8.4_
 
-  - [ ] 1.6 Implement governance/domain_lifecycle.py
+  - [x] 1.6 Implement governance/domain_lifecycle.py
     - Implement `DomainLifecycleState` enum (active/deprecated/archived), `VALID_DOMAIN_TRANSITIONS` dict, `DeprecationRequest`, `ReassignmentPlanEntry`, `ReassignmentPlan` dataclasses
     - Implement `DomainLifecycleManager` class: `get_domain_state()` defaulting to ACTIVE, `validate_transition()` against VALID_DOMAIN_TRANSITIONS, `request_deprecation()` with cannot_own check and reassignment plan generation, `execute_reassignment()` recording to ledger, `transition_domain()` for non-deprecation transitions
     - Record all lifecycle transitions to Mutation_Audit_Ledger with event_type `domain_lifecycle_transition`
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 10.1, 10.2, 10.3, 10.4, 10.5_
 
-  - [ ] 1.7 Add transition_hysteresis config section
+  - [x] 1.7 Add transition_hysteresis config section
     - Add `transition_hysteresis: { cooldown_hours: 4 }` section to `.domainization/config.yaml`
     - _Requirements: 7.4_
 
@@ -96,6 +96,15 @@ Lean delta layer implementation: 4 Python modules + 2 YAML data files extending 
 
 - [ ] 6. Final Verification Gate
   - Run full test suite (`pytest tests/ -v`), verify ALL property tests (8 properties × 200 iterations), unit tests, integration tests, and non-interference tests pass. Produce verification metrics (total, passed, failed, skipped). Confirm delta layer is additive-only with no breaking changes to governance-runtime-enforcement. Ask the user if questions arise.
+
+- [ ] 7. Documentation
+  - [ ] 7.1 Create `governance/README_deployment_authority_and_domain_lifecycle.md`
+    - Document all 4 new modules: influence_graph, deployment_authority, transition_cooldown, domain_lifecycle
+    - Document both YAML data files: governance_influence_declarations.yaml, deployment_authority_model.yaml
+    - Include key interfaces, usage examples, CTO directives, and requirements traceability
+    - Document the initialization sequence and integration with existing ledger/enforcer infrastructure
+    - Document the transition_hysteresis config section
+    - Follow existing README style from `governance/README_enforcement_runtime_and_integration.md`
 
 ## Notes
 
