@@ -156,9 +156,12 @@ class DeployProvenance:
         )
 
 
-# Topology constraints — these pairs MUST NOT coexist on any single role
+# Topology constraints — these pairs MUST NOT coexist on any single role.
+# CTO Decision (2026-05-31): Final set is ADDITIVE and stricter.
+# All three pairs are enforced simultaneously.
 FORBIDDEN_AUTHORITY_PAIRS: list[tuple[Authority, Authority]] = [
     (Authority.MUTATE_GOVERNANCE, Authority.DEPLOY),
+    (Authority.DEPLOY, Authority.CHANGE_ENFORCEMENT_MODE),
     (Authority.CHANGE_ENFORCEMENT_MODE, Authority.EXECUTE_OVERRIDE),
 ]
 
