@@ -144,31 +144,102 @@ Lean delta layer implementation: 4 Python modules + 2 YAML data files extending 
     - No framework escalation. No plugin system. No event bus. No runtime kernel.
     - _Requirements: 2.4, 4.4, 5.4, 11.5_
 
-- [ ] 6. Final Verification Gate
-  - **Exact command:** `.venv/bin/python -m pytest tests/ -v --hypothesis-profile=default --hypothesis-show-statistics`
-  - Report: total, passed, failed, skipped
-  - Report: property-test statistics (Hypothesis example counts per test)
-  - Report: unit-test count
-  - Report: integration-test count
-  - Report: non-interference-test count
-  - Confirm additive-only delta behavior
-  - Confirm no regression against the current discovered baseline (do NOT hardcode old 342 number — use actual discovered baseline)
-  - If baseline count differs from earlier reports, document why
-  - Produce verification report at `.domainization/reports/final_verification_gate_task6.md`
-  - Ask the user if questions arise.
+- [x] 6. Final Verification Gate
+  - **Step 1: Discover current test baseline dynamically**
+    - Run `.venv/bin/python -m pytest tests/ --collect-only -q` to discover total test count BEFORE the full run
+    - Record this as `discovered_baseline` — do NOT hardcode any previous number (not 342, not 494, not any other)
+    - If baseline differs from earlier reports, document the delta and explain why (new tests added, tests removed, etc.)
+  - **Step 2: Full test suite execution**
+    - **Exact command:** `.venv/bin/python -m pytest tests/ -v --hypothesis-profile=default --hypothesis-show-statistics`
+    - Verify tests run under `default` Hypothesis profile (max_examples=200), NOT `fast` CI profile
+  - **Step 3: Classify tests by category**
+    - Classify tests by filename/path pattern:
+      - `test_*_properties.py` → property tests
+      - `test_delta_non_interference.py` → non-interference tests
+      - `test_delta_init.py` → integration tests
+      - `test_influence_graph.py`, `test_deployment_authority.py`, `test_transition_cooldown.py`, `test_domain_lifecycle.py` → unit tests
+      - All other test files → classify by best-fit or mark as `unclassified`
+    - Do NOT silently misclassify — if a test file doesn't fit cleanly, list it as `unclassified` with explanation
+  - **Step 4: Report must contain ALL of the following**
+    - total tests (from pytest output)
+    - passed / failed / skipped counts
+    - unit-test count (by category)
+    - integration-test count (by category)
+    - property-test count (by category)
+    - non-interference-test count (by category)
+    - Hypothesis statistics: example counts per property test (from `--hypothesis-show-statistics`)
+    - discovered current baseline (from Step 1)
+    - comparison against discovered baseline (pass count == baseline? explain any delta)
+    - confirmation of additive-only delta behavior
+    - confirmation of no regression against current discovered baseline
+    - explanation if baseline differs from earlier reports
+  - **Step 5: Acceptance criteria**
+    - Full pytest run successful (0 failures)
+    - Hypothesis statistics visibly documented in report
+    - Baseline NOT hardcoded — dynamically discovered
+    - Additive-only behavior confirmed
+    - No regression against current discovered baseline
+    - Deviations transparently explained
+    - Ask the user if questions arise
+  - **Report path:** `.domainization/reports/final_verification_gate_task6.md`
 
 - [ ] 7. Documentation
   - [ ] 7.1 Create `governance/README_deployment_authority_and_domain_lifecycle.md`
-    - Create ONLY after Task 6 passes
-    - Document all 4 new modules: influence_graph, deployment_authority, transition_cooldown, domain_lifecycle
-    - Document both YAML data files: governance_influence_declarations.yaml, deployment_authority_model.yaml
-    - Document the final forbidden-pair set (3 pairs) with CTO decision rationale
-    - Document the initialization sequence and integration with existing ledger/enforcer infrastructure
-    - Document the transition_hysteresis config section
-    - Document requirements traceability
-    - Document that this is a lean delta layer, not a framework expansion
-    - Include key interfaces and usage examples
+    - **Precondition:** Verify `.domainization/reports/final_verification_gate_task6.md` exists AND contains "FINAL VERIFICATION GATE: PASSED". If not, STOP and report to user.
+    - **Output:** Create ONE new file: `governance/README_deployment_authority_and_domain_lifecycle.md`
+    - **Constraints:**
+      - Do NOT modify any existing README files or runtime modules
+      - Do NOT invent new architecture decisions — document only what exists
+      - Derive documentation exclusively from existing artifacts: 4 modules (`governance/influence_graph.py`, `governance/deployment_authority.py`, `governance/transition_cooldown.py`, `governance/domain_lifecycle.py`), 2 YAML data files (`governance_influence_declarations.yaml`, `deployment_authority_model.yaml`), `governance/delta_init.py`, test files, and Task-6 report
+      - Usage examples MUST use real existing interfaces only (read the module source first)
+    - **Required content:**
+      - Explicitly state: "This is a lean delta layer extending governance-runtime-enforcement, not a framework expansion"
+      - Document all 4 new modules with purpose, key classes, and public interfaces
+      - Document both YAML data files with schema and purpose
+      - Document CTO Decision exactly: final forbidden-pair set = 3 pairs, additive resolution, no silent deviations permitted
+      - Document initialization sequence (InfluenceGraph → DeploymentAuthority → TransitionCooldown → DomainLifecycleManager)
+      - Document integration with existing ledger/enforcer infrastructure (read-only consumption of Actor_Identity, Policy_Versioner)
+      - Document `transition_hysteresis` config section (cooldown_hours, clamping [1.0, 24.0])
+      - Requirements traceability as a table (module → requirement IDs)
+      - Usage examples with real existing interfaces (read source before writing examples)
     - Follow existing README style from `governance/README_enforcement_runtime_and_integration.md`
+    - _Requirements: 1.1–12.5 (traceability documentation)_
+
+  - [ ] 7.2 MoneyHorst Test Governance Layer
+    - **Goal:** Produce a test governance inventory report for MoneyHorst so that future Engines, Signals, and Reports can be extended regression-safe.
+    - **Constraints:**
+      - Do NOT reuse Task-6 numbers — run fresh baseline discovery independently
+      - Do NOT write new tests or refactor existing code
+      - Do NOT modify any existing runtime files
+      - Do NOT block or depend on Task 7.1 output
+      - This is follow-up governance documentation, NOT an execution gate
+    - **Scope:**
+      - Run `.venv/bin/python -m pytest tests/ --collect-only -q` for fresh baseline discovery
+      - Classify tests by filename/path pattern:
+        - `test_*_properties.py` / `test_property_*.py` → property tests
+        - `test_delta_non_interference.py` → non-interference tests
+        - `test_delta_init.py` → integration tests
+        - Module-specific `test_*.py` → unit tests
+        - All others → classify by best-fit or mark as `unclassified` with explanation
+      - Derive Engine test status from repository structure and test files (scan `engines/` and `tests/` directories) — do NOT estimate
+      - Derive Signal test status from repository structure and test files (scan `signals/` and `tests/` directories) — do NOT estimate
+      - Document coverage gaps (which engines/signals lack tests) but do NOT fix them
+      - Separate test categories clearly:
+        - `unit tests` — isolated module behavior
+        - `integration tests` — cross-module interaction
+        - `property tests` — Hypothesis-based correctness properties
+        - `non-interference tests` — delta-layer guarantees
+        - `regression/baseline tests` — baseline preservation
+    - **Report path:** `.domainization/reports/test_governance_layer_task7_2.md`
+    - **Acceptance criteria:**
+      - Report exists at specified path
+      - Fresh baseline dynamically discovered (not copied from Task 6)
+      - All test categories documented with file-to-category mapping
+      - Engine and Signal test status inventoried from actual repository structure
+      - Coverage gaps identified and documented
+      - Unclear tests marked as `unclassified` with explanation
+      - No existing runtime files modified
+    - _Requirements: 12.1, 12.2, 12.3, 12.4, 12.5_
 
 ## Notes
 
@@ -195,7 +266,7 @@ Lean delta layer implementation: 4 Python modules + 2 YAML data files extending 
     { "id": 5, "tasks": ["5.2"] },
     { "id": 6, "tasks": ["5.1"] },
     { "id": 7, "tasks": ["5.3"] },
-    { "id": 8, "tasks": ["7.1"] }
+    { "id": 8, "tasks": ["7.1", "7.2"] }
   ]
 }
 ```
