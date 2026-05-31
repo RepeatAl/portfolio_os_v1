@@ -21,8 +21,8 @@
 
 | File | Test Count | Domain Coverage |
 |------|:---:|---|
-| `tests/test_influence_graph_properties.py` | 7 | Governance (influence graph) |
-| `tests/test_deployment_authority_properties.py` | 7 | Governance (deployment authority) |
+| `tests/test_influence_graph_properties.py` | 8 | Governance (influence graph) |
+| `tests/test_deployment_authority_properties.py` | 10 | Governance (deployment authority) |
 | `tests/test_transition_cooldown_properties.py` | 10 | Governance (transition cooldown) |
 | `tests/test_domain_lifecycle_properties.py` | 6 | Governance (domain lifecycle) |
 | `tests/test_property_actor_identity_roundtrip.py` | 2 | Governance (actor identity) |
@@ -56,14 +56,14 @@
 | `tests/test_property_sunset_governance_behavior.py` | 6 | Governance (sunset) |
 
 **Total property test files:** 33  
-**Total property tests:** ~166
+**Total property tests:** 176
 
 
 ### 2.2 Non-Interference Tests (delta-layer guarantees)
 
 | File | Test Count | Purpose |
 |------|:---:|---|
-| `tests/test_delta_non_interference.py` | varies | Verifies delta layer does not regress existing enforcement modes, fail modes, ledger schema, domain registry schema, or read-only consumption of Actor_Identity/Policy_Versioner |
+| `tests/test_delta_non_interference.py` | 32 | Verifies delta layer does not regress existing enforcement modes, fail modes, ledger schema, domain registry schema, or read-only consumption of Actor_Identity/Policy_Versioner |
 
 **Total non-interference test files:** 1
 
@@ -73,7 +73,7 @@
 
 | File | Test Count | Purpose |
 |------|:---:|---|
-| `tests/test_delta_init.py` | varies | Verifies initialization sequence: InfluenceGraph → DeploymentAuthority → TransitionCooldown → DomainLifecycleManager; CRITICAL events halt init; fail_soft components degrade gracefully |
+| `tests/test_delta_init.py` | 12 | Verifies initialization sequence: InfluenceGraph → DeploymentAuthority → TransitionCooldown → DomainLifecycleManager; CRITICAL events halt init; fail_soft components degrade gracefully |
 
 **Total integration test files:** 1
 
@@ -83,21 +83,21 @@
 
 | File | Test Count | Module Under Test |
 |------|:---:|---|
-| `tests/test_influence_graph.py` | 12 | `governance/influence_graph.py` |
-| `tests/test_deployment_authority.py` | varies | `governance/deployment_authority.py` |
-| `tests/test_transition_cooldown.py` | 18 | `governance/transition_cooldown.py` |
-| `tests/test_domain_lifecycle.py` | 18 | `governance/domain_lifecycle.py` |
-| `tests/test_audit_ledger_verification.py` | varies | `governance/mutation_audit_ledger.py` |
-| `tests/test_boundary_shadow_ledger_wiring.py` | varies | Boundary/shadow/ledger wiring |
-| `tests/test_cold_start_handler.py` | varies | `governance/cold_start_handler.py` |
-| `tests/test_deterministic_ordering_enforcement.py` | varies | Deterministic ordering |
-| `tests/test_enforcement_config_loader.py` | 22 | `governance/enforcement_config_loader.py` |
+| `tests/test_influence_graph.py` | 14 | `governance/influence_graph.py` |
+| `tests/test_deployment_authority.py` | 22 | `governance/deployment_authority.py` |
+| `tests/test_transition_cooldown.py` | 20 | `governance/transition_cooldown.py` |
+| `tests/test_domain_lifecycle.py` | 22 | `governance/domain_lifecycle.py` |
+| `tests/test_audit_ledger_verification.py` | 20 | `governance/mutation_audit_ledger.py` |
+| `tests/test_boundary_shadow_ledger_wiring.py` | 9 | Boundary/shadow/ledger wiring |
+| `tests/test_cold_start_handler.py` | 22 | `governance/cold_start_handler.py` |
+| `tests/test_deterministic_ordering_enforcement.py` | 14 | Deterministic ordering |
+| `tests/test_enforcement_config_loader.py` | 23 | `governance/enforcement_config_loader.py` |
 | `tests/test_enforcement_runtime_verification.py` | 14 | Enforcement runtime integration |
 | `tests/test_lifecycle_audit_wiring.py` | 14 | Lifecycle/audit wiring |
-| `tests/test_ontology_growth_observer.py` | 18 | `governance/ontology_growth_observer.py` |
+| `tests/test_ontology_growth_observer.py` | 21 | `governance/ontology_growth_observer.py` |
 | `tests/test_pipeline_initializer.py` | 16 | `governance/pipeline_initializer.py` |
 | `tests/test_policy_versioner.py` | 16 | `governance/policy_versioner.py` |
-| `tests/test_sunset_governance.py` | 20 | `governance/sunset_governance.py` |
+| `tests/test_sunset_governance.py` | 27 | `governance/sunset_governance.py` |
 
 **Total unit test files (in `tests/`):** 15
 
@@ -263,14 +263,14 @@ The SIGNALS domain (authority_level: 1, first in the reasoning chain) has **zero
 
 ### 8.1 By Category (within `tests/` directory — 494 tests)
 
-| Category | File Count | Approx. Test Count | Description |
+| Category | File Count | Test Count | Description |
 |---|:---:|:---:|---|
-| Property tests | 33 | ~166 | Hypothesis-based correctness properties |
-| Unit tests | 15 | ~168 | Isolated module behavior |
-| Integration tests | 1 | varies | Cross-module interaction (delta_init) |
-| Non-interference tests | 1 | varies | Delta-layer guarantees |
+| Property tests | 33 | 176 | Hypothesis-based correctness properties |
+| Unit tests | 15 | 274 | Isolated module behavior |
+| Integration tests | 1 | 12 | Cross-module interaction (delta_init) |
+| Non-interference tests | 1 | 32 | Delta-layer guarantees |
 | Regression/baseline tests | 0 | 0 | No dedicated baseline preservation tests (baseline is the full suite) |
-| Unclassified | 1 | varies | `verify_ledger_integration.py` — verification script |
+| Unclassified | 1 | 0 | `verify_ledger_integration.py` — verification script (0 tests collected) |
 
 ### 8.2 By Category (outside `tests/` — not in baseline count)
 

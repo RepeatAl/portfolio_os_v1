@@ -3438,3 +3438,282 @@ artifacts:
     - package
     - {'registry_mode': 'transient_exempt'}
 
+
+  # ======================================================================
+  # DELTA LAYER: DEPLOYMENT AUTHORITY AND DOMAINIZATION HARDENING
+  # ======================================================================
+
+- artifact_id: influence_graph_py
+  file_path: governance/influence_graph.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-31"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - governance_influence_declarations_yaml
+  description: Governance module dependency graph with cycle detection and directionality enforcement. Prevents circular governance influence paths.
+  report_value:
+    category: traceability
+    justification: "Validates governance module dependency topology preventing circular influence that could amplify or oscillate decisions"
+  tags:
+    - governance
+    - influence_graph
+    - cycle_detection
+    - delta_layer
+
+- artifact_id: deployment_authority_py
+  file_path: governance/deployment_authority.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-31"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - deployment_authority_model_yaml
+    - mutation_audit_ledger_py
+  description: Minimal OWNER/CI/RUNTIME authority model with topology constraint enforcement (3 forbidden pairs) and deploy provenance recording.
+  report_value:
+    category: traceability
+    justification: "Enforces deployment authority separation preventing single actor from both deploying and mutating governance"
+  tags:
+    - governance
+    - deployment_authority
+    - topology_constraint
+    - delta_layer
+
+- artifact_id: transition_cooldown_py
+  file_path: governance/transition_cooldown.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-31"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - mutation_audit_ledger_py
+  description: Anti-flapping cooldown guard for enforcement mode transitions. Configurable [1h, 24h] with emergency bypass and full audit trail.
+  report_value:
+    category: traceability
+    justification: "Prevents enforcement mode oscillation ensuring stable governance state transitions"
+  tags:
+    - governance
+    - transition_cooldown
+    - anti_flapping
+    - delta_layer
+
+- artifact_id: domain_lifecycle_py
+  file_path: governance/domain_lifecycle.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-31"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - mutation_audit_ledger_py
+  description: Domain lifecycle state model (active/deprecated/archived) with deprecation-triggered artifact reassignment planning and execution.
+  report_value:
+    category: traceability
+    justification: "Governs domain lifecycle transitions preventing artifact orphaning during domain deprecation"
+  tags:
+    - governance
+    - domain_lifecycle
+    - deprecation
+    - delta_layer
+
+- artifact_id: delta_init_py
+  file_path: governance/delta_init.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-06-01"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - influence_graph_py
+    - deployment_authority_py
+    - transition_cooldown_py
+    - domain_lifecycle_py
+  description: Delta layer initialization sequence orchestrator. Loads components in strict order with CRITICAL halt and fail_soft degradation semantics.
+  report_value:
+    category: traceability
+    justification: "Orchestrates delta layer initialization ensuring correct component loading order and failure semantics"
+  tags:
+    - governance
+    - initialization
+    - delta_layer
+
+- artifact_id: governance_influence_declarations_yaml
+  file_path: .domainization/governance_influence_declarations.yaml
+  primary_domain: GOV
+  artifact_type: DATA
+  lifecycle_status: active
+  created_date: "2026-05-31"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Static dependency declarations for all 13 governance modules. Consumed by InfluenceGraph for cycle detection and directionality enforcement.
+  report_value:
+    category: traceability
+    justification: "Declares governance module dependencies enabling static cycle detection at initialization"
+  tags:
+    - governance
+    - declarations
+    - data
+    - delta_layer
+
+- artifact_id: deployment_authority_model_yaml
+  file_path: .domainization/deployment_authority_model.yaml
+  primary_domain: GOV
+  artifact_type: DATA
+  lifecycle_status: active
+  created_date: "2026-05-31"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Three-role authority model (OWNER/CI/RUNTIME) with authority assignments and forbidden pairs. Consumed by DeploymentAuthorityModel for topology validation.
+  report_value:
+    category: traceability
+    justification: "Defines deployment authority topology enabling separation-of-concerns validation at initialization"
+  tags:
+    - governance
+    - authority_model
+    - data
+    - delta_layer
+
+- artifact_id: readme_deployment_authority_and_domain_lifecycle_md
+  file_path: governance/README_deployment_authority_and_domain_lifecycle.md
+  primary_domain: GOV
+  artifact_type: SSOT
+  lifecycle_status: active
+  created_date: "2026-06-01"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - influence_graph_py
+    - deployment_authority_py
+    - transition_cooldown_py
+    - domain_lifecycle_py
+    - delta_init_py
+  description: Comprehensive documentation for the deployment authority and domain lifecycle delta layer. Documents all 4 modules, YAML data files, CTO decisions, and initialization sequence.
+  report_value:
+    category: traceability
+    justification: "Documents delta layer architecture enabling developer onboarding and governance audit"
+  tags:
+    - governance
+    - documentation
+    - delta_layer
+
+- artifact_id: test_governance_layer_report_md
+  file_path: .domainization/reports/test_governance_layer_task7_2.md
+  primary_domain: GOV
+  artifact_type: REPORT
+  lifecycle_status: active
+  created_date: "2026-06-01"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: derived
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Test governance inventory report for MoneyHorst. Documents test baseline, classification, engine/signal coverage gaps, and extension governance recommendations.
+  report_value:
+    category: traceability
+    justification: "Documents test governance layer enabling regression-safe extension of engines, signals, and reports"
+  tags:
+    - governance
+    - testing
+    - inventory
+    - delta_layer
+
+- artifact_id: final_verification_gate_task6_md
+  file_path: .domainization/reports/final_verification_gate_task6.md
+  primary_domain: GOV
+  artifact_type: REPORT
+  lifecycle_status: active
+  created_date: "2026-06-01"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: derived
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Final verification gate report for the deployment-authority-and-domainization-hardening spec. Documents 494/494 tests passing with full Hypothesis statistics.
+  report_value:
+    category: traceability
+    justification: "Documents final verification gate passage enabling spec completion audit trail"
+  tags:
+    - governance
+    - verification
+    - report
+    - delta_layer
+
+- artifact_id: documentation_execution_report_task7_md
+  file_path: .domainization/reports/documentation_execution_report_task7.md
+  primary_domain: GOV
+  artifact_type: REPORT
+  lifecycle_status: active
+  created_date: "2026-06-01"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: derived
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Execution report for Task 7 (Documentation phase). Documents preconditions, subtask completion, artifacts produced, and spec closure.
+  report_value:
+    category: traceability
+    justification: "Documents Task 7 execution enabling traceability of documentation phase completion"
+  tags:
+    - governance
+    - execution_report
+    - delta_layer
