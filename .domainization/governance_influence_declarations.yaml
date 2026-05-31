@@ -1,0 +1,66 @@
+schema_version: "1.0.0"
+modules:
+  - module_id: "influence_graph"
+    read_dependencies: []
+    write_dependencies: []
+    influence_direction: "upstream"
+
+  - module_id: "deployment_authority"
+    read_dependencies: []
+    write_dependencies: ["mutation_audit_ledger"]
+    influence_direction: "upstream"
+
+  - module_id: "transition_cooldown"
+    read_dependencies: ["mutation_audit_ledger"]
+    write_dependencies: ["mutation_audit_ledger"]
+    influence_direction: "downstream"
+
+  - module_id: "domain_lifecycle"
+    read_dependencies: []
+    write_dependencies: ["mutation_audit_ledger"]
+    influence_direction: "downstream"
+
+  - module_id: "gate_framework"
+    read_dependencies: ["fail_mode_registry", "state_provenance_tagger"]
+    write_dependencies: ["mutation_audit_ledger"]
+    influence_direction: "upstream"
+
+  - module_id: "lifecycle_enforcer"
+    read_dependencies: ["gate_framework"]
+    write_dependencies: ["mutation_audit_ledger"]
+    influence_direction: "upstream"
+
+  - module_id: "boundary_enforcer"
+    read_dependencies: ["gate_framework"]
+    write_dependencies: ["mutation_audit_ledger"]
+    influence_direction: "upstream"
+
+  - module_id: "warning_governor"
+    read_dependencies: []
+    write_dependencies: ["mutation_audit_ledger"]
+    influence_direction: "downstream"
+
+  - module_id: "mutation_audit_ledger"
+    read_dependencies: []
+    write_dependencies: []
+    influence_direction: "upstream"
+
+  - module_id: "policy_versioner"
+    read_dependencies: []
+    write_dependencies: ["mutation_audit_ledger"]
+    influence_direction: "upstream"
+
+  - module_id: "fail_mode_registry"
+    read_dependencies: []
+    write_dependencies: []
+    influence_direction: "upstream"
+
+  - module_id: "state_provenance_tagger"
+    read_dependencies: []
+    write_dependencies: []
+    influence_direction: "upstream"
+
+  - module_id: "shadow_authority_detector"
+    read_dependencies: []
+    write_dependencies: []
+    influence_direction: "downstream"

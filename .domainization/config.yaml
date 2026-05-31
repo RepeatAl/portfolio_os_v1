@@ -87,6 +87,29 @@ governance_enforcement:
   mode: observability
 
 # -----------------------------------------------------------------------------
+# Transition Hysteresis Configuration (Req 7.4)
+# -----------------------------------------------------------------------------
+# Prevents rapid enforcement mode oscillation (anti-flapping).
+#
+# When an enforcement mode transition occurs (e.g., observability → soft),
+# a cooldown period is enforced before any subsequent transition is permitted.
+# This prevents mode oscillation caused by transient failures or automated
+# systems rapidly toggling enforcement levels.
+#
+# cooldown_hours: Minimum hours between enforcement mode transitions.
+#   - Clamped to [1.0, 24.0] — values below 1.0 are raised to 1.0,
+#     values above 24.0 are lowered to 24.0.
+#   - Default: 4 hours (sufficient to prevent flapping while allowing
+#     same-day corrections).
+#
+# Emergency overrides (invoked by OWNER actor per governance-runtime-enforcement
+# Req 35) bypass the cooldown entirely, with mandatory audit logging of the
+# bypass reason in the Mutation Audit Ledger.
+#
+transition_hysteresis:
+  cooldown_hours: 4
+
+# -----------------------------------------------------------------------------
 # System Phase
 # -----------------------------------------------------------------------------
 # Documents the current development phase for governance decisions.
