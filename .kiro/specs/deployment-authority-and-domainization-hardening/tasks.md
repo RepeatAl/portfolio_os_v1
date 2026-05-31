@@ -183,8 +183,8 @@ Lean delta layer implementation: 4 Python modules + 2 YAML data files extending 
     - Ask the user if questions arise
   - **Report path:** `.domainization/reports/final_verification_gate_task6.md`
 
-- [ ] 7. Documentation
-  - [ ] 7.1 Create `governance/README_deployment_authority_and_domain_lifecycle.md`
+- [x] 7. Documentation
+  - [x] 7.1 Create `governance/README_deployment_authority_and_domain_lifecycle.md`
     - **Precondition:** Verify `.domainization/reports/final_verification_gate_task6.md` exists AND contains "FINAL VERIFICATION GATE: PASSED". If not, STOP and report to user.
     - **Output:** Create ONE new file: `governance/README_deployment_authority_and_domain_lifecycle.md`
     - **Constraints:**
@@ -205,7 +205,7 @@ Lean delta layer implementation: 4 Python modules + 2 YAML data files extending 
     - Follow existing README style from `governance/README_enforcement_runtime_and_integration.md`
     - _Requirements: 1.1–12.5 (traceability documentation)_
 
-  - [ ] 7.2 MoneyHorst Test Governance Layer
+  - [x] 7.2 MoneyHorst Test Governance Layer
     - **Goal:** Produce a test governance inventory report for MoneyHorst so that future Engines, Signals, and Reports can be extended regression-safe.
     - **Constraints:**
       - Do NOT reuse Task-6 numbers — run fresh baseline discovery independently
