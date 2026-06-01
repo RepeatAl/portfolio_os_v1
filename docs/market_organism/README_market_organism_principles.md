@@ -272,6 +272,68 @@ The framework DOES:
 - Provide the causal model that future SIGNALS implementations will detect
 - Constrain future design decisions through these principles
 
+### Signal Architecture Compatibility
+
+This subsection declares the relationship between the Market Organism Principles and the Signal Architecture. These are DECLARATIONS of compatibility — they state what the organism framework preserves and respects. They do NOT implement signal logic.
+
+#### Signal Reusability Invariant
+
+The following invariant applies across all four levels of the canonical chain (SIGNALS, SEMANTICS, REASONING, REPORT):
+
+1. All signals, signal details, static asset facts, derived metrics, and provenance metadata are modeled as reusable **Intelligence_Objects** — addressable, versionable, and served from a canonical source.
+2. No Signal_Consumer may privately recalculate Canonical_Signal_Truth. Consumers request intelligence from the authoritative producing domain.
+3. Exactly six request types are defined for Signal_Consumers:
+   - (a) Single signal value
+   - (b) Composite signal bundle
+   - (c) Signal detail/provenance
+   - (d) Static asset context
+   - (e) Variable market context
+   - (f) Derived intelligence object
+4. **Static_Asset_Context**: Cached intelligence refreshed exclusively by governance policy (not per-request). Refresh policy is declared at the context-type level, not per-consumer.
+5. **Variable_Signal**: Intelligence refreshed by one of two mechanisms — scheduled cadence (time-based) or event trigger (reactive invalidation upon upstream State_Change detection).
+6. **Derived_Intelligence**: Composite objects invalidated only when declared upstream dependencies change. Each Derived_Intelligence object explicitly declares its dependency set.
+7. No layer in the canonical chain may duplicate intelligence already produced by an upstream layer.
+
+(See: README_state_change_taxonomy, Section: Signal Architecture Compatibility)
+(See: README_dependency_types_v2, Section: Signal Architecture Compatibility)
+(See: README_temporal_taxonomy, Section: Signal Architecture Compatibility)
+(See: README_expansion_taxonomy, Section: Signal Architecture Compatibility)
+
+#### Signal_Bubble_v0 Preservation
+
+1. Existing Excel-derived metrics are **first-generation canonical signal objects** (Signal_Bubble_v0). They are NOT legacy artifacts to be discarded — they are the first real Sensor_Layer of the system.
+2. Signal_Bubble_v0 encompasses the following signal categories:
+   - **Portfolio Core** — total portfolio value, total P/L, cash EUR, invested capital, total capital, largest position, top performer, worst performer
+   - **Allocation** — technology, semiconductors, defense, healthcare, ETFs, USD exposure
+   - **Risk** — portfolio health, risk review count, concentration score, max position, max drawdown, portfolio stability, risk alerts
+   - **Performance** — portfolio performance, equity curve, 7D return, trend signals
+   - **Deployment** — capital deployment, cash readiness, portfolio efficiency, deployment signal
+   - **Regime/PM** — market regime, portfolio bias, scenario readiness, high priority candidates, morning briefing outputs
+3. No consumer (dashboard, report, scenario module, or future engine) may privately rebuild or recalculate Signal_Bubble_v0 signals. All consumers request these signals from the canonical Signal Bubble registry.
+4. **Organism relationship**: Signal_Bubble_v0 signals are leaf-node observations (sensors) in the Organism_Graph. They detect that a State_Change has propagated to the portfolio level. They are evidence of propagation, not causes of it.
+5. Signal_Bubble_v0 signals are reusable by all future layers including: Morning Briefing, Asset Detail Page, Portfolio Fit, Market Fit, Model Fit, Butterfly Simulation, Scenario Engine, PM Control Center, and Report Pipeline.
+
+#### Signal_Lifecycle_Definition Gate
+
+1. Every signal must pass a mandatory **Signal_Lifecycle_Definition** gate before implementation. No bulk signal implementation is permitted — each signal passes its lifecycle individually.
+2. The Signal_Lifecycle_Definition contains exactly 11 mandatory fields:
+   - `signal_id` — unique identifier within the Signal Bubble namespace
+   - `category` — signal category (Portfolio Core, Allocation, Risk, Performance, Deployment, Regime/PM)
+   - `owner_domain` — exactly one domain from the 12-domain model (GOV, ARCH, SIGNALS, SEMANTICS, REASONING, REPORT, STATE, DATA, USER, DEPLOY, MEMORY, SIM)
+   - `input_sources` — list of upstream dependencies
+   - `classification` — static or variable
+   - `refresh_policy` — scheduled cadence or governance-defined refresh interval
+   - `cache_policy` — maximum staleness tolerance
+   - `provenance` — origin and derivation chain
+   - `consumers` — list of downstream consumers
+   - `invalidation_rule` — dependency_change, time_expiry, or event_trigger
+   - `implementation_status` — one of three statuses (see below)
+3. Three implementation statuses:
+   - **Defined_Signal** — architecturally positioned, lifecycle complete, no engine yet
+   - **Structured_Signal** — architecturally positioned as future Intelligence_Object, must NOT be implemented in this spec
+   - **Implemented_Signal** — lifecycle complete and engine producing it
+4. Any signal referenced in worked examples must have a Signal_Lifecycle_Definition before implementation.
+
 ---
 
 ## Cross-References
@@ -330,3 +392,31 @@ This document satisfies the following requirements:
 | 9.4 | Architectural Compatibility: signal layer as sensor defined |
 | 9.5 | Architectural Compatibility: runtime state model preserved |
 | 9.6 | Architectural Compatibility: conceptual world model relationship stated |
+| 11.1 | Signal Architecture Compatibility: all signals defined as reusable Intelligence_Objects (addressable, versionable, canonical source) |
+| 11.2 | Signal Architecture Compatibility: prohibits private recalculation of Canonical_Signal_Truth |
+| 11.3 | Signal Architecture Compatibility: defines exactly six request types for Signal_Consumers |
+| 11.4 | Signal Architecture Compatibility: defines Static_Asset_Context as cached, refreshed by governance policy |
+| 11.5 | Signal Architecture Compatibility: defines Variable_Signals refreshed by cadence or event trigger |
+| 11.6 | Signal Architecture Compatibility: defines Derived_Intelligence invalidated only when upstream dependencies change |
+| 11.7 | Signal Architecture Compatibility: invariant applies across all four canonical chain levels |
+| 11.8 | Signal Architecture Compatibility: requires formal registration before consumer use |
+| 11.9 | Signal Architecture Compatibility: defines Intelligence_Object relationship to Organism_Graph |
+| 12.1 | Signal Architecture Compatibility: defines Signal_Bubble_v0 as first-generation canonical signal objects (NOT legacy) |
+| 12.2 | Signal Architecture Compatibility: enumerates six signal categories (Portfolio Core, Allocation, Risk, Performance, Deployment, Regime/PM) |
+| 12.3 | Signal Architecture Compatibility: prohibits private rebuilding or recalculation of Signal_Bubble_v0 signals |
+| 12.4 | Signal Architecture Compatibility: defines organism relationship (signals as sensors detecting propagation) |
+| 12.5 | Signal Architecture Compatibility: declares reusability by all future layers |
+| 12.6 | Signal Architecture Compatibility: requires migration into Signal Bubble as Intelligence_Objects |
+| 12.7 | Signal Architecture Compatibility: defines migration principle (retain semantics, gain addressability) |
+| 12.8 | Signal Architecture Compatibility: defines signals as leaf-node observations (evidence of propagation, not causes) |
+| 12.9 | Signal Architecture Compatibility: prohibits reimplementation of existing signals |
+| 13.1 | Signal Architecture Compatibility: prohibits bulk signal implementation, requires individual lifecycle gate |
+| 13.2 | Signal Architecture Compatibility: defines 11-field mandatory Signal_Lifecycle_Definition |
+| 13.3 | Signal Architecture Compatibility: requires unique signal_id within Signal Bubble namespace |
+| 13.4 | Signal Architecture Compatibility: requires exactly one owner domain from 12-domain model |
+| 13.5 | Signal Architecture Compatibility: classification determines caching vs refresh rules |
+| 13.6 | Signal Architecture Compatibility: refresh_policy and cache_policy fields specified |
+| 13.7 | Signal Architecture Compatibility: consumers field enumerates downstream consumers |
+| 13.8 | Signal Architecture Compatibility: invalidation_rule specifies exact invalidation conditions |
+| 13.9 | Signal Architecture Compatibility: defines three implementation statuses (Defined_Signal, Structured_Signal, Implemented_Signal) |
+| 13.10 | Signal Architecture Compatibility: incomplete lifecycle definition prohibits implementation |

@@ -357,6 +357,68 @@ This section consolidates all prohibitions that apply to the Temporal_Taxonomy d
 
 (See: README_market_organism_principles, Section: Content Exclusions)
 
+---
+
+## Signal Architecture Compatibility
+
+This section declares the relationship between the Temporal_Taxonomy and the Signal Architecture. These are DECLARATIONS of compatibility — they state what the temporal model preserves and respects. They do NOT implement signal logic.
+
+### Signal Reusability Invariant
+
+Temporal_Properties govern the refresh cadence and invalidation timing of Intelligence_Objects flowing through the Organism_Graph. The following invariant applies:
+
+1. All signals, signal details, static asset facts, derived metrics, and provenance metadata are modeled as reusable **Intelligence_Objects** — addressable, versionable, and served from a canonical source.
+2. No Signal_Consumer may privately recalculate Canonical_Signal_Truth. Consumers request intelligence from the authoritative producing domain.
+3. Exactly six request types are defined for Signal_Consumers:
+   - (a) Single signal value
+   - (b) Composite signal bundle
+   - (c) Signal detail/provenance
+   - (d) Static asset context
+   - (e) Variable market context
+   - (f) Derived intelligence object
+4. **Static_Asset_Context**: Cached intelligence refreshed exclusively by governance policy (not per-request). Refresh policy is declared at the context-type level, not per-consumer. The Temporal_Taxonomy's calendar units (Day, Week, Month, Quarter, Year) provide the vocabulary for expressing refresh intervals.
+5. **Variable_Signal**: Intelligence refreshed by one of two mechanisms — scheduled cadence (time-based, expressed using Temporal_Taxonomy calendar units) or event trigger (reactive invalidation upon upstream State_Change detection).
+6. **Derived_Intelligence**: Composite objects invalidated only when declared upstream dependencies change. Each Derived_Intelligence object explicitly declares its dependency set. Invalidation propagation follows the Latency characteristics defined in this taxonomy.
+7. This invariant applies across all four levels of the canonical chain (SIGNALS, SEMANTICS, REASONING, REPORT). No layer may duplicate intelligence already produced by an upstream layer.
+
+(See: README_market_organism_principles, Section: Signal Architecture Compatibility)
+
+### Signal_Bubble_v0 Preservation
+
+The Temporal_Taxonomy defines how fast effects propagate. Signal_Bubble_v0 signals have their own refresh cadences and cache policies that align with the temporal vocabulary defined here. The relationship is:
+
+1. Existing Excel-derived metrics are **first-generation canonical signal objects** (Signal_Bubble_v0). They are NOT legacy artifacts — they are the first real Sensor_Layer of the system.
+2. Signal_Bubble_v0 encompasses the following signal categories:
+   - **Portfolio Core** — total portfolio value, total P/L, cash EUR, invested capital, total capital, largest position, top performer, worst performer
+   - **Allocation** — technology, semiconductors, defense, healthcare, ETFs, USD exposure
+   - **Risk** — portfolio health, risk review count, concentration score, max position, max drawdown, portfolio stability, risk alerts
+   - **Performance** — portfolio performance, equity curve, 7D return, trend signals
+   - **Deployment** — capital deployment, cash readiness, portfolio efficiency, deployment signal
+   - **Regime/PM** — market regime, portfolio bias, scenario readiness, high priority candidates, morning briefing outputs
+3. No consumer may privately rebuild or recalculate Signal_Bubble_v0 signals. All consumers request these signals from the canonical Signal Bubble registry.
+4. **Organism relationship**: Signal_Bubble_v0 signals are leaf-node observations (sensors) in the Organism_Graph. They detect that propagation has arrived with temporal characteristics described by this taxonomy. They are evidence of propagation, not causes of it.
+5. Signal_Bubble_v0 signals are reusable by all future layers including: Morning Briefing, Asset Detail Page, Portfolio Fit, Market Fit, Model Fit, Butterfly Simulation, Scenario Engine, PM Control Center, and Report Pipeline.
+
+### Signal_Lifecycle_Definition Gate
+
+1. Every signal must pass a mandatory **Signal_Lifecycle_Definition** gate before implementation. No bulk signal implementation is permitted — each signal passes its lifecycle individually.
+2. The Signal_Lifecycle_Definition contains exactly 11 mandatory fields:
+   - `signal_id` — unique identifier within the Signal Bubble namespace
+   - `category` — signal category (Portfolio Core, Allocation, Risk, Performance, Deployment, Regime/PM)
+   - `owner_domain` — exactly one domain from the 12-domain model (GOV, ARCH, SIGNALS, SEMANTICS, REASONING, REPORT, STATE, DATA, USER, DEPLOY, MEMORY, SIM)
+   - `input_sources` — list of upstream dependencies
+   - `classification` — static or variable
+   - `refresh_policy` — scheduled cadence or governance-defined refresh interval (expressed using Temporal_Taxonomy calendar units)
+   - `cache_policy` — maximum staleness tolerance (expressed using Temporal_Taxonomy calendar units)
+   - `provenance` — origin and derivation chain
+   - `consumers` — list of downstream consumers
+   - `invalidation_rule` — dependency_change, time_expiry, or event_trigger
+   - `implementation_status` — one of three statuses (see below)
+3. Three implementation statuses:
+   - **Defined_Signal** — architecturally positioned, lifecycle complete, no engine yet
+   - **Structured_Signal** — architecturally positioned as future Intelligence_Object, must NOT be implemented in this spec
+   - **Implemented_Signal** — lifecycle complete and engine producing it
+4. Any signal referenced in worked examples within this document must have a Signal_Lifecycle_Definition before implementation.
 
 ---
 

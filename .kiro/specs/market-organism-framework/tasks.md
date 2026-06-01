@@ -132,8 +132,8 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Ensure all expansion orders support explanation readiness and fractal drilldown
     - _Requirements: 3.5, 3.6, 6.1, 6.2, 6.3, 6.4, 6.5, 8.7, 10.8_
 
-- [ ] 7. Add Signal Architecture Compatibility sections
-  - [ ] 7.1 Add Signal Reusability and Signal Bubble v0 compatibility to all documents
+- [x] 7. Add Signal Architecture Compatibility sections
+  - [x] 7.1 Add Signal Reusability and Signal Bubble v0 compatibility to all documents
     - In each of the 5 deliverables, add or extend an "Architectural Compatibility" section that declares:
     - Signal Reusability invariant: all signals as Intelligence_Objects, 6 request types, Static_Asset_Context caching, Variable_Signal refresh, Derived_Intelligence invalidation, no private recalculation
     - Signal_Bubble_v0 preservation: existing signals are first-generation sensors (not legacy), enumerate signal categories (Portfolio Core, Allocation, Risk, Performance, Deployment, Regime/PM), prohibit reimplementation, define organism relationship (signals as leaf-node observations detecting propagation)
