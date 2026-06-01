@@ -8,8 +8,8 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
 
 ## Tasks
 
-- [ ] 1. Create shared infrastructure and Market Organism Principles
-  - [ ] 1.1 Create directory structure and shared glossary reference
+- [x] 1. Create shared infrastructure and Market Organism Principles
+  - [x] 1.1 Create directory structure and shared glossary reference
     - **CTO EXECUTION NOTE**: Task 1 is NOT infrastructure work. It is the semantic foundation plate for all subsequent deliverables. Do not rush. Do not "think ahead." Get this right.
     - **Key principles for this task:**
     - 1. DO NOT DUPLICATE GLOSSARY: `README_shared_glossary_reference.md` is a REFERENCE LAYER, not a DEFINITION LAYER. The SSOT (requirements.md glossary) remains authoritative. This document POINTS to it — never redefines terms.
@@ -22,7 +22,7 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Define the glossary usage rules: no duplication, consistent term usage, new terms added to glossary first
     - _Requirements: 10.7, 10.8_
 
-  - [ ] 1.2 Create Market_Organism_Principles document
+  - [x] 1.2 Create Market_Organism_Principles document
     - Create `docs/market_organism/README_market_organism_principles.md`
     - Include YAML metadata header (artifact_id, primary_domain: ARCH, artifact_type: SSOT, lifecycle_status: canonical)
     - Write Scope Statement (one paragraph defining coverage and non-coverage)
@@ -41,8 +41,8 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Ensure every principle uses the format: Statement, Implication, Violation Condition, Example of Compliance, Example of Violation, Satisfies requirement reference
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 8.1–8.7, 9.1–9.6_
 
-- [ ] 2. Create State_Change_Taxonomy document
-  - [ ] 2.1 Create State_Change_Taxonomy with classification hierarchy and categories
+- [x] 2. Create State_Change_Taxonomy document
+  - [x] 2.1 Create State_Change_Taxonomy with classification hierarchy and categories
     - Create `docs/market_organism/README_state_change_taxonomy.md`
     - Include YAML metadata header with stable artifact_id
     - Write Scope Statement and Glossary Reference
@@ -55,7 +55,7 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Every sub-category entry must carry a stable ID (e.g., `sc.macro.rates`, `sc.corporate.earnings`)
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7_
 
-  - [ ] 2.2 Add primary classification rule, extension criteria, and root node invariant
+  - [x] 2.2 Add primary classification rule, extension criteria, and root node invariant
     - Write Primary Classification Rule: when a State_Change spans categories, assign by originating causal mechanism
     - Write Extension Criteria section: new sub-category requires distinct causal mechanism + scope definition + concrete example + boundary counter-example
     - Write Root Node Invariant section with: valid root nodes table (Fed Hawkish Shift, Nvidia Guidance Raise, Oil Shock, World Cup Start — each with Root_Node type), invalid root nodes table (ticker symbols, asset names — each with explanation and required reformulation), disambiguation rule, classification question ("What kind of state change occurred?" vs prohibited "How do I classify this asset?")
