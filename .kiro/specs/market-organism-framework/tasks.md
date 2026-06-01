@@ -10,6 +10,13 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
 
 - [ ] 1. Create shared infrastructure and Market Organism Principles
   - [ ] 1.1 Create directory structure and shared glossary reference
+    - **CTO EXECUTION NOTE**: Task 1 is NOT infrastructure work. It is the semantic foundation plate for all subsequent deliverables. Do not rush. Do not "think ahead." Get this right.
+    - **Key principles for this task:**
+    - 1. DO NOT DUPLICATE GLOSSARY: `README_shared_glossary_reference.md` is a REFERENCE LAYER, not a DEFINITION LAYER. The SSOT (requirements.md glossary) remains authoritative. This document POINTS to it — never redefines terms.
+    - 2. CROSS-REFERENCE CONVENTION IS CRITICAL: The pattern `(See: [Deliverable_Name], Section: [Section_Title])` looks small but is later essential for: Explanation Traversal, Agent Navigation, Historical Reconstruction, Registry Consumption.
+    - 3. NEW TERMS GLOSSARY-FIRST: The rule "new terms added to glossary first" prevents semantic drift. Without it: "Dependency_Path" gets defined slightly differently in 3 places. Or "Explanation_Chain" acquires two meanings.
+    - 4. TREAT THIS AS A SEMANTIC CONTRACT: `README_shared_glossary_reference.md` is not a documentation file. It is the semantic contract that all future deliverables, agents, registries, and explanation systems will consume.
+    - **Expected output**: A document that contains: reference rules, glossary rules, cross-reference convention, canonical-term policy, SSOT pointers. NOT definitions. NOT new content. Only the rules for how all other documents reference shared truth.
     - Create `docs/market_organism/` directory
     - Create a `docs/market_organism/README_shared_glossary_reference.md` that points to the canonical glossary in requirements.md and defines the cross-reference convention: `(See: [Deliverable_Name], Section: [Section_Title])`
     - Define the glossary usage rules: no duplication, consistent term usage, new terms added to glossary first
