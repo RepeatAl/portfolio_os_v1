@@ -84,8 +84,8 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Ensure all type definitions support explanation readiness (each type explainable as edge label in fractal drilldown)
     - _Requirements: 4.4, 4.5, 8.7, 10.8_
 
-- [ ] 4. Create Temporal_Taxonomy document
-  - [ ] 4.1 Create Temporal_Taxonomy with all four property definitions
+- [x] 4. Create Temporal_Taxonomy document
+  - [x] 4.1 Create Temporal_Taxonomy with all four property definitions
     - Create `docs/market_organism/README_temporal_taxonomy.md`
     - Include YAML metadata header with stable artifact_id
     - Write Scope Statement and Glossary Reference
@@ -97,7 +97,7 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Write explicit Numeric Prohibition: no scores, weights, probabilities, quantitative models
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.7, 6.3_
 
-  - [ ] 4.2 Add complete temporal propagation example and shared sections
+  - [x] 4.2 Add complete temporal propagation example and shared sections
     - Write complete temporal propagation example showing all 4 properties at each Expansion_Order (1st through 4th) with increasing Latency values (e.g., Day, Month, Quarter, Year)
     - Demonstrate Amplification typically decreasing and Dampening typically increasing with distance (as tendencies, not rules)
     - Write consolidated Exclusion Constraints section
@@ -106,11 +106,11 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Ensure temporal properties support explanation readiness ("Effect arrives at Month 1 BECAUSE of this latency")
     - _Requirements: 5.6, 8.7, 10.8_
 
-- [ ] 5. Checkpoint - Verify first four documents
+- [x] 5. Checkpoint - Verify first four documents
   - Ensure all four documents (Principles, State_Change_Taxonomy, Dependency_Types_v2, Temporal_Taxonomy) are complete and internally consistent before creating Expansion_Taxonomy which depends on all of them. Ask the user if questions arise.
 
-- [ ] 6. Create Expansion_Taxonomy document
-  - [ ] 6.1 Create Expansion_Taxonomy with order definitions and worked examples
+- [x] 6. Create Expansion_Taxonomy document
+  - [x] 6.1 Create Expansion_Taxonomy with order definitions and worked examples
     - Create `docs/market_organism/README_expansion_taxonomy.md`
     - Include YAML metadata header with stable artifact_id
     - Write Scope Statement and Glossary Reference
@@ -122,7 +122,7 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Write at least one complete worked example showing an Impulse propagating through all 4 orders with ≥2 concrete affected systems at each order, using Dependency_Types from the Dependency_Types_v2 document and Temporal_Properties from the Temporal_Taxonomy
     - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-  - [ ] 6.2 Add termination criteria, feedback detection, and shared sections
+  - [x] 6.2 Add termination criteria, feedback detection, and shared sections
     - Write Termination Criteria: propagation stops when no further identifiable Dependency_Path connects to an additional system not already in the sequence
     - Write Feedback Detection Rule: path revisiting an existing node = Feedback_Loop, not continued expansion; reference Feedback_Loop definition from Req 6
     - Write Feedback_Loop section: define as circular Dependency_Paths forming closed cycles (≥4 nodes), mandate that Organism_Graph is NOT a DAG, provide concrete feedback loop example with real market entities and Dependency_Type labels on each edge, distinguish growth structure (acyclic forward propagation) from feedback structure (back-edges creating cycles)
