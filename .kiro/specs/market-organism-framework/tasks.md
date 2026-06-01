@@ -64,8 +64,8 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Ensure all entries support explanation readiness (traversable through explanation levels, no dead ends)
     - _Requirements: 1.8, 1.9, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 8.7, 10.8_
 
-- [ ] 3. Create Dependency_Types_v2 document
-  - [ ] 3.1 Create Dependency_Types_v2 with all 10 type definitions
+- [x] 3. Create Dependency_Types_v2 document
+  - [x] 3.1 Create Dependency_Types_v2 with all 10 type definitions
     - Create `docs/market_organism/README_dependency_types_v2.md`
     - Include YAML metadata header with stable artifact_id
     - Write Scope Statement and Glossary Reference
@@ -75,7 +75,7 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Ensure no two types share identical causal channel + directionality + propagation characteristics
     - _Requirements: 4.1, 4.2, 4.3, 4.6_
 
-  - [ ] 3.2 Add multi-type coexistence rules, dependency vs correlation, and shared sections
+  - [x] 3.2 Add multi-type coexistence rules, dependency vs correlation, and shared sections
     - Write Multi-Type Coexistence Rules: unordered types, primary designation by dominant causal channel, combined temporal properties (shortest latency, longest duration)
     - Write Dependency vs. Correlation section: formal definitions, contrastive example showing same entity pair as correlation vs typed dependency
     - Write consolidated Exclusion Constraints section
