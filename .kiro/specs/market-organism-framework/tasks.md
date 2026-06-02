@@ -141,8 +141,8 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Ensure these are REFERENCES and DECLARATIONS only — not implementations
     - _Requirements: 11.1–11.9, 12.1–12.9, 13.1–13.10_
 
-- [ ] 8. Final Validation and Cross-Reference Verification
-  - [ ] 8.1 Validate structural completeness across all 5 deliverables
+- [x] 8. Final Validation and Cross-Reference Verification
+  - [x] 8.1 Validate structural completeness across all 5 deliverables
     - Verify State_Change_Taxonomy has: 4 top-level categories, all required sub-categories with scope/example/counter-example, root node invariant section, exclusion constraints
     - Verify Expansion_Taxonomy has: 4 orders defined, worked example with ≥2 systems per order, termination criteria, feedback detection rule, feedback loop example
     - Verify Dependency_Types_v2 has: 10 types defined, each with causal channel/mechanism/example, multi-type rules, dependency vs correlation section
@@ -151,7 +151,7 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Verify all documents have: YAML metadata, scope statement, glossary reference, exclusion constraints, cross-references, stable IDs on every entry
     - _Requirements: 10.1–10.9_
 
-  - [ ] 8.2 Validate cross-references, explanation readiness, and invariant preservation
+  - [x] 8.2 Validate cross-references, explanation readiness, and invariant preservation
     - Verify all cross-references use the convention `(See: [Deliverable_Name], Section: [Section_Title])` and point to existing sections
     - Verify no definition is duplicated across deliverables (shared concepts are cross-referenced only)
     - Verify no asset appears as a Root_Node anywhere
@@ -164,7 +164,7 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - Verify architectural compatibility: 12-domain model, canonical chain, runtime state model all preserved (not added to, removed from, or redefined)
     - _Requirements: 2.1, 2.2, 5.7, 6.2, 8.1–8.6, 9.1–9.6, 10.7, 10.8_
 
-  - [ ] 8.3 Architecture Preservation Audit
+  - [x] 8.3 Architecture Preservation Audit
     - Verify State_Change remains the root primitive (cause) — no deliverable promotes another entity to root status
     - Verify Narrative remains the explanatory container — no deliverable conflates narrative with state change, signal, or asset
     - Verify System remains the affected functional domain — no deliverable uses system as a synonym for narrative or asset
@@ -181,7 +181,7 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - PASS: All primitive responsibilities remain distinct and all global rules respected
     - _Requirements: 1.7, 2.1, 2.2, 7.1, 8.1–8.6, 9.6_
 
-  - [ ] 8.4 Documentation Consumption Audit
+  - [x] 8.4 Documentation Consumption Audit
     - Verify every major deliverable has a companion operational README (`README_<deliverable>_implementation_guide.md`)
     - Verify each operational README contains: purpose, canonical primitive, scope, exclusions, future consumers, required invariants, common failure modes, compatibility requirements, machine-readable metadata section
     - Verify the machine-readable metadata section is valid YAML with: consumes, produces, future_consumers, invariants, known_future_dependencies fields
@@ -194,7 +194,7 @@ All deliverables are markdown documents created in `docs/market_organism/`. No e
     - PASS: Every deliverable has SSOT + operational README with human-readable explanation and machine-readable metadata
     - _Requirements: 10.7, 10.9_
 
-- [ ] 9. Final checkpoint - All deliverables complete
+- [x] 9. Final checkpoint - All deliverables complete
   - Ensure all 5 documents pass structural validation, cross-reference verification, explanation readiness, and invariant preservation. Ask the user if questions arise.
 
 ## Notes
