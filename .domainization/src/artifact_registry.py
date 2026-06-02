@@ -216,6 +216,15 @@ class ArtifactRegistry:
         """
         Parse YAML frontmatter from markdown file
         
+        Supports two placement patterns:
+          1. Standard: file starts with '---' (frontmatter at top)
+          2. Title-first: file starts with '# Title' followed by '---' block
+             (common in documentation where the heading precedes metadata)
+        
+        The parser scans the first 20 lines for a '---' delimiter to remain
+        performant on large files while tolerating headings, blank lines, or
+        comments before the frontmatter block.
+        
         Args:
             file_path: Path to markdown file
         
@@ -228,14 +237,21 @@ class ArtifactRegistry:
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
         
-        # Check for YAML frontmatter (starts with ---)
-        if not content.startswith('---'):
+        lines = content.split('\n')
+        
+        # Find the opening '---' delimiter within the first 20 lines
+        start_index = None
+        for i in range(min(20, len(lines))):
+            if lines[i].strip() == '---':
+                start_index = i
+                break
+        
+        if start_index is None:
             return None
         
-        # Find end of frontmatter
-        lines = content.split('\n')
+        # Find the closing '---' delimiter after the opening
         end_index = None
-        for i in range(1, len(lines)):
+        for i in range(start_index + 1, len(lines)):
             if lines[i].strip() == '---':
                 end_index = i
                 break
@@ -244,7 +260,7 @@ class ArtifactRegistry:
             return None
         
         # Extract and parse frontmatter
-        frontmatter_text = '\n'.join(lines[1:end_index])
+        frontmatter_text = '\n'.join(lines[start_index + 1:end_index])
         try:
             frontmatter = yaml.safe_load(frontmatter_text)
             return frontmatter if frontmatter else None
