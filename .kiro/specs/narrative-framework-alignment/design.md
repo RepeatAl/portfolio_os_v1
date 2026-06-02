@@ -4,6 +4,8 @@
 
 This design specifies HOW the existing `docs/README_narrative_framework.md` will be structurally modified to satisfy requirements NFA-REQ-1 through NFA-REQ-11. The deliverable is an in-place replacement of the current Narrative Framework document with a v2 version that preserves the existing ontology while adding formalization layers required by Market Organism Layer 0.
 
+**Scope preservation**: This design specifies document structure only. It does not authorize execution, registry population, runtime validation, or SSOT mutation beyond the future planned in-place Narrative Framework v2 update.
+
 ### Design Constraints
 
 - **Definition-only**: No engines, code, scores, probabilities, or runtime behavior
@@ -151,6 +153,8 @@ Definitions:
 - **Narrative_Container**: The structural role of a Narrative as the explanatory grouping that organizes how a State_Change's effects are understood by market participants. Distinguished from `dep.narrative` (the propagation mechanism).
 - **Narrative_Membership**: The relationship between an Asset and a Narrative, classified by membership type (primary/secondary/emerging/legacy) and qualitative influence descriptor (strong/moderate/weak). These are categorical labels, not ordinal numeric proxies.
 - **Narrative_Interaction**: A causal relationship between a State_Change and a Narrative, classified by interaction type (Creates/Strengthens/Weakens/Kills/Revives). State_Changes cause interactions; signals detect their effects.
+
+**Governance note**: These amendments are formalized locally inside Narrative Framework v2 for the purpose of this alignment. Updating the central Market Organism glossary (`.kiro/specs/market-organism-framework/requirements.md`, Section: Glossary) is not performed by this spec unless separately authorized by a future governance task. The glossary-first rule remains intact — these terms are defined here before use, and will be proposed for central inclusion as a follow-up action.
 
 ---
 
@@ -412,7 +416,9 @@ Four Declarations:
 3. Signal_Bubble_v0 signals are leaf-node observations in the Organism_Graph that may detect evidence of narrative membership or narrative lifecycle state — but they do not define or control those states
 4. Explicit statement: "A signal may detect that a narrative is strengthening. The signal does not cause the strengthening. The underlying State_Change causes it."
 
-Cross-Reference: (See: README_market_organism_principles, Section: Signal Architecture Compatibility)
+Cross-Reference:
+(See: README_market_organism_principles, Section: Architectural Compatibility)
+(See: README_market_organism_principles, Section: Signal Layer as Sensor (Req 9.4))
 
 ---
 
@@ -468,7 +474,8 @@ Minimum Required Cross-References:
 |-------------------|-------------------|---------|
 | README_market_organism_principles | Principle 4 — Feedback is Structural | Feedback loop integration |
 | README_market_organism_principles | Exclusion Constraints | Prohibition alignment |
-| README_market_organism_principles | Signal Architecture Compatibility | Signal sensor relationship |
+| README_market_organism_principles | Architectural Compatibility | Architectural compatibility declarations |
+| README_market_organism_principles | Signal Layer as Sensor (Req 9.4) | Signal sensor relationship |
 | README_state_change_taxonomy | Classification Hierarchy | State_Change-to-Narrative interaction types |
 | README_dependency_types_v2 | Narrative | dep.narrative mechanism definition |
 | README_temporal_taxonomy | Feedback_Delay | Narrative feedback loop temporal descriptor |
@@ -480,6 +487,8 @@ Minimum Required Cross-References:
 ---
 
 ## Data Models
+
+**IMPORTANT**: All examples in this section are illustrative conceptual examples only. They do NOT populate a canonical narrative registry, asset registry, or system registry. They are used solely to demonstrate document structure and identity relationships. IDs such as `narrative.ai_infrastructure`, `asset.nvidia`, and `system.datacenter_networking` are used for illustration purposes — they are not canonical entries created by this spec.
 
 ### Narrative Canonical Identity Model
 
@@ -530,6 +539,8 @@ Decision: "Velocity" is retained as a narrative-specific qualitative observation
 Values: Accelerating | Steady | Decelerating
 
 Definition: Velocity describes the qualitative observation of how quickly a narrative's lifecycle is progressing — whether belief adoption (or erosion) is speeding up, holding constant, or slowing down.
+
+**Prohibitions**: Velocity MUST NOT be used as a lifecycle transition trigger, ranking input, score proxy, or Temporal_Taxonomy extension. It is an observational annotation only.
 
 Placement: Within the Narrative Lifecycle section as a supplementary observation property, with explicit declaration:
 
