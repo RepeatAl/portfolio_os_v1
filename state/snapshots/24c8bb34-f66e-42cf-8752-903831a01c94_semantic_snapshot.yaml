@@ -1,0 +1,97 @@
+run_id: 24c8bb34-f66e-42cf-8752-903831a01c94
+states:
+- category: allocation
+  completeness: placeholder
+  meaning: Baseline semantic state for allocation category (pending full semantic
+    expansion).
+  signal_id: allocation_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: attribution
+  completeness: placeholder
+  meaning: Baseline semantic state for attribution category (pending full semantic
+    expansion).
+  signal_id: attribution_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: correlation
+  completeness: placeholder
+  meaning: Baseline semantic state for correlation category (pending full semantic
+    expansion).
+  signal_id: correlation_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: cross_asset
+  completeness: placeholder
+  meaning: Baseline semantic state for cross_asset category (pending full semantic
+    expansion).
+  signal_id: cross_asset_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: divergence
+  completeness: placeholder
+  meaning: Baseline semantic state for divergence category (pending full semantic
+    expansion).
+  signal_id: divergence_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: early_warning
+  completeness: placeholder
+  meaning: Baseline semantic state for early_warning category (pending full semantic
+    expansion).
+  signal_id: early_warning_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: flow
+  completeness: placeholder
+  meaning: Baseline semantic state for flow category (pending full semantic expansion).
+  signal_id: flow_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: liquidity
+  completeness: placeholder
+  meaning: Baseline semantic state for liquidity category (pending full semantic expansion).
+  signal_id: liquidity_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: market_breadth
+  completeness: placeholder
+  meaning: Baseline semantic state for market_breadth category (pending full semantic
+    expansion).
+  signal_id: market_breadth_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: narrative_dependency
+  completeness: placeholder
+  meaning: Baseline semantic state for narrative_dependency category (pending full
+    semantic expansion).
+  signal_id: narrative_dependency_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: regime
+  completeness: placeholder
+  meaning: Baseline semantic state for regime category (pending full semantic expansion).
+  signal_id: regime_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: relative_strength
+  completeness: placeholder
+  meaning: Baseline semantic state for relative_strength category (pending full semantic
+    expansion).
+  signal_id: relative_strength_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: scenario
+  completeness: placeholder
+  meaning: Baseline semantic state for scenario category (pending full semantic expansion).
+  signal_id: scenario_baseline
+  source: semantic_engine_placeholder
+  value: null
+- category: portfolio_memory
+  completeness: placeholder
+  meaning: Baseline semantic state for portfolio_memory category (pending full semantic
+    expansion).
+  signal_id: portfolio_memory_baseline
+  source: semantic_engine_placeholder
+  value: null
+timestamp: '2026-05-27T12:30:51Z'

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# Domainization CLI wrapper script
+#
+# This script provides easy access to the domainization CLI from anywhere in the repository.
+#
+
+# Get the directory where this script is located
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Execute the Python CLI
+python3 "${SCRIPT_DIR}/src/cli_main.py" "$@"

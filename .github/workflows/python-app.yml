@@ -30,12 +30,11 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
           fi
@@ -44,16 +43,106 @@ jobs:
         run: |
           echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
 
-      - name: Validate Python syntax
+      - name: Run full test suite
+        timeout-minutes: 10
         run: |
-          python -m compileall .
+          python -m pytest tests/ -v --tb=short
 
-      - name: Validate critical engine imports
+      - name: Validate Python syntax (all directories)
         run: |
-          python -c "from engines import allocation_engine"
-          python -c "from engines import report_engine"
-          python -c "from engines import regime_engine"
-          python -c "from engines import scoring_engine"
+          python -m compileall -q engines/ runtime/ governance/ .domainization/src/ tests/
+
+      - name: Validate governance YAML files
+        run: |
+          python -c "
+          import yaml
+          import sys
+
+          REQUIRED_KEYS = {
+              '.domainization/config.yaml': ['enforcement_mode', 'current_phase', 'observers'],
+              '.domainization/domain_registry.yaml': ['domains'],
+              '.domainization/artifact_registry.yaml': ['artifacts'],
+              '.domainization/lifecycle_state_machine.yaml': ['artifact_types'],
+          }
+
+          errors = []
+          for file_path, required_keys in REQUIRED_KEYS.items():
+              try:
+                  with open(file_path, 'r') as f:
+                      data = yaml.safe_load(f)
+                  if data is None:
+                      errors.append(f'{file_path}: file is empty or contains no valid YAML')
+                      continue
+                  if not isinstance(data, dict):
+                      errors.append(f'{file_path}: expected a YAML mapping, got {type(data).__name__}')
+                      continue
+                  for key in required_keys:
+                      if key not in data:
+                          errors.append(f'{file_path}: missing required top-level key \"{key}\"')
+              except yaml.YAMLError as e:
+                  errors.append(f'{file_path}: YAML parse error: {e}')
+              except FileNotFoundError:
+                  errors.append(f'{file_path}: file not found')
+              except Exception as e:
+                  errors.append(f'{file_path}: unexpected error: {e}')
+
+          if errors:
+              print('Governance YAML validation FAILED:')
+              for err in errors:
+                  print(f'  ERROR: {err}')
+              sys.exit(1)
+          else:
+              print('Governance YAML validation passed: all files valid with required keys.')
+          "
+
+      - name: ENGINE_REGISTRY-based import validation
+        run: |
+          python -c "
+          import sys, importlib
+          sys.path.insert(0, '.')
+          from engines.engine_registry import ENGINE_REGISTRY
+
+          failures = []
+          for engine_name in sorted(ENGINE_REGISTRY.keys()):
+              module_name = f'engines.{engine_name}_engine'
+              try:
+                  importlib.import_module(module_name)
+                  print(f'  OK: {module_name}')
+              except Exception as e:
+                  print(f'  FAIL: {module_name} -> {e}')
+                  failures.append((module_name, str(e)))
+
+          print(f'\nValidated {len(ENGINE_REGISTRY)} registered engines.')
+          if failures:
+              print(f'\n{len(failures)} engine(s) failed to import:')
+              for mod, err in failures:
+                  print(f'  - {mod}: {err}')
+              sys.exit(1)
+          print('All registered engines imported successfully.')
+          "
+
+      - name: Compute runtime integrity hash
+        timeout-minutes: 1
+        continue-on-error: true
+        run: |
+          python -c "
+          import sys
+          sys.path.insert(0, '.')
+          from governance.runtime_integrity_hash import RuntimeIntegrityHash
+          from governance.hash_canonicalizer import HashCanonicalizer
+
+          canonicalizer = HashCanonicalizer()
+          integrity_hash = RuntimeIntegrityHash(base_path='.', canonicalizer=canonicalizer)
+          hash_value = integrity_hash.compute()
+
+          print(f'Runtime Integrity Hash: {hash_value}')
+          print(f'Files included: {len(integrity_hash._resolve_paths())}')
+
+          # Persist hash as CI artifact for drift detection
+          with open('runtime_integrity_hash.txt', 'w') as f:
+              f.write(hash_value)
+          print('Hash persisted to runtime_integrity_hash.txt')
+          "
 
       - name: Repository governance summary
         run: |

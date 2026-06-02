@@ -1,0 +1,28 @@
+schema_version: "1.0.0"
+
+roles:
+  - role_id: "OWNER"
+    description: "Human operator with full governance mutation rights"
+    authorities:
+      - "mutate_governance"
+      - "change_enforcement_mode"
+
+  - role_id: "CI"
+    description: "Automated pipeline with deploy and validation rights"
+    authorities:
+      - "deploy"
+      - "accept_runtime_hash"
+
+  - role_id: "RUNTIME"
+    description: "Execution process with override and fail-mode rights"
+    authorities:
+      - "execute_override"
+      - "change_fail_mode"
+
+forbidden_pairs:
+  - pair: ["mutate_governance", "deploy"]
+    rationale: "OWNER cannot deploy — prevents single actor from both mutating governance and deploying"
+  - pair: ["deploy", "change_enforcement_mode"]
+    rationale: "CI cannot change enforcement mode — prevents deployer from altering the rules it enforces"
+  - pair: ["change_enforcement_mode", "execute_override"]
+    rationale: "Mode change and override must be separate actors — prevents enforcement bypass"

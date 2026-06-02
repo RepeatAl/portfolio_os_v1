@@ -1,0 +1,206 @@
+deltas:
+- additions:
+  - new_value:
+      category: allocation
+      completeness: placeholder
+      meaning: Baseline semantic state for allocation category (pending full semantic
+        expansion).
+      signal_id: allocation_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: allocation_baseline
+  - new_value:
+      category: attribution
+      completeness: placeholder
+      meaning: Baseline semantic state for attribution category (pending full semantic
+        expansion).
+      signal_id: attribution_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: attribution_baseline
+  - new_value:
+      category: correlation
+      completeness: placeholder
+      meaning: Baseline semantic state for correlation category (pending full semantic
+        expansion).
+      signal_id: correlation_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: correlation_baseline
+  - new_value:
+      category: cross_asset
+      completeness: placeholder
+      meaning: Baseline semantic state for cross_asset category (pending full semantic
+        expansion).
+      signal_id: cross_asset_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: cross_asset_baseline
+  - new_value:
+      category: divergence
+      completeness: placeholder
+      meaning: Baseline semantic state for divergence category (pending full semantic
+        expansion).
+      signal_id: divergence_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: divergence_baseline
+  - new_value:
+      category: early_warning
+      completeness: placeholder
+      meaning: Baseline semantic state for early_warning category (pending full semantic
+        expansion).
+      signal_id: early_warning_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: early_warning_baseline
+  - new_value:
+      category: flow
+      completeness: placeholder
+      meaning: Baseline semantic state for flow category (pending full semantic expansion).
+      signal_id: flow_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: flow_baseline
+  - new_value:
+      category: liquidity
+      completeness: placeholder
+      meaning: Baseline semantic state for liquidity category (pending full semantic
+        expansion).
+      signal_id: liquidity_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: liquidity_baseline
+  - new_value:
+      category: market_breadth
+      completeness: placeholder
+      meaning: Baseline semantic state for market_breadth category (pending full semantic
+        expansion).
+      signal_id: market_breadth_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: market_breadth_baseline
+  - new_value:
+      category: narrative_dependency
+      completeness: placeholder
+      meaning: Baseline semantic state for narrative_dependency category (pending
+        full semantic expansion).
+      signal_id: narrative_dependency_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: narrative_dependency_baseline
+  - new_value:
+      category: portfolio_memory
+      completeness: placeholder
+      meaning: Baseline semantic state for portfolio_memory category (pending full
+        semantic expansion).
+      signal_id: portfolio_memory_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: portfolio_memory_baseline
+  - new_value:
+      category: regime
+      completeness: placeholder
+      meaning: Baseline semantic state for regime category (pending full semantic
+        expansion).
+      signal_id: regime_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: regime_baseline
+  - new_value:
+      category: relative_strength
+      completeness: placeholder
+      meaning: Baseline semantic state for relative_strength category (pending full
+        semantic expansion).
+      signal_id: relative_strength_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: relative_strength_baseline
+  - new_value:
+      category: scenario
+      completeness: placeholder
+      meaning: Baseline semantic state for scenario category (pending full semantic
+        expansion).
+      signal_id: scenario_baseline
+      source: semantic_engine_placeholder
+      value: null
+    signal_id: scenario_baseline
+  changes: []
+  removals: []
+  run_id: 1077ba59-d6a0-4061-b233-341ffd2396df
+  timestamp: '2026-05-27T08:45:43Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: 52da6d73-3bed-4ad5-9b46-0749cd8b5de5
+  timestamp: '2026-05-27T08:45:44Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: e4f3ad3c-0cf8-4a09-bf01-acaa83f9a6aa
+  timestamp: '2026-05-27T08:56:47Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: d6d9274d-f45c-43a7-86f3-4e78d266dc09
+  timestamp: '2026-05-27T08:56:49Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: 9c866bb9-f41d-4b86-b687-2631875b82d9
+  timestamp: '2026-05-27T09:27:20Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: 606f2255-e6b4-43c1-beb7-1bfeafed3c24
+  timestamp: '2026-05-27T09:27:21Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: ddf5239b-aa2f-4e71-a62a-075cb1377527
+  timestamp: '2026-05-27T12:19:41Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: a2e8dd87-b2f3-4f82-83c3-4e441e6ade1d
+  timestamp: '2026-05-27T12:19:41Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: d37bb4fa-e44d-4502-9112-8f7573f57d61
+  timestamp: '2026-05-27T12:30:51Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: 24c8bb34-f66e-42cf-8752-903831a01c94
+  timestamp: '2026-05-27T12:30:51Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: cb417a2c-407f-4032-ac76-ecd402fa59eb
+  timestamp: '2026-05-27T12:56:56Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: e1fc9feb-c30e-4aa3-b327-b1d88eb39c13
+  timestamp: '2026-05-27T12:56:56Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: 72df02f4-3a25-45a2-aafa-9ebd4d5dfd41
+  timestamp: '2026-05-27T13:02:25Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: ec7f3d6e-d9cf-4309-a1bd-4913e08cf07a
+  timestamp: '2026-05-27T13:02:26Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: fdb91d6e-c7f7-48c0-8cde-00c7d6b20244
+  timestamp: '2026-05-27T13:20:02Z'
+- additions: []
+  changes: []
+  removals: []
+  run_id: 673e5b2d-a99e-42ae-a3eb-a12876d8f2b9
+  timestamp: '2026-05-27T13:20:02Z'

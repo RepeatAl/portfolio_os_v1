@@ -1,0 +1,18 @@
+schema_version: 1.0.0
+entries:
+- entry_id: 537cbb5d-a6b6-4fde-8838-44cf475033af
+  event_type: GOVERNANCE_EVENT
+  timestamp: '2026-05-29T18:06:07.343032+00:00'
+  actor:
+    actor_type: USER
+    actor_id: RepeatAl
+    context:
+      git_author: RepeatAl <166618308+RepeatAl@users.noreply.github.com>
+    is_fallback: false
+  governance_policy_version: bootstrap
+  severity: INFO
+  details:
+    action: cold_start_initialization
+    enforcement_mode: observability
+    provenance: bootstrap_derived
+    reason: Governance state missing, initializing minimal defaults

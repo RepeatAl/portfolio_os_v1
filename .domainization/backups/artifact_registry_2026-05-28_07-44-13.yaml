@@ -1,0 +1,37 @@
+artifacts:
+- allowed_readers:
+  - ALL
+  allowed_writers:
+  - SIGNALS
+  artifact_id: test_engine_py
+  artifact_type: ENGINE
+  created_date: '2026-01-01'
+  dependencies:
+  - signal_framework_md
+  description: Test engine
+  file_path: engines/test_engine.py
+  last_modified: '2026-01-15'
+  lifecycle_status: active
+  owner_role: Signal Engineer
+  primary_domain: SIGNALS
+  secondary_domains:
+  - DATA
+  ssot_relationship: implementation
+  tags:
+  - signal
+  - engine
+  topic: signal_generation
+- allowed_readers:
+  - ALL
+  allowed_writers:
+  - ARCH
+  artifact_id: arch_doc_md
+  artifact_type: SSOT
+  created_date: '2026-01-01'
+  file_path: docs/architecture.md
+  last_modified: '2026-01-10'
+  lifecycle_status: canonical
+  owner_role: System Architect
+  primary_domain: ARCH
+  ssot_relationship: canonical
+  topic: system_architecture

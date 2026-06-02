@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Block Phase Naming",
+  "description": "Blocks file creation when the filename contains a sequence-based 'phase' prefix. Only triggers on fs_write (new file creation), not on edits or deletes.",
+  "version": "2",
+  "when": {
+    "type": "preToolUse",
+    "toolTypes": [
+      "fs_write"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "NAMING GATE — Check the 'path' parameter of this fs_write call. Does the FILENAME (not directory) match the regex pattern 'phase[_-]?[a-z0-9]' (case-insensitive)? Examples of violations: 'phase_a_verification.md', 'phase_d_output.md', 'phase_13_report.md', 'phase-b-cleanup.yaml'. If the filename MATCHES this pattern: respond ONLY with 'DENIED: <reason>' and do NOT proceed. If the filename does NOT match: respond ONLY with 'APPROVED' and immediately re-invoke the tool with identical parameters."
+  }
+}

@@ -1,0 +1,218 @@
+# =============================================================================
+# Domainization System Configuration
+# =============================================================================
+#
+# This file configures the domainization governance system for Portfolio OS.
+#
+# CURRENT PHASE: FAST LANE REPORT MVP
+# ENFORCEMENT MODE: observability (warnings only, no blocking)
+#
+# During the FAST LANE phase, the system operates in observability-only mode:
+# - All validation observers generate warnings, never errors
+# - Commits are NEVER blocked by governance rules
+# - Violations are logged for visibility and future enforcement
+# - Registry enforcement remains soft-validation only
+# - Governance does not block report development
+#
+# This approach ensures:
+# - A visible unhealthy system is preferable to an invisible blocked system
+# - Report development velocity is preserved
+# - Governance value is demonstrated before enforcement is activated
+# - Developers gain awareness without friction
+#
+# Requirements Satisfied:
+#   5.9  - Commit gates deferred until MVP stabilizes
+#   5.10 - Governance shall not block report development
+#   9.8  - Registry enforcement remains soft-validation only
+#
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Enforcement Mode (Legacy — retained for backward compatibility)
+# -----------------------------------------------------------------------------
+# Controls how validation observers behave:
+#
+#   observability - Warnings only, no blocking (FAST LANE phase)
+#                   All observers report violations but never prevent commits.
+#                   This is the default during FAST LANE REPORT MVP.
+#
+#   soft          - Warnings with audit trail, no blocking
+#                   Similar to observability but with stricter audit logging.
+#                   Suitable for transition period after MVP stabilizes.
+#
+#   hard          - Blocking mode, violations prevent commits
+#                   Full enforcement. Only activate after report value is
+#                   established and MVP is stable.
+#
+enforcement_mode: observability
+
+# -----------------------------------------------------------------------------
+# Governance Enforcement Configuration (Req 7)
+# -----------------------------------------------------------------------------
+# Structured enforcement mode configuration for the governance runtime.
+# This section is the authoritative source for enforcement mode used by:
+#   - GateFramework (governance/gate_framework.py)
+#   - LifecycleEnforcer (governance/lifecycle_enforcer.py)
+#   - BoundaryEnforcer (governance/boundary_enforcer.py)
+#
+# Mode values:
+#   observability - Execute all checks, produce warnings only, never block.
+#                   All gates report results as informational. No commits or
+#                   pipeline executions are blocked.
+#
+#   soft          - Block on gates configured as blocking_in_soft, warn on
+#                   others. Invalid lifecycle transitions are rejected with
+#                   structured warnings. Boundary violations are rejected.
+#
+#   hard          - Block on all gates configured as blocking_in_soft or
+#                   blocking_in_hard. Full enforcement of lifecycle, boundary,
+#                   and deployment gates.
+#
+# Transition Criteria (auditable, config-driven):
+#
+#   observability → soft:
+#     - All property tests pass (full pytest suite green)
+#     - Deployment integrity score >= 4.0
+#     - Mutation audit ledger operational (no corruption events)
+#
+#   soft → hard:
+#     - 30 days in soft mode with zero enforcement overrides
+#     - All gates passing consistently (no timeout/skip patterns)
+#     - Shadow authority detector reports zero unregistered module writes
+#
+# Mode changes are recorded in the Mutation Audit Ledger with:
+#   timestamp, previous_mode, new_mode, actor, justification
+#
+governance_enforcement:
+  mode: observability
+
+# -----------------------------------------------------------------------------
+# Transition Hysteresis Configuration (Req 7.4)
+# -----------------------------------------------------------------------------
+# Prevents rapid enforcement mode oscillation (anti-flapping).
+#
+# When an enforcement mode transition occurs (e.g., observability → soft),
+# a cooldown period is enforced before any subsequent transition is permitted.
+# This prevents mode oscillation caused by transient failures or automated
+# systems rapidly toggling enforcement levels.
+#
+# cooldown_hours: Minimum hours between enforcement mode transitions.
+#   - Clamped to [1.0, 24.0] — values below 1.0 are raised to 1.0,
+#     values above 24.0 are lowered to 24.0.
+#   - Default: 4 hours (sufficient to prevent flapping while allowing
+#     same-day corrections).
+#
+# Emergency overrides (invoked by OWNER actor per governance-runtime-enforcement
+# Req 35) bypass the cooldown entirely, with mandatory audit logging of the
+# bypass reason in the Mutation Audit Ledger.
+#
+transition_hysteresis:
+  cooldown_hours: 4
+
+# -----------------------------------------------------------------------------
+# System Phase
+# -----------------------------------------------------------------------------
+# Documents the current development phase for governance decisions.
+#
+# Phases:
+#   fast_lane_report_mvp - Current phase. Report development takes priority.
+#                          No governance friction allowed.
+#   post_mvp_transition  - Report value established. Gradual enforcement begins.
+#   full_enforcement     - All gates active and blocking.
+#
+current_phase: fast_lane_report_mvp
+
+# -----------------------------------------------------------------------------
+# Observers Configuration
+# -----------------------------------------------------------------------------
+# Each observer can be individually enabled/disabled.
+# In observability mode, enabled observers generate warnings only.
+#
+observers:
+  RegistrationValidator:
+    enabled: true
+    description: "Detects unregistered artifacts and missing metadata"
+  DomainAssignmentValidator:
+    enabled: true
+    description: "Detects invalid domain assignments"
+  LifecycleValidator:
+    enabled: true
+    description: "Detects invalid lifecycle transitions"
+  BoundaryAwarenessValidator:
+    enabled: true
+    description: "Detects authority chain violations, cloud provider issues, runtime flow violations"
+  SSOTConsistencyValidator:
+    enabled: true
+    description: "Detects SSOT conflicts and missing references"
+
+# -----------------------------------------------------------------------------
+# Performance Settings
+# -----------------------------------------------------------------------------
+# Performance targets for validation and reporting operations.
+#
+performance:
+  # Maximum time for commit gate validation (milliseconds)
+  # Requirement 15.1: Commit gates SHALL complete in less than 5 seconds
+  validation_timeout_ms: 5000
+
+  # Maximum time for health report generation (milliseconds)
+  # Requirement 15.3: Health reports SHALL complete in less than 10 seconds
+  health_report_timeout_ms: 10000
+
+# -----------------------------------------------------------------------------
+# Logging Settings
+# -----------------------------------------------------------------------------
+# Controls audit logging and log verbosity.
+#
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR
+  level: INFO
+
+  # Whether to write audit logs for all validation events
+  # Audit logs track: registrations, transitions, violations, bypasses
+  audit_enabled: true
+
+  # Log directory (relative to .domainization/)
+  log_directory: logs
+
+# -----------------------------------------------------------------------------
+# FAST LANE Phase Rules
+# -----------------------------------------------------------------------------
+# These rules document the governance constraints during FAST LANE phase.
+# They are informational and enforced by the observability mode setting above.
+#
+fast_lane_rules:
+  # Commit gates are deferred - no blocking behavior (Req 5.9)
+  commit_gates_deferred: true
+
+  # Governance shall not block report development (Req 5.10)
+  report_development_unblocked: true
+
+  # Registry enforcement is soft-validation only (Req 9.8)
+  registry_soft_validation_only: true
+
+  # Features without report value are warned, not blocked
+  report_value_enforcement: warning_only
+
+  # Cloud provider detection generates warnings, not blocks
+  cloud_provider_enforcement: warning_only
+
+  # Runtime flow violations generate warnings, not blocks
+  runtime_flow_enforcement: warning_only
+
+# -----------------------------------------------------------------------------
+# Migration Configuration
+# -----------------------------------------------------------------------------
+# Controls behavior during gradual migration to full governance.
+#
+migration:
+  # Allow unregistered artifacts during migration (Req 9.3)
+  allow_unregistered: true
+
+  # Current migration phase
+  # Phases: foundation, registration, commit_gates, lifecycle_enforcement,
+  #         boundary_enforcement, monitoring
+  current_migration_phase: registration
+
+  # Whether to require metadata for new artifacts (false during FAST LANE)
+  require_metadata_for_new: false

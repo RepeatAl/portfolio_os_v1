@@ -1,0 +1,13 @@
+# Confidence Degradation Policy Configuration
+# Defines how confidence_level is reduced when upstream inputs are missing.
+# Modify this file to adjust degradation behavior without changing source code.
+#
+# Formula: max(minimum_floor, base_ceiling - (penalty_per_missing_category * missing_count))
+
+schema_version: "1.0.0"
+policy_name: "default_degradation"
+version: "1.0.0"
+base_ceiling: 50
+penalty_per_missing_category: 10
+minimum_floor: 0
+effective_date: "2026-05-27"

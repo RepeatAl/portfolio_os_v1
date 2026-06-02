@@ -1,0 +1,3719 @@
+# Artifact Registry
+# Central index of all artifacts in Portfolio OS with metadata
+#
+# This file tracks artifacts that cannot embed YAML frontmatter (non-markdown files).
+# Markdown files should use YAML frontmatter instead of entries here.
+#
+# METADATA SCHEMA:
+#
+# Required Fields:
+#   artifact_id: string - Unique identifier (e.g., "system_architecture_md")
+#   file_path: string - Relative path from repo root (e.g., "docs/system_architecture.md")
+#   primary_domain: string - Domain ID from domain_registry.yaml (e.g., "ARCH")
+#   artifact_type: string - Type ID from lifecycle_state_machine.yaml (e.g., "SSOT")
+#   lifecycle_status: string - Current state from state machine (e.g., "canonical")
+#   created_date: string - Creation date in YYYY-MM-DD format
+#   last_modified: string - Last modification date in YYYY-MM-DD format
+#   owner_role: string - Responsibility description (e.g., "System architect")
+#   ssot_relationship: string - One of: canonical, derived, implementation, none
+#   allowed_writers: list[string] - Domain IDs with write permission
+#   allowed_readers: list[string] - Domain IDs with read permission (use "ALL" for public)
+#
+# Optional Fields:
+#   secondary_domains: list[string] - Additional domain associations
+#   dependencies: list[string] - Artifact IDs this depends on
+#   topic: string - Topic for SSOT conflict detection
+#   description: string - Human-readable description
+#   tags: list[string] - Categorization tags
+#   report_value: object - Report value metadata (category + justification)
+#
+# Deprecation Governance Fields (HARDENING 12 — optional, for sunset lifecycle):
+#   deprecated_date: string - ISO 8601 date when artifact was deprecated
+#   sunset_date: string - ISO 8601 date after which artifact stops being generated
+#   replacement_artifact: string - artifact_id of the replacement artifact
+#   deprecation_reason: string - Reason for deprecation (max 200 chars)
+#   compatibility_impact: string - One of: none, minor, breaking
+#
+# Report Value Categories (10 accepted):
+#   semantic_interpretation, pm_reasoning, concentration_explanation,
+#   dependency_explanation, scenario_interpretation, confidence_explanation,
+#   action_space_clarity, multilingual_rendering, traceability, user_understanding
+
+artifacts:
+
+  # ======================================================================
+  # SIGNAL GENERATION ENGINES
+  # ======================================================================
+
+- artifact_id: allocation_engine_py
+  file_path: engines/allocation_engine.py
+  primary_domain: SIGNALS
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_health_framework_md
+    - signal_calculation_framework_md
+  description: Generates allocation structure signals for portfolio composition analysis
+  report_value:
+    category: semantic_interpretation
+    justification: "Produces allocation structure signals consumed by semantic engine for portfolio composition interpretation"
+  tags:
+    - signals
+    - allocation
+
+- artifact_id: regime_engine_py
+  file_path: engines/regime_engine.py
+  primary_domain: SIGNALS
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - market_regime_framework_md
+    - signal_calculation_framework_md
+  description: Generates market regime classification signals based on liquidity conditions
+  report_value:
+    category: semantic_interpretation
+    justification: "Produces market regime classification signals consumed by semantic engine for regime state interpretation"
+  tags:
+    - signals
+    - regime
+
+- artifact_id: attribution_engine_py
+  file_path: engines/attribution_engine.py
+  primary_domain: SIGNALS
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - correlation_dependency_framework_md
+    - signal_calculation_framework_md
+  description: Generates attribution signals identifying portfolio performance drivers
+  report_value:
+    category: pm_reasoning
+    justification: "Produces attribution signals identifying performance drivers rendered in Portfolio Structure section"
+  tags:
+    - signals
+    - attribution
+
+- artifact_id: scoring_engine_py
+  file_path: engines/scoring_engine.py
+  primary_domain: SIGNALS
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - scoring_methodology_framework_md
+    - signal_calculation_framework_md
+  description: Generates portfolio scoring signals for action prioritization
+  report_value:
+    category: action_space_clarity
+    justification: "Produces scoring signals enabling action prioritization in the Action Space report section"
+  tags:
+    - signals
+    - scoring
+
+
+  # ======================================================================
+  # SEMANTIC INTERPRETATION ENGINES
+  # ======================================================================
+
+- artifact_id: semantic_engine_py
+  file_path: engines/semantic_engine.py
+  primary_domain: SEMANTICS
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-05"
+  last_modified: "2026-05-27"
+  owner_role: Semantic interpretation engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - SEMANTICS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - semantic_signal_registry_md
+    - semantic_reasoning_rules_md
+  description: "Interprets raw signals into semantic states with meaning and context. Contains Semantic Signal Registry with 8 states (5 protected + 3 new Phase C narrative_dependency states: semiconductor_dependency_high, energy_grid_dependency, datacenter_infrastructure_exposure). Produces deterministic states given same input signals."
+  report_value:
+    category: semantic_interpretation
+    justification: "Transforms raw allocation signals into semantic states that enable reasoning chain interpretation"
+  tags:
+    - semantics
+    - interpretation
+    - narrative_dependency
+    - phase_c
+
+
+  # ======================================================================
+  # REASONING ENGINES
+  # ======================================================================
+
+- artifact_id: decision_engine_py
+  file_path: engines/decision_engine.py
+  primary_domain: REASONING
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-10"
+  last_modified: "2026-05-25"
+  owner_role: Reasoning logic engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - REASONING
+  allowed_readers:
+    - ALL
+  dependencies:
+    - decision_governance_md
+    - semantic_reasoning_rules_md
+  description: Generates actionable decisions based on semantic states and priorities
+  report_value:
+    category: pm_reasoning
+    justification: "Produces Reasoning Objects with actionable portfolio decisions rendered in daily report sections"
+  tags:
+    - reasoning
+    - decisions
+
+- artifact_id: quality_engine_py
+  file_path: engines/quality_engine.py
+  primary_domain: REASONING
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-10"
+  last_modified: "2026-05-25"
+  owner_role: Reasoning logic engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - REASONING
+  allowed_readers:
+    - ALL
+  dependencies:
+    - decision_governance_md
+    - semantic_reasoning_rules_md
+  description: Evaluates reasoning quality and confidence levels for decision validation
+  report_value:
+    category: confidence_explanation
+    justification: "Evaluates reasoning quality and confidence levels rendered in Confidence Interpretation section"
+  tags:
+    - reasoning
+    - quality
+
+- artifact_id: priority_engine_py
+  file_path: engines/priority_engine.py
+  primary_domain: REASONING
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-10"
+  last_modified: "2026-05-25"
+  owner_role: Reasoning logic engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - REASONING
+  allowed_readers:
+    - ALL
+  dependencies:
+    - decision_governance_md
+    - semantic_reasoning_rules_md
+  description: Prioritizes actions and risks based on semantic interpretation
+  report_value:
+    category: action_space_clarity
+    justification: "Prioritizes actions and risks rendered in Action Space and Executive Summary sections"
+  tags:
+    - reasoning
+    - priority
+
+
+  # ======================================================================
+  # REPORT GENERATION ENGINES
+  # ======================================================================
+
+- artifact_id: report_engine_py
+  file_path: engines/report_engine.py
+  primary_domain: REPORT
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-15"
+  last_modified: "2026-05-27"
+  owner_role: Report generation engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+    - report_section_specification_md
+    - reasoning_object_py
+    - provenance_schema_py
+  description: "Chain-compliant report engine with ReportEngine orchestrator composing 4 sub-components (SectionCompletenessClassifier, ProvenanceAssembler, SectionRenderer, DegradationRenderer). Enforces Hardening 7 boundary: render only, no inference. Legacy run_report_engine() retained deprecated for backward compatibility."
+  report_value:
+    category: pm_reasoning
+    justification: "Renders Reasoning Objects into the 9-section daily report with provenance metadata and degradation notices"
+  tags:
+    - report
+    - generation
+    - chain_compliant
+    - provenance
+
+- artifact_id: morning_briefing_engine_py
+  file_path: engines/morning_briefing_engine.py
+  primary_domain: REPORT
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-15"
+  last_modified: "2026-05-25"
+  owner_role: Report generation engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+    - report_section_specification_md
+  description: Generates daily morning briefing summaries for portfolio managers
+  report_value:
+    category: pm_reasoning
+    justification: "Generates morning briefing summaries providing portfolio manager daily context"
+  tags:
+    - report
+    - briefing
+
+- artifact_id: delta_engine_py
+  file_path: engines/delta_engine.py
+  primary_domain: REPORT
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-15"
+  last_modified: "2026-05-25"
+  owner_role: Report generation engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+  description: Detects and reports changes between consecutive portfolio reports
+  report_value:
+    category: pm_reasoning
+    justification: "Detects changes between consecutive reports enabling portfolio manager awareness of shifts"
+  tags:
+    - report
+    - delta
+
+- artifact_id: pm_report_engine_py
+  file_path: reports/pm_report_engine.py
+  primary_domain: REPORT
+  artifact_type: ENGINE
+  lifecycle_status: development
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+    - report_section_specification_md
+  description: Portfolio manager report generation engine (in development)
+  report_value:
+    category: pm_reasoning
+    justification: "Generates portfolio manager report with structured reasoning conclusions"
+  tags:
+    - report
+    - pm
+
+
+  # ======================================================================
+  # SIMULATION ENGINES
+  # ======================================================================
+
+- artifact_id: scenario_engine_py
+  file_path: engines/scenario_engine.py
+  primary_domain: SIM
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-20"
+  last_modified: "2026-05-25"
+  owner_role: Simulation engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - SIM
+  allowed_readers:
+    - ALL
+  dependencies:
+    - simulation_architecture_md
+  description: Generates scenario analysis and stress testing simulations
+  report_value:
+    category: scenario_interpretation
+    justification: "Generates scenario analysis and stress testing rendered in Scenario Analysis report section"
+  tags:
+    - simulation
+    - scenarios
+
+
+  # ======================================================================
+  # USER INTERFACE ENGINES
+  # ======================================================================
+
+- artifact_id: visual_engine_py
+  file_path: engines/visual_engine.py
+  primary_domain: ARCH
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-25"
+  last_modified: "2026-05-25"
+  owner_role: UI/UX engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - ARCH
+    - USER
+  allowed_readers:
+    - ALL
+  secondary_domains:
+    - USER
+  dependencies:
+    - dashboard_philosophy_md
+  description: Generates visualization data structures for dashboard rendering
+  report_value:
+    category: user_understanding
+    justification: "Generates visualization data structures enabling dashboard comprehension of portfolio state"
+  tags:
+    - visualization
+    - dashboard
+
+
+  # ======================================================================
+  # ARCHITECTURE ENGINES
+  # ======================================================================
+
+- artifact_id: engine_registry_py
+  file_path: engines/engine_registry.py
+  primary_domain: ARCH
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: System architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies:
+    - engine_design_principles_md
+    - system_architecture_md
+  description: Central registry defining engine dependencies and execution order
+  report_value:
+    category: traceability
+    justification: "Defines engine dependencies and execution order enabling pipeline provenance validation"
+  tags:
+    - architecture
+    - orchestration
+
+- artifact_id: engine_runner_py
+  file_path: engines/engine_runner.py
+  primary_domain: ARCH
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: System architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies:
+    - engine_design_principles_md
+    - system_architecture_md
+    - engine_registry_py
+  description: Orchestrates engine execution flow and dependency resolution
+  report_value:
+    category: traceability
+    justification: "Orchestrates engine execution flow providing execution audit trail for pipeline runs"
+  tags:
+    - architecture
+    - orchestration
+
+
+  # ======================================================================
+  # REPORT OUTPUTS
+  # ======================================================================
+
+- artifact_id: portfolio_report_txt
+  file_path: portfolio_report.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-24"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_engine_py
+    - report_reasoning_system_md
+    - report_section_specification_md
+  description: Daily portfolio manager report
+  report_value:
+    category: pm_reasoning
+    justification: "Daily portfolio report output delivering structured reasoning conclusions to portfolio manager"
+  tags:
+    - report
+    - daily
+
+- artifact_id: morning_briefing_txt
+  file_path: morning_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - morning_briefing_engine_py
+    - report_reasoning_system_md
+    - report_section_specification_md
+  description: Daily morning briefing summary for portfolio managers
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by chain-compliant daily_report.md with full provenance
+  compatibility_impact: minor
+  report_value:
+    category: pm_reasoning
+    justification: "Morning briefing output delivering daily portfolio context to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - daily
+
+- artifact_id: allocation_briefing_txt
+  file_path: allocation_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - allocation_engine_py
+    - report_reasoning_system_md
+  description: Allocation structure analysis briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Portfolio Structure section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: concentration_explanation
+    justification: "Allocation briefing explaining portfolio composition structure to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - allocation
+
+- artifact_id: attribution_briefing_txt
+  file_path: attribution_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - attribution_engine_py
+    - report_reasoning_system_md
+  description: Performance attribution analysis briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Portfolio Structure section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: pm_reasoning
+    justification: "Attribution briefing explaining performance drivers to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - attribution
+
+- artifact_id: correlation_briefing_txt
+  file_path: correlation_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+    - correlation_dependency_framework_md
+  description: Correlation and dependency analysis briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Concentration and Dependency section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: concentration_explanation
+    justification: "Correlation briefing explaining asset dependency relationships to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - correlation
+
+- artifact_id: cross_asset_briefing_txt
+  file_path: cross_asset_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+  description: Cross-asset relationship analysis briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Market Regime section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: pm_reasoning
+    justification: "Cross-asset briefing explaining inter-market relationships to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - cross_asset
+
+- artifact_id: divergence_briefing_txt
+  file_path: divergence_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+  description: Market divergence analysis briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Market Regime section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: pm_reasoning
+    justification: "Divergence briefing explaining market divergence patterns to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - divergence
+
+- artifact_id: early_warning_briefing_txt
+  file_path: early_warning_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+    - portfolio_health_framework_md
+  description: Early warning signals briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Confidence Interpretation section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: confidence_explanation
+    justification: "Early warning briefing explaining risk signals and confidence degradation to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - early_warning
+
+- artifact_id: flow_briefing_txt
+  file_path: flow_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+  description: Market flow analysis briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Market Regime section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: pm_reasoning
+    justification: "Flow briefing explaining market flow dynamics to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - flow
+
+- artifact_id: liquidity_briefing_txt
+  file_path: liquidity_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - regime_engine_py
+    - report_reasoning_system_md
+    - market_regime_framework_md
+  description: Liquidity conditions analysis briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Market Regime section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: pm_reasoning
+    justification: "Liquidity briefing explaining market liquidity conditions to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - liquidity
+
+- artifact_id: market_breadth_briefing_txt
+  file_path: market_breadth_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+  description: Market breadth analysis briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Market Regime section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: pm_reasoning
+    justification: "Market breadth briefing explaining participation breadth to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - market_breadth
+
+- artifact_id: narrative_dependency_briefing_txt
+  file_path: narrative_dependency_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+    - correlation_dependency_framework_md
+  description: Narrative dependency analysis briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Concentration and Dependency section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: dependency_explanation
+    justification: "Narrative dependency briefing explaining thematic risk dependencies to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - narrative
+
+- artifact_id: portfolio_memory_briefing_txt
+  file_path: portfolio_memory_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+    - portfolio_memory_architecture_md
+  description: Portfolio memory and historical context briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by PM Summary section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: pm_reasoning
+    justification: "Portfolio memory briefing providing historical context for current portfolio decisions"
+  tags:
+    - report
+    - briefing
+    - memory
+
+- artifact_id: regime_briefing_txt
+  file_path: regime_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - regime_engine_py
+    - report_reasoning_system_md
+    - market_regime_framework_md
+  description: Market regime classification briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Market Regime section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: semantic_interpretation
+    justification: "Regime briefing explaining current market regime classification to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - regime
+
+- artifact_id: relative_strength_briefing_txt
+  file_path: relative_strength_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - report_reasoning_system_md
+  description: Relative strength analysis briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Deployment Analysis section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: action_space_clarity
+    justification: "Relative strength briefing explaining deployment candidate rankings to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - relative_strength
+
+- artifact_id: scenario_briefing_txt
+  file_path: scenario_briefing.txt
+  primary_domain: REPORT
+  artifact_type: REPORT_OUT
+  lifecycle_status: deprecated
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Report generation system
+  ssot_relationship: none
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  dependencies:
+    - scenario_engine_py
+    - report_reasoning_system_md
+    - simulation_architecture_md
+  description: Scenario analysis and stress testing briefing
+  deprecated_date: "2026-05-27"
+  sunset_date: "2026-08-27"
+  replacement_artifact: daily_report_md
+  deprecation_reason: Replaced by Scenario Analysis section in chain-compliant daily report
+  compatibility_impact: minor
+  report_value:
+    category: scenario_interpretation
+    justification: "Scenario briefing explaining stress test results and scenario outcomes to portfolio manager"
+  tags:
+    - report
+    - briefing
+    - scenario
+
+
+  # ======================================================================
+  # SIGNAL OUTPUT DATA FILES (DATA_OUT)
+  # ======================================================================
+
+- artifact_id: allocation_engine_xlsx
+  file_path: allocation_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - allocation_engine_py
+  description: Allocation structure signal outputs
+  report_value:
+    category: semantic_interpretation
+    justification: "Allocation signal data consumed by semantic engine for portfolio structure interpretation"
+  tags:
+    - signals
+    - data
+    - allocation
+
+- artifact_id: attribution_engine_xlsx
+  file_path: attribution_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - attribution_engine_py
+  description: Performance attribution signal outputs
+  report_value:
+    category: pm_reasoning
+    justification: "Attribution signal data enabling performance driver identification in daily report"
+  tags:
+    - signals
+    - data
+    - attribution
+
+- artifact_id: regime_engine_xlsx
+  file_path: regime_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - regime_engine_py
+  description: Market regime classification signal outputs
+  report_value:
+    category: semantic_interpretation
+    justification: "Regime signal data consumed by semantic engine for market regime state interpretation"
+  tags:
+    - signals
+    - data
+    - regime
+
+- artifact_id: scenario_engine_xlsx
+  file_path: scenario_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - scenario_engine_py
+  description: Scenario analysis signal outputs
+  report_value:
+    category: scenario_interpretation
+    justification: "Scenario signal data enabling stress test analysis in Scenario Analysis section"
+  tags:
+    - signals
+    - data
+    - scenario
+
+- artifact_id: risk_engine_xlsx
+  file_path: risk_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - signal_calculation_framework_md
+  description: Risk assessment signal outputs
+  report_value:
+    category: confidence_explanation
+    justification: "Risk signal data enabling confidence assessment and degradation detection in report"
+  tags:
+    - signals
+    - data
+    - risk
+
+- artifact_id: correlation_matrix_xlsx
+  file_path: correlation_matrix.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - correlation_dependency_framework_md
+  description: Asset correlation matrix signal outputs
+  report_value:
+    category: concentration_explanation
+    justification: "Correlation matrix data enabling concentration risk detection in report"
+  tags:
+    - signals
+    - data
+    - correlation
+
+- artifact_id: high_correlation_pairs_xlsx
+  file_path: high_correlation_pairs.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - correlation_dependency_framework_md
+  description: High correlation asset pairs signal outputs
+  report_value:
+    category: concentration_explanation
+    justification: "High correlation pairs data enabling dependency risk explanation in report"
+  tags:
+    - signals
+    - data
+    - correlation
+
+- artifact_id: divergence_engine_xlsx
+  file_path: divergence_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - signal_calculation_framework_md
+  description: Market divergence signal outputs
+  report_value:
+    category: pm_reasoning
+    justification: "Divergence signal data enabling market divergence interpretation in Market Regime section"
+  tags:
+    - signals
+    - data
+    - divergence
+
+- artifact_id: early_warning_engine_xlsx
+  file_path: early_warning_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_health_framework_md
+  description: Early warning signal outputs
+  report_value:
+    category: confidence_explanation
+    justification: "Early warning signal data enabling confidence degradation detection in report"
+  tags:
+    - signals
+    - data
+    - early_warning
+
+- artifact_id: flow_engine_xlsx
+  file_path: flow_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - signal_calculation_framework_md
+  description: Market flow signal outputs
+  report_value:
+    category: pm_reasoning
+    justification: "Flow signal data enabling market flow interpretation in Market Regime section"
+  tags:
+    - signals
+    - data
+    - flow
+
+- artifact_id: liquidity_engine_xlsx
+  file_path: liquidity_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - regime_engine_py
+    - market_regime_framework_md
+  description: Liquidity conditions signal outputs
+  report_value:
+    category: pm_reasoning
+    justification: "Liquidity signal data enabling liquidity condition interpretation in Market Regime section"
+  tags:
+    - signals
+    - data
+    - liquidity
+
+- artifact_id: market_breadth_engine_xlsx
+  file_path: market_breadth_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - signal_calculation_framework_md
+  description: Market breadth signal outputs
+  report_value:
+    category: pm_reasoning
+    justification: "Market breadth signal data enabling participation analysis in Market Regime section"
+  tags:
+    - signals
+    - data
+    - market_breadth
+
+- artifact_id: narrative_risk_engine_xlsx
+  file_path: narrative_risk_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - correlation_dependency_framework_md
+  description: Narrative risk signal outputs
+  report_value:
+    category: dependency_explanation
+    justification: "Narrative risk signal data enabling thematic dependency explanation in report"
+  tags:
+    - signals
+    - data
+    - narrative
+
+- artifact_id: relative_strength_engine_xlsx
+  file_path: relative_strength_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - signal_calculation_framework_md
+  description: Relative strength signal outputs
+  report_value:
+    category: action_space_clarity
+    justification: "Relative strength signal data enabling deployment candidate ranking in report"
+  tags:
+    - signals
+    - data
+    - relative_strength
+
+- artifact_id: cross_asset_engine_xlsx
+  file_path: cross_asset_engine.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - signal_calculation_framework_md
+  description: Cross-asset relationship signal outputs
+  report_value:
+    category: pm_reasoning
+    justification: "Cross-asset signal data enabling inter-market relationship interpretation in report"
+  tags:
+    - signals
+    - data
+    - cross_asset
+
+- artifact_id: divergence_market_data_xlsx
+  file_path: divergence_market_data.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - signal_calculation_framework_md
+  description: Divergence market data signal outputs
+  report_value:
+    category: pm_reasoning
+    justification: "Divergence market data enabling divergence pattern detection in Market Regime section"
+  tags:
+    - signals
+    - data
+    - divergence
+
+- artifact_id: liquidity_signals_xlsx
+  file_path: liquidity_signals.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - regime_engine_py
+    - market_regime_framework_md
+  description: Liquidity signal outputs
+  report_value:
+    category: pm_reasoning
+    justification: "Liquidity signal data enabling regime liquidity assessment in Market Regime section"
+  tags:
+    - signals
+    - data
+    - liquidity
+
+- artifact_id: macro_output_xlsx
+  file_path: macro_output.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - signal_calculation_framework_md
+  description: Macro signal outputs
+  report_value:
+    category: pm_reasoning
+    justification: "Macro signal data enabling macroeconomic context interpretation in Executive Summary"
+  tags:
+    - signals
+    - data
+    - macro
+
+- artifact_id: narrative_summary_xlsx
+  file_path: narrative_summary.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - correlation_dependency_framework_md
+  description: Narrative summary signal outputs
+  report_value:
+    category: dependency_explanation
+    justification: "Narrative summary data enabling thematic dependency explanation in report"
+  tags:
+    - signals
+    - data
+    - narrative
+
+- artifact_id: trigger_dependency_xlsx
+  file_path: trigger_dependency.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - correlation_dependency_framework_md
+  description: Trigger dependency signal outputs
+  report_value:
+    category: dependency_explanation
+    justification: "Trigger dependency data enabling causal chain explanation in Concentration section"
+  tags:
+    - signals
+    - data
+    - dependency
+
+- artifact_id: breadth_category_strength_xlsx
+  file_path: breadth_category_strength.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - signal_calculation_framework_md
+  description: Category strength breadth signal outputs
+  report_value:
+    category: pm_reasoning
+    justification: "Category strength data enabling sector breadth analysis in Market Regime section"
+  tags:
+    - signals
+    - data
+    - breadth
+
+- artifact_id: category_attribution_xlsx
+  file_path: category_attribution.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - attribution_engine_py
+  description: Category attribution signal outputs
+  report_value:
+    category: pm_reasoning
+    justification: "Category attribution data enabling sector performance explanation in Portfolio Structure"
+  tags:
+    - signals
+    - data
+    - attribution
+
+- artifact_id: category_relative_strength_xlsx
+  file_path: category_relative_strength.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - signal_calculation_framework_md
+  description: Category relative strength signal outputs
+  report_value:
+    category: action_space_clarity
+    justification: "Category relative strength data enabling sector deployment ranking in report"
+  tags:
+    - signals
+    - data
+    - relative_strength
+
+- artifact_id: cross_asset_data_xlsx
+  file_path: cross_asset_data.xlsx
+  primary_domain: SIGNALS
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation system
+  ssot_relationship: none
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  dependencies:
+    - signal_calculation_framework_md
+  description: Cross-asset data signal outputs
+  report_value:
+    category: pm_reasoning
+    justification: "Cross-asset data enabling inter-market correlation analysis in Market Regime section"
+  tags:
+    - signals
+    - data
+    - cross_asset
+
+
+  # ======================================================================
+  # PORTFOLIO STATE DATA FILES
+  # ======================================================================
+
+- artifact_id: watchlist_xlsx
+  file_path: watchlist.xlsx
+  primary_domain: STATE
+  artifact_type: DATA_IN
+  lifecycle_status: active
+  created_date: "2026-05-20"
+  last_modified: "2026-05-25"
+  owner_role: Portfolio state management system
+  ssot_relationship: none
+  allowed_writers:
+    - STATE
+  allowed_readers:
+    - ALL
+  dependencies:
+    - watchlist_asset_registry_framework_md
+  description: Portfolio watchlist with tracked assets
+  report_value:
+    category: action_space_clarity
+    justification: "Watchlist data enabling deployment candidate tracking in Watchlist report block"
+  tags:
+    - state
+    - watchlist
+    - portfolio
+
+- artifact_id: data_json
+  file_path: data.json
+  primary_domain: STATE
+  artifact_type: CONFIG
+  lifecycle_status: active
+  created_date: "2026-01-20"
+  last_modified: "2026-05-22"
+  owner_role: State management system
+  ssot_relationship: none
+  allowed_writers:
+    - STATE
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_state_model_md
+  description: Portfolio state configuration
+  report_value:
+    category: traceability
+    justification: "Portfolio state configuration enabling consistent data access across pipeline components"
+  tags:
+    - config
+    - state
+
+- artifact_id: portfolio_output_xlsx
+  file_path: portfolio_output.xlsx
+  primary_domain: STATE
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Portfolio state management system
+  ssot_relationship: none
+  allowed_writers:
+    - STATE
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_state_model_md
+  description: Portfolio state output data
+  report_value:
+    category: pm_reasoning
+    justification: "Portfolio state output enabling Current Portfolio Reality block in daily report"
+  tags:
+    - state
+    - portfolio
+    - output
+
+- artifact_id: category_exposure_xlsx
+  file_path: category_exposure.xlsx
+  primary_domain: STATE
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Portfolio state management system
+  ssot_relationship: none
+  allowed_writers:
+    - STATE
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_state_model_md
+  description: Portfolio category exposure data
+  report_value:
+    category: concentration_explanation
+    justification: "Category exposure data enabling concentration risk explanation in report"
+  tags:
+    - state
+    - portfolio
+    - exposure
+
+- artifact_id: category_flow_xlsx
+  file_path: category_flow.xlsx
+  primary_domain: STATE
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Portfolio state management system
+  ssot_relationship: none
+  allowed_writers:
+    - STATE
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_state_model_md
+  description: Portfolio category flow data
+  report_value:
+    category: pm_reasoning
+    justification: "Category flow data enabling sector rotation analysis in Portfolio Structure section"
+  tags:
+    - state
+    - portfolio
+    - flow
+
+- artifact_id: allocation_governance_xlsx
+  file_path: allocation_governance.xlsx
+  primary_domain: STATE
+  artifact_type: DATA_OUT
+  lifecycle_status: current
+  created_date: "2026-05-24"
+  last_modified: "2026-05-25"
+  owner_role: Portfolio state management system
+  ssot_relationship: none
+  allowed_writers:
+    - STATE
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_state_model_md
+    - decision_governance_md
+  description: Portfolio allocation governance data
+  report_value:
+    category: action_space_clarity
+    justification: "Allocation governance data enabling deployment constraint explanation in report"
+  tags:
+    - state
+    - portfolio
+    - governance
+
+
+  # ======================================================================
+  # DATA INPUT FILES
+  # ======================================================================
+
+- artifact_id: market_snapshot_xlsx
+  file_path: data/market_snapshot_2026-05-23.xlsx
+  primary_domain: DATA
+  artifact_type: DATA_IN
+  lifecycle_status: active
+  created_date: "2026-05-23"
+  last_modified: "2026-05-23"
+  owner_role: Data ingestion system
+  ssot_relationship: none
+  allowed_writers:
+    - DATA
+  allowed_readers:
+    - ALL
+  dependencies:
+    - data_ingestion_normalization_framework_md
+  description: Daily market data snapshot
+  report_value:
+    category: semantic_interpretation
+    justification: "Daily market data snapshot providing raw input for signal engine interpretation chain"
+  tags:
+    - market_data
+    - input
+
+
+  # ======================================================================
+  # RUNTIME ENTRY POINTS
+  # ======================================================================
+
+- artifact_id: main_py
+  file_path: main.py
+  primary_domain: DEPLOY
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-02-01"
+  last_modified: "2026-05-24"
+  owner_role: Deployment engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - DEPLOY
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies:
+    - engine_runner_py
+    - engine_registry_py
+  description: Main runtime entry point for Portfolio OS engine execution pipeline
+  report_value:
+    category: traceability
+    justification: "Main execution entry point enabling pipeline run initiation and audit trail"
+  tags:
+    - runtime
+    - deploy
+    - entry_point
+
+- artifact_id: app_py
+  file_path: app.py
+  primary_domain: USER
+  artifact_type: DASHBOARD
+  lifecycle_status: active
+  created_date: "2026-02-01"
+  last_modified: "2026-05-24"
+  owner_role: Dashboard engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - USER
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies:
+    - dashboard_philosophy_md
+    - visual_engine_py
+  description: Streamlit dashboard application entry point for portfolio visualization
+  report_value:
+    category: user_understanding
+    justification: "Dashboard entry point enabling portfolio visualization and user comprehension"
+  tags:
+    - dashboard
+    - user
+    - entry_point
+
+
+  # ======================================================================
+  # HISTORICAL SNAPSHOT FILES (MEMORY DOMAIN)
+  # ======================================================================
+
+- artifact_id: portfolio_history_xlsx
+  file_path: data/portfolio_history.xlsx
+  primary_domain: MEMORY
+  artifact_type: SNAPSHOT
+  lifecycle_status: captured
+  created_date: "2026-05-01"
+  last_modified: "2026-05-23"
+  owner_role: Portfolio memory system
+  ssot_relationship: none
+  allowed_writers:
+    - MEMORY
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_memory_architecture_md
+  description: Historical portfolio positions and performance
+  report_value:
+    category: pm_reasoning
+    justification: "Historical portfolio data enabling temporal comparison in PM Summary section"
+  tags:
+    - history
+    - snapshot
+
+- artifact_id: briefing_2026_05_23_txt
+  file_path: history/briefing_2026-05-23.txt
+  primary_domain: MEMORY
+  artifact_type: SNAPSHOT
+  lifecycle_status: archived
+  created_date: "2026-05-23"
+  last_modified: "2026-05-23"
+  owner_role: Portfolio memory system
+  ssot_relationship: none
+  allowed_writers:
+    - NONE
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_memory_architecture_md
+  description: Archived briefing snapshot from 2026-05-23
+  report_value:
+    category: traceability
+    justification: "Archived briefing snapshot enabling historical provenance and delta comparison"
+  tags:
+    - history
+    - snapshot
+    - briefing
+
+- artifact_id: macro_2026_05_23_xlsx
+  file_path: history/macro_2026-05-23.xlsx
+  primary_domain: MEMORY
+  artifact_type: SNAPSHOT
+  lifecycle_status: archived
+  created_date: "2026-05-23"
+  last_modified: "2026-05-23"
+  owner_role: Portfolio memory system
+  ssot_relationship: none
+  allowed_writers:
+    - NONE
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_memory_architecture_md
+  description: Archived macro data snapshot from 2026-05-23
+  report_value:
+    category: traceability
+    justification: "Archived macro data snapshot enabling historical replay and forensic analysis"
+  tags:
+    - history
+    - snapshot
+    - macro
+
+- artifact_id: narrative_2026_05_23_xlsx
+  file_path: history/narrative_2026-05-23.xlsx
+  primary_domain: MEMORY
+  artifact_type: SNAPSHOT
+  lifecycle_status: archived
+  created_date: "2026-05-23"
+  last_modified: "2026-05-23"
+  owner_role: Portfolio memory system
+  ssot_relationship: none
+  allowed_writers:
+    - NONE
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_memory_architecture_md
+  description: Archived narrative data snapshot from 2026-05-23
+  report_value:
+    category: traceability
+    justification: "Archived narrative data snapshot enabling historical replay and forensic analysis"
+  tags:
+    - history
+    - snapshot
+    - narrative
+
+- artifact_id: portfolio_2026_05_23_xlsx
+  file_path: history/portfolio_2026-05-23.xlsx
+  primary_domain: MEMORY
+  artifact_type: SNAPSHOT
+  lifecycle_status: archived
+  created_date: "2026-05-23"
+  last_modified: "2026-05-23"
+  owner_role: Portfolio memory system
+  ssot_relationship: none
+  allowed_writers:
+    - NONE
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_memory_architecture_md
+  description: Archived portfolio snapshot from 2026-05-23
+  report_value:
+    category: traceability
+    justification: "Archived portfolio snapshot enabling historical state comparison and replay"
+  tags:
+    - history
+    - snapshot
+    - portfolio
+
+- artifact_id: portfolio_memory_xlsx
+  file_path: history/portfolio_memory.xlsx
+  primary_domain: MEMORY
+  artifact_type: SNAPSHOT
+  lifecycle_status: captured
+  created_date: "2026-05-01"
+  last_modified: "2026-05-25"
+  owner_role: Portfolio memory system
+  ssot_relationship: none
+  allowed_writers:
+    - MEMORY
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_memory_architecture_md
+  description: Consolidated portfolio memory across time periods
+  report_value:
+    category: pm_reasoning
+    justification: "Consolidated portfolio memory enabling historical context in PM Summary section"
+  tags:
+    - history
+    - snapshot
+    - memory
+
+- artifact_id: regime_history_xlsx
+  file_path: history/regime_history.xlsx
+  primary_domain: MEMORY
+  artifact_type: SNAPSHOT
+  lifecycle_status: captured
+  created_date: "2026-05-01"
+  last_modified: "2026-05-25"
+  owner_role: Portfolio memory system
+  ssot_relationship: none
+  allowed_writers:
+    - MEMORY
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_memory_architecture_md
+    - market_regime_framework_md
+  description: Historical market regime classifications
+  report_value:
+    category: semantic_interpretation
+    justification: "Historical regime data enabling regime transition detection and semantic state comparison"
+  tags:
+    - history
+    - snapshot
+    - regime
+
+- artifact_id: report_2026_05_24_txt
+  file_path: history/report_2026-05-24.txt
+  primary_domain: MEMORY
+  artifact_type: SNAPSHOT
+  lifecycle_status: archived
+  created_date: "2026-05-24"
+  last_modified: "2026-05-24"
+  owner_role: Portfolio memory system
+  ssot_relationship: none
+  allowed_writers:
+    - NONE
+  allowed_readers:
+    - ALL
+  dependencies:
+    - portfolio_memory_architecture_md
+  description: Archived report snapshot from 2026-05-24
+  report_value:
+    category: traceability
+    justification: "Archived report snapshot enabling historical comparison and delta detection"
+  tags:
+    - history
+    - snapshot
+    - report
+
+
+  # ======================================================================
+  # CALIBRATION AND STEERING
+  # ======================================================================
+
+- artifact_id: kiro_calibration_report_md
+  file_path: reports/kiro_calibration_report.md
+  primary_domain: ARCH
+  artifact_type: CALIBRATION
+  lifecycle_status: active
+  created_date: "2026-03-01"
+  last_modified: "2026-05-10"
+  owner_role: System calibration engineer
+  ssot_relationship: none
+  allowed_writers:
+    - ARCH
+  allowed_readers:
+    - ALL
+  description: Kiro AI calibration decisions and parameter tuning
+  report_value:
+    category: confidence_explanation
+    justification: "Calibration decisions enabling transparent confidence parameter tuning in report pipeline"
+  tags:
+    - calibration
+    - ai
+
+- artifact_id: execution_governance_baseline_md
+  file_path: .kiro/steering/Committ.md
+  primary_domain: GOV
+  artifact_type: STEERING
+  lifecycle_status: active
+  created_date: "2026-04-01"
+  last_modified: "2026-05-15"
+  owner_role: Governance engineer
+  ssot_relationship: none
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  description: Kiro execution governance rules (commit governance)
+  report_value:
+    category: traceability
+    justification: "Commit governance rules enabling audit trail integrity for all pipeline changes"
+  tags:
+    - steering
+    - governance
+
+
+  # ======================================================================
+  # SSOT FRAMEWORK DOCUMENTS (mirror_only)
+  # ======================================================================
+
+- artifact_id: system_architecture_md
+  file_path: docs/system_architecture.md
+  primary_domain: ARCH
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-01-15"
+  last_modified: "2026-05-20"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - ARCH
+  allowed_readers:
+    - ALL
+  topic: system_architecture
+  description: Defines the overall system architecture and component relationships
+  report_value:
+    category: traceability
+    justification: "Defines system component relationships enabling architectural provenance for all pipeline artifacts"
+  tags:
+    - architecture
+    - design
+
+- artifact_id: signal_calculation_framework_md
+  file_path: docs/signal_calculation_framework.md
+  primary_domain: SIGNALS
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Signal calculation methodology and formulas
+  report_value:
+    category: semantic_interpretation
+    justification: "Signal calculation methodology enabling deterministic signal production for semantic interpretation"
+  tags:
+    - signals
+    - framework
+
+- artifact_id: portfolio_health_framework_md
+  file_path: docs/portfolio_health_framework.md
+  primary_domain: SIGNALS
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Portfolio health assessment framework
+  report_value:
+    category: confidence_explanation
+    justification: "Portfolio health framework enabling health state detection and confidence assessment in report"
+  tags:
+    - signals
+    - health
+
+- artifact_id: market_regime_framework_md
+  file_path: docs/market_regime_framework.md
+  primary_domain: SIGNALS
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Market regime classification framework
+  report_value:
+    category: semantic_interpretation
+    justification: "Market regime framework enabling regime classification rendered in Market Regime section"
+  tags:
+    - signals
+    - regime
+
+- artifact_id: correlation_dependency_framework_md
+  file_path: docs/correlation_dependency_framework.md
+  primary_domain: SIGNALS
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Correlation and dependency analysis framework
+  report_value:
+    category: concentration_explanation
+    justification: "Correlation framework enabling dependency detection rendered in Concentration section"
+  tags:
+    - signals
+    - correlation
+
+- artifact_id: scoring_methodology_framework_md
+  file_path: docs/scoring_methodology_framework.md
+  primary_domain: SIGNALS
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Portfolio scoring methodology framework
+  report_value:
+    category: action_space_clarity
+    justification: "Scoring methodology enabling action prioritization rendered in Action Space section"
+  tags:
+    - signals
+    - scoring
+
+- artifact_id: semantic_signal_registry_md
+  file_path: docs/semantic_signal_registry.md
+  primary_domain: SEMANTICS
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-05"
+  last_modified: "2026-05-25"
+  owner_role: Semantic interpretation architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - SEMANTICS
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Semantic signal registry and interpretation rules
+  report_value:
+    category: semantic_interpretation
+    justification: "Semantic signal registry defining all semantic states interpreted from raw signals"
+  tags:
+    - semantics
+    - registry
+
+- artifact_id: semantic_reasoning_rules_md
+  file_path: docs/semantic_reasoning_rules.md
+  primary_domain: SEMANTICS
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-05"
+  last_modified: "2026-05-25"
+  owner_role: Semantic interpretation architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - SEMANTICS
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Semantic reasoning rules and interpretation logic
+  report_value:
+    category: semantic_interpretation
+    justification: "Semantic reasoning rules enabling deterministic state interpretation from signal inputs"
+  tags:
+    - semantics
+    - reasoning
+
+- artifact_id: decision_governance_md
+  file_path: docs/decision_governance.md
+  primary_domain: GOV
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-10"
+  last_modified: "2026-05-25"
+  owner_role: Governance architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Decision governance framework and rules
+  report_value:
+    category: pm_reasoning
+    justification: "Decision governance framework enabling structured reasoning in Reasoning Objects"
+  tags:
+    - governance
+    - decisions
+
+- artifact_id: report_reasoning_system_md
+  file_path: docs/report_reasoning_system.md
+  primary_domain: REPORT
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-15"
+  last_modified: "2026-05-25"
+  owner_role: Report generation architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Report reasoning system specification
+  report_value:
+    category: pm_reasoning
+    justification: "Report reasoning system defining how Reasoning Objects map to report sections"
+  tags:
+    - report
+    - reasoning
+
+- artifact_id: report_section_specification_md
+  file_path: docs/report_section_specification.md
+  primary_domain: REPORT
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-15"
+  last_modified: "2026-05-25"
+  owner_role: Report generation architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Report section structure and content specification
+  report_value:
+    category: multilingual_rendering
+    justification: "Report section specification defining content structure and rendering rules for daily report"
+  tags:
+    - report
+    - specification
+
+- artifact_id: simulation_architecture_md
+  file_path: docs/simulation_architecture.md
+  primary_domain: SIM
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-20"
+  last_modified: "2026-05-25"
+  owner_role: Simulation architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - SIM
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Simulation and scenario analysis architecture
+  report_value:
+    category: scenario_interpretation
+    justification: "Simulation architecture enabling scenario analysis rendered in Scenario Analysis section"
+  tags:
+    - simulation
+    - architecture
+
+- artifact_id: dashboard_philosophy_md
+  file_path: docs/dashboard_philosophy.md
+  primary_domain: USER
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-25"
+  last_modified: "2026-05-25"
+  owner_role: UI/UX architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - USER
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Dashboard design philosophy and principles
+  report_value:
+    category: user_understanding
+    justification: "Dashboard philosophy defining visualization principles for portfolio comprehension"
+  tags:
+    - dashboard
+    - philosophy
+
+- artifact_id: engine_design_principles_md
+  file_path: docs/engine_design_principles.md
+  primary_domain: ARCH
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - ARCH
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Engine design principles and patterns
+  report_value:
+    category: traceability
+    justification: "Engine design principles enabling consistent engine implementation across pipeline layers"
+  tags:
+    - architecture
+    - engines
+
+- artifact_id: portfolio_memory_architecture_md
+  file_path: docs/portfolio_memory_architecture.md
+  primary_domain: MEMORY
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: Memory system architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - MEMORY
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Portfolio memory and historical data architecture
+  report_value:
+    category: pm_reasoning
+    justification: "Memory architecture enabling historical context integration in PM Summary section"
+  tags:
+    - memory
+    - architecture
+
+- artifact_id: portfolio_state_model_md
+  file_path: docs/portfolio_state_model.md
+  primary_domain: STATE
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: State management architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - STATE
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Portfolio state model and data structures
+  report_value:
+    category: pm_reasoning
+    justification: "Portfolio state model defining data structures rendered in Current Portfolio Reality block"
+  tags:
+    - state
+    - model
+
+- artifact_id: watchlist_asset_registry_framework_md
+  file_path: docs/watchlist_asset_registry_framework.md
+  primary_domain: STATE
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: State management architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - STATE
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Watchlist and asset registry framework
+  report_value:
+    category: action_space_clarity
+    justification: "Watchlist framework defining deployment candidate tracking rendered in Watchlist block"
+  tags:
+    - state
+    - watchlist
+
+- artifact_id: data_ingestion_normalization_framework_md
+  file_path: docs/data_ingestion_normalization_framework.md
+  primary_domain: DATA
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: Data management architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - DATA
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  description: Data ingestion and normalization framework
+  report_value:
+    category: traceability
+    justification: "Data ingestion framework enabling consistent data normalization for signal engine inputs"
+  tags:
+    - data
+    - ingestion
+
+
+  # ======================================================================
+  # RUNTIME GOVERNANCE MODULES
+  # ======================================================================
+
+- artifact_id: runtime_state_model_py
+  file_path: runtime/runtime_state_model.py
+  primary_domain: GOV
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-05-26"
+  last_modified: "2026-05-26"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Multi-dimensional runtime state model with orthogonal integrity dimensions for governance-aware components
+  report_value:
+    category: traceability
+    justification: "Defines shared runtime state vocabulary enabling all governance components to classify and aggregate pipeline health consistently"
+  tags:
+    - runtime
+    - governance
+    - state_model
+
+- artifact_id: severity_taxonomy_py
+  file_path: runtime/severity_taxonomy.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-26"
+  last_modified: "2026-05-26"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Single canonical definition of severity levels used system-wide by all governance-aware components
+  report_value:
+    category: traceability
+    justification: "Defines canonical severity levels used by all validators and pipeline components for consistent event classification"
+  tags:
+    - governance
+    - runtime
+    - severity
+    - taxonomy
+
+- artifact_id: reasoning_object_py
+  file_path: runtime/reasoning_object.py
+  primary_domain: REASONING
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-26"
+  last_modified: "2026-05-26"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - REASONING
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies:
+    - severity_taxonomy_py
+  description: Reasoning Object schema and TemporalValidity model — formal contract between REASONING and REPORT layers
+  report_value:
+    category: pm_reasoning
+    justification: "Defines the formal schema for Reasoning Objects that carry portfolio conclusions from REASONING to REPORT layer"
+  tags:
+    - runtime
+    - reasoning
+    - schema
+    - temporal_validity
+
+- artifact_id: run_context_py
+  file_path: runtime/run_context.py
+  primary_domain: ARCH
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - ARCH
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - runtime_state_model_py
+  description: Run Context creation and validation — temporal snapshot ensuring pipeline consistency across all chain layers
+  report_value:
+    category: traceability
+    justification: "Creates temporal snapshots ensuring all engines operate on identical data, enabling deterministic replay and provenance validation"
+  tags:
+    - runtime
+    - run_context
+    - temporal_consistency
+    - provenance
+
+- artifact_id: pipeline_result_py
+  file_path: runtime/pipeline_result.py
+  primary_domain: ARCH
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - ARCH
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - runtime_state_model_py
+  description: Typed PipelineResult dataclass contract replacing implicit dict-based orchestration outputs with explicit typed fields
+  report_value:
+    category: traceability
+    justification: "Provides typed contract for pipeline execution output enabling deterministic validation of all generated artifacts and integrity states"
+  tags:
+    - runtime
+    - pipeline
+    - contract
+    - determinism
+
+- artifact_id: confidence_policy_py
+  file_path: runtime/confidence_policy.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies:
+    - runtime_state_model_py
+    - severity_taxonomy_py
+  description: Configurable confidence degradation policy loaded from governance YAML without modifying schema or engine source code
+  report_value:
+    category: confidence_explanation
+    justification: "Defines configurable degradation formula enabling transparent confidence reduction when upstream signal categories are unavailable"
+  tags:
+    - runtime
+    - governance
+    - confidence
+    - degradation
+    - policy
+
+- artifact_id: semantic_state_store_py
+  file_path: runtime/semantic_state_store.py
+  primary_domain: SEMANTICS
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - SEMANTICS
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies:
+    - run_context_py
+    - runtime_state_model_py
+  description: Immutable archive persistence layer for semantic states with delta computation and historical replay
+  report_value:
+    category: traceability
+    justification: "Persists immutable semantic state snapshots enabling forensic replay, delta tracking, and canonical snapshot retrieval between pipeline runs"
+  tags:
+    - runtime
+    - semantics
+    - persistence
+    - snapshot
+    - delta
+
+- artifact_id: chain_validator_py
+  file_path: runtime/chain_validator.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: Governance maintainer
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies:
+    - provenance_schema_py
+    - reasoning_object_py
+    - runtime_state_model_py
+  description: Pre-normalized graph-based provenance verification with O(1) lookups and 2-second validation budget
+  report_value:
+    category: traceability
+    justification: "Verifies provenance chain integrity for every report section ensuring no canonical chain layer is skipped at runtime"
+  tags:
+    - runtime
+    - governance
+    - chain-validation
+    - provenance
+    - observability
+
+
+  # ======================================================================
+  # GOVERNANCE MODULES
+  # ======================================================================
+
+- artifact_id: schema_version_registry_py
+  file_path: governance/schema_version_registry.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-26"
+  last_modified: "2026-05-26"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Schema version registry tracking versions for all 5 canonical artifact schemas with compatibility validation
+  report_value:
+    category: traceability
+    justification: "Tracks schema versions for all canonical artifacts enabling compatibility validation and preventing silent breaking changes"
+  tags:
+    - governance
+    - schema
+    - versioning
+    - compatibility
+
+- artifact_id: provenance_schema_py
+  file_path: governance/provenance_schema.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies:
+    - schema_version_registry_py
+  description: Provenance schema defining SectionProvenance and ReportProvenance dataclasses with YAML/JSON serialization and canonical sidecar file persistence
+  report_value:
+    category: traceability
+    justification: "Defines provenance structure enabling full chain traceability from report sections back to signal engines via reasoning objects and semantic states"
+  tags:
+    - governance
+    - provenance
+    - traceability
+    - sidecar
+
+- artifact_id: canonical_boundary_py
+  file_path: governance/canonical_boundary.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Canonical boundary enforcement classifying artifacts and promoting transient to canonical when persisted or passed downstream
+  report_value:
+    category: traceability
+    justification: "Classifies artifacts as canonical or transient, preventing governance overhead on internal processing structures while enforcing boundary promotion"
+  tags:
+    - governance
+    - canonical
+    - boundary
+    - classification
+
+
+  # ======================================================================
+  # PIPELINE AND CHAIN MODULES
+  # ======================================================================
+
+- artifact_id: pipeline_orchestrator_py
+  file_path: engines/pipeline_orchestrator.py
+  primary_domain: ARCH
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: System architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies:
+    - engine_runner_py
+    - semantic_engine_py
+    - run_context_py
+    - reasoning_object_py
+    - semantic_state_store_py
+    - provenance_schema_py
+    - pipeline_result_py
+    - runtime_state_model_py
+    - severity_taxonomy_py
+  description: Replaces engine_runner.py orchestration with chain-compliant 10-step pipeline execution enforcing domain boundaries
+  report_value:
+    category: traceability
+    justification: "Chain-aware pipeline orchestrator enforcing canonical authority flow SIGNALS to SEMANTICS to REASONING to REPORT with forbidden flow detection"
+  tags:
+    - architecture
+    - orchestration
+    - pipeline
+    - chain-compliance
+
+- artifact_id: deployment_matrix_py
+  file_path: runtime/deployment_matrix.py
+  primary_domain: REASONING
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-28"
+  last_modified: "2026-05-28"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - REASONING
+    - ARCH
+  allowed_readers:
+    - ALL
+  dependencies:
+    - reasoning_object_py
+    - run_context_py
+  description: Three-basket deployment matrix schema (momentum_core, diversification_candidates, risk_thresholds, unclassified) with position assignment validation
+  report_value:
+    category: action_space_clarity
+    justification: "Formalizes three-basket capital allocation model enabling traceable deployment reasoning with confidence levels and temporal validity"
+  tags:
+    - runtime
+    - reasoning
+    - deployment
+    - allocation
+    - baskets
+
+
+  # ======================================================================
+  # PHASE C ARTIFACTS
+  # ======================================================================
+
+- artifact_id: test_property_deployment_matrix_partition_py
+  file_path: tests/test_property_deployment_matrix_partition.py
+  primary_domain: GOV
+  artifact_type: TEST
+  lifecycle_status: canonical
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: Quality engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  description: "Property 17: Deployment Matrix Partition Invariant (Req 14.2, 14.3)"
+  report_value:
+    category: traceability
+    justification: "Validates deployment matrix partition correctness via Hypothesis PBT"
+  tags:
+    - property-test
+    - hypothesis
+    - phase-c
+
+- artifact_id: test_property_semantic_coverage_invariant_py
+  file_path: tests/test_property_semantic_coverage_invariant.py
+  primary_domain: GOV
+  artifact_type: TEST
+  lifecycle_status: canonical
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: Quality engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  description: "Property 4: Semantic Coverage Invariant (Req 2.1, 2.2)"
+  report_value:
+    category: traceability
+    justification: "Validates semantic coverage completeness across all 14 categories"
+  tags:
+    - property-test
+    - hypothesis
+    - phase-c
+
+- artifact_id: test_property_portfolio_watchlist_separation_py
+  file_path: tests/test_property_portfolio_watchlist_separation.py
+  primary_domain: GOV
+  artifact_type: TEST
+  lifecycle_status: canonical
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: Quality engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  description: "Property 7: Portfolio/Watchlist Separation (Req 5.1-5.4, 5.6)"
+  report_value:
+    category: traceability
+    justification: "Validates portfolio/watchlist block separation invariant"
+  tags:
+    - property-test
+    - hypothesis
+    - phase-c
+
+- artifact_id: test_property_position_transition_rendering_py
+  file_path: tests/test_property_position_transition_rendering.py
+  primary_domain: GOV
+  artifact_type: TEST
+  lifecycle_status: canonical
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: Quality engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  description: "Property 23: Position Transition Rendering (Req 5.5)"
+  report_value:
+    category: traceability
+    justification: "Validates transition notices contain position_id, previous, new"
+  tags:
+    - property-test
+    - hypothesis
+    - phase-c
+
+- artifact_id: test_report_engine_portfolio_watchlist_py
+  file_path: engines/test_report_engine_portfolio_watchlist.py
+  primary_domain: REPORT
+  artifact_type: TEST
+  lifecycle_status: canonical
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: Quality engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - REPORT
+    - ARCH
+  allowed_readers:
+    - ALL
+  description: Unit tests for Portfolio State / Watchlist separation in ReportEngine
+  report_value:
+    category: traceability
+    justification: "Validates report rendering of portfolio and watchlist blocks"
+  tags:
+    - unit-test
+    - phase-c
+
+- artifact_id: test_deployment_matrix_py
+  file_path: runtime/test_deployment_matrix.py
+  primary_domain: GOV
+  artifact_type: TEST
+  lifecycle_status: canonical
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: Quality engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  description: Unit tests for DeploymentMatrix and PositionAssignment dataclasses
+  report_value:
+    category: traceability
+    justification: "Validates deployment matrix get_basket() and validate() behavior"
+  tags:
+    - unit-test
+    - phase-c
+
+- artifact_id: verification_gate_governance_md
+  file_path: .kiro/steering/verification_gate_governance.md
+  primary_domain: GOV
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: CTO
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  description: Steering rule preventing auto-skip of verification gates in DAG execution
+  report_value:
+    category: traceability
+    justification: "Prevents green architecture hallucinations from skipped verification"
+  tags:
+    - steering
+    - governance
+    - phase-c
+
+- artifact_id: semantic_expansion_verification_md
+  file_path: .kiro/specs/report-runtime-integrity/semantic_expansion_verification.md
+  primary_domain: GOV
+  artifact_type: REPORT
+  lifecycle_status: canonical
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: Quality engineer
+  ssot_relationship: derived
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  description: Formal verification evidence for Phase C Output Contract (Task 9)
+  report_value:
+    category: traceability
+    justification: "Documents explicit test evidence for Phase C verification gate"
+  tags:
+    - verification
+    - phase-c
+
+- artifact_id: readme_semantic_expansion_implementation_md
+  file_path: .kiro/specs/report-runtime-integrity/README_semantic_expansion_implementation.md
+  primary_domain: GOV
+  artifact_type: REPORT
+  lifecycle_status: canonical
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: System architect
+  ssot_relationship: derived
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  description: Implementation summary for Phase C Semantic Expansion
+  report_value:
+    category: traceability
+    justification: "Documents Phase C deliverables, architecture impact, and test coverage"
+  tags:
+    - documentation
+    - phase-c
+
+
+  # ======================================================================
+  # PHASE D: PREVIOUSLY UNREGISTERED ARTIFACTS
+  # ======================================================================
+
+- artifact_id: action_space_framework_md
+  file_path: docs/action_space_framework.md
+  primary_domain: REASONING
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-10"
+  last_modified: "2026-05-25"
+  owner_role: Reasoning logic architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - REASONING
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies: []
+  description: Action space framework defining how portfolio actions are structured and prioritized
+  report_value:
+    category: action_space_clarity
+    justification: "Defines the action space framework enabling structured action implications in Reasoning Objects"
+  tags:
+    - reasoning
+    - action_space
+    - framework
+
+- artifact_id: opportunity_engine_design_md
+  file_path: docs/opportunity_engine_design.md
+  primary_domain: REASONING
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-15"
+  last_modified: "2026-05-25"
+  owner_role: Reasoning logic architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - REASONING
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies:
+    - action_space_framework_md
+  description: Opportunity engine design specification for deployment candidate identification
+  report_value:
+    category: action_space_clarity
+    justification: "Defines opportunity detection logic enabling deployment candidate identification in daily report"
+  tags:
+    - reasoning
+    - opportunity
+    - design
+
+- artifact_id: portfolio_os_domainization_steering_md
+  file_path: docs/portfolio_os_domainization_steering.md
+  primary_domain: GOV
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-03-01"
+  last_modified: "2026-05-25"
+  owner_role: Governance architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies: []
+  description: Portfolio OS domainization steering rules and governance principles
+  report_value:
+    category: traceability
+    justification: "Defines domainization steering rules ensuring governance consistency across all system components"
+  tags:
+    - governance
+    - steering
+    - domainization
+
+- artifact_id: future_framework_backlog_md
+  file_path: docs/future_framework_backlog.md
+  primary_domain: ARCH
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-03-01"
+  last_modified: "2026-05-25"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - ARCH
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies: []
+  description: Future framework backlog tracking planned extensions and improvements
+  report_value:
+    category: traceability
+    justification: "Tracks planned framework extensions enabling roadmap visibility for report pipeline evolution"
+  tags:
+    - architecture
+    - backlog
+    - planning
+
+- artifact_id: confidence_model_md
+  file_path: docs/confidence_model.md
+  primary_domain: GOV
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-10"
+  last_modified: "2026-05-25"
+  owner_role: Governance architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies: []
+  description: Confidence model specification defining how confidence levels are computed and interpreted
+  report_value:
+    category: confidence_explanation
+    justification: "Defines confidence model enabling transparent confidence scoring in Reasoning Objects and degradation notices"
+  tags:
+    - governance
+    - confidence
+    - model
+
+- artifact_id: report_pipeline_architecture_md
+  file_path: docs/report_pipeline_architecture.md
+  primary_domain: ARCH
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-15"
+  last_modified: "2026-05-25"
+  owner_role: System architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - ARCH
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies:
+    - engine_design_principles_md
+  description: Report pipeline architecture specification defining the SIGNALS to SEMANTICS to REASONING to REPORT flow
+  report_value:
+    category: traceability
+    justification: "Defines report pipeline architecture enabling chain-compliant report generation through canonical authority flow"
+  tags:
+    - architecture
+    - pipeline
+    - report
+
+- artifact_id: deployment_intelligence_framework_md
+  file_path: docs/deployment_intelligence_framework.md
+  primary_domain: REASONING
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-20"
+  last_modified: "2026-05-25"
+  owner_role: Reasoning logic architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - REASONING
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies:
+    - action_space_framework_md
+  description: Deployment intelligence framework for capital allocation reasoning and basket assignment
+  report_value:
+    category: action_space_clarity
+    justification: "Defines deployment intelligence enabling three-basket capital allocation reasoning in daily report"
+  tags:
+    - reasoning
+    - deployment
+    - intelligence
+
+- artifact_id: multilingual_rendering_framework_md
+  file_path: docs/multilingual_rendering_framework.md
+  primary_domain: REPORT
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-25"
+  last_modified: "2026-05-25"
+  owner_role: Report generation architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - REPORT
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies:
+    - report_section_specification_md
+  description: Multilingual rendering framework for report output localization and plain-language generation
+  report_value:
+    category: multilingual_rendering
+    justification: "Defines multilingual rendering rules enabling plain-language report output free of unexplained jargon"
+  tags:
+    - report
+    - multilingual
+    - rendering
+
+- artifact_id: trusted_signal_sources_md
+  file_path: docs/trusted_signal_sources.md
+  primary_domain: SIGNALS
+  artifact_type: SSOT
+  lifecycle_status: canonical
+  created_date: "2026-02-01"
+  last_modified: "2026-05-25"
+  owner_role: Signal generation architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - SIGNALS
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies: []
+  description: Trusted signal sources registry defining authorized data inputs for signal generation
+  report_value:
+    category: traceability
+    justification: "Defines trusted signal sources enabling provenance validation of data inputs to signal engines"
+  tags:
+    - signals
+    - trusted_sources
+    - provenance
+
+- artifact_id: governance_stabilization_verification_md
+  file_path: reports/governance_stabilization_verification_2026-05-25.md
+  primary_domain: GOV
+  artifact_type: REPORT
+  lifecycle_status: canonical
+  created_date: "2026-05-25"
+  last_modified: "2026-05-25"
+  owner_role: Governance engineer
+  ssot_relationship: derived
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies: []
+  description: Governance stabilization verification report documenting system health validation results
+  report_value:
+    category: traceability
+    justification: "Documents governance stabilization verification results enabling audit trail of system health"
+  tags:
+    - governance
+    - verification
+    - report
+
+- artifact_id: task_1_execution_report_md
+  file_path: reports/task_1_execution_report.md
+  primary_domain: GOV
+  artifact_type: REPORT
+  lifecycle_status: canonical
+  created_date: "2026-05-25"
+  last_modified: "2026-05-25"
+  owner_role: Governance engineer
+  ssot_relationship: derived
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies: []
+  description: Task 1 execution report documenting implementation progress and decisions
+  report_value:
+    category: traceability
+    justification: "Documents task execution results enabling implementation audit trail"
+  tags:
+    - governance
+    - execution
+    - report
+
+- artifact_id: governance_stabilization_preflight_md
+  file_path: reports/governance_stabilization_preflight_2026-05-25.md
+  primary_domain: GOV
+  artifact_type: REPORT
+  lifecycle_status: canonical
+  created_date: "2026-05-25"
+  last_modified: "2026-05-25"
+  owner_role: Governance engineer
+  ssot_relationship: derived
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies: []
+  description: Governance stabilization preflight report documenting prerequisite validation
+  report_value:
+    category: traceability
+    justification: "Documents preflight checks enabling safe governance stabilization execution"
+  tags:
+    - governance
+    - preflight
+    - report
+
+- artifact_id: governance_stabilization_audit_md
+  file_path: reports/governance_stabilization_audit_2026-05-25.md
+  primary_domain: GOV
+  artifact_type: REPORT
+  lifecycle_status: canonical
+  created_date: "2026-05-25"
+  last_modified: "2026-05-25"
+  owner_role: Governance engineer
+  ssot_relationship: derived
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  metadata_source: frontmatter
+  registry_mode: mirror_only
+  dependencies: []
+  description: Governance stabilization audit report documenting compliance findings and recommendations
+  report_value:
+    category: traceability
+    justification: "Documents governance audit findings enabling compliance verification"
+  tags:
+    - governance
+    - audit
+    - report
+
+
+  # ======================================================================
+  # PHASE D: NEW FEATURE IMPLEMENTATION ARTIFACTS
+  # ======================================================================
+
+- artifact_id: sunset_governance_py
+  file_path: governance/sunset_governance.py
+  primary_domain: GOV
+  artifact_type: ENGINE
+  lifecycle_status: active
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: Governance engineer
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - lifecycle_state_machine_yaml
+  description: 4-phase sunset governance model for deprecated artifacts. Implements HARDENING 12 with evaluate_sunset_phase() and get_sunset_report() for legacy briefing file lifecycle management.
+  report_value:
+    category: traceability
+    justification: "Prevents artifact zombie sprawl by enforcing deterministic deprecation lifecycle"
+  tags:
+    - governance
+    - sunset
+    - deprecation
+    - phase-d
+
+- artifact_id: confidence_policy_yaml
+  file_path: governance/confidence_policy.yaml
+  primary_domain: GOV
+  artifact_type: CONFIG
+  lifecycle_status: active
+  created_date: "2026-05-27"
+  last_modified: "2026-05-27"
+  owner_role: Governance architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  metadata_source: registry
+  registry_mode: full
+  dependencies:
+    - confidence_policy_py
+  description: YAML configuration for confidence degradation policy parameters (base_ceiling, penalty, floor)
+  report_value:
+    category: confidence_explanation
+    justification: "Configurable degradation policy parameters enabling confidence tuning without code changes"
+  tags:
+    - governance
+    - confidence
+    - config
+
+- artifact_id: governance_init_py
+  file_path: governance/__init__.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-26"
+  last_modified: "2026-05-26"
+  owner_role: System architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+    - ARCH
+  allowed_readers:
+    - ALL
+  metadata_source: registry
+  registry_mode: full
+  dependencies: []
+  description: Python package initialization for governance module
+  report_value:
+    category: traceability
+    justification: "Python package init enabling governance module imports across the codebase"
+  tags:
+    - governance
+    - package
+    - {'registry_mode': 'transient_exempt'}
+
+- artifact_id: runtime_init_py
+  file_path: runtime/__init__.py
+  primary_domain: ARCH
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-26"
+  last_modified: "2026-05-26"
+  owner_role: System architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - ARCH
+    - GOV
+  allowed_readers:
+    - ALL
+  metadata_source: registry
+  registry_mode: full
+  dependencies: []
+  description: Python package initialization for runtime module
+  report_value:
+    category: traceability
+    justification: "Python package init enabling runtime module imports across the codebase"
+  tags:
+    - runtime
+    - package
+    - {'registry_mode': 'transient_exempt'}
+
+
+  # ======================================================================
+  # DELTA LAYER: DEPLOYMENT AUTHORITY AND DOMAINIZATION HARDENING
+  # ======================================================================
+
+- artifact_id: influence_graph_py
+  file_path: governance/influence_graph.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-31"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - governance_influence_declarations_yaml
+  description: Governance module dependency graph with cycle detection and directionality enforcement. Prevents circular governance influence paths.
+  report_value:
+    category: traceability
+    justification: "Validates governance module dependency topology preventing circular influence that could amplify or oscillate decisions"
+  tags:
+    - governance
+    - influence_graph
+    - cycle_detection
+    - delta_layer
+
+- artifact_id: deployment_authority_py
+  file_path: governance/deployment_authority.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-31"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - deployment_authority_model_yaml
+    - mutation_audit_ledger_py
+  description: Minimal OWNER/CI/RUNTIME authority model with topology constraint enforcement (3 forbidden pairs) and deploy provenance recording.
+  report_value:
+    category: traceability
+    justification: "Enforces deployment authority separation preventing single actor from both deploying and mutating governance"
+  tags:
+    - governance
+    - deployment_authority
+    - topology_constraint
+    - delta_layer
+
+- artifact_id: transition_cooldown_py
+  file_path: governance/transition_cooldown.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-31"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - mutation_audit_ledger_py
+  description: Anti-flapping cooldown guard for enforcement mode transitions. Configurable [1h, 24h] with emergency bypass and full audit trail.
+  report_value:
+    category: traceability
+    justification: "Prevents enforcement mode oscillation ensuring stable governance state transitions"
+  tags:
+    - governance
+    - transition_cooldown
+    - anti_flapping
+    - delta_layer
+
+- artifact_id: domain_lifecycle_py
+  file_path: governance/domain_lifecycle.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-05-31"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - mutation_audit_ledger_py
+  description: Domain lifecycle state model (active/deprecated/archived) with deprecation-triggered artifact reassignment planning and execution.
+  report_value:
+    category: traceability
+    justification: "Governs domain lifecycle transitions preventing artifact orphaning during domain deprecation"
+  tags:
+    - governance
+    - domain_lifecycle
+    - deprecation
+    - delta_layer
+
+- artifact_id: delta_init_py
+  file_path: governance/delta_init.py
+  primary_domain: GOV
+  artifact_type: RUNTIME
+  lifecycle_status: active
+  created_date: "2026-06-01"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: implementation
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - influence_graph_py
+    - deployment_authority_py
+    - transition_cooldown_py
+    - domain_lifecycle_py
+  description: Delta layer initialization sequence orchestrator. Loads components in strict order with CRITICAL halt and fail_soft degradation semantics.
+  report_value:
+    category: traceability
+    justification: "Orchestrates delta layer initialization ensuring correct component loading order and failure semantics"
+  tags:
+    - governance
+    - initialization
+    - delta_layer
+
+- artifact_id: governance_influence_declarations_yaml
+  file_path: .domainization/governance_influence_declarations.yaml
+  primary_domain: GOV
+  artifact_type: DATA
+  lifecycle_status: active
+  created_date: "2026-05-31"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Static dependency declarations for all 13 governance modules. Consumed by InfluenceGraph for cycle detection and directionality enforcement.
+  report_value:
+    category: traceability
+    justification: "Declares governance module dependencies enabling static cycle detection at initialization"
+  tags:
+    - governance
+    - declarations
+    - data
+    - delta_layer
+
+- artifact_id: deployment_authority_model_yaml
+  file_path: .domainization/deployment_authority_model.yaml
+  primary_domain: GOV
+  artifact_type: DATA
+  lifecycle_status: active
+  created_date: "2026-05-31"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Three-role authority model (OWNER/CI/RUNTIME) with authority assignments and forbidden pairs. Consumed by DeploymentAuthorityModel for topology validation.
+  report_value:
+    category: traceability
+    justification: "Defines deployment authority topology enabling separation-of-concerns validation at initialization"
+  tags:
+    - governance
+    - authority_model
+    - data
+    - delta_layer
+
+- artifact_id: readme_deployment_authority_and_domain_lifecycle_md
+  file_path: governance/README_deployment_authority_and_domain_lifecycle.md
+  primary_domain: GOV
+  artifact_type: SSOT
+  lifecycle_status: active
+  created_date: "2026-06-01"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: canonical
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - influence_graph_py
+    - deployment_authority_py
+    - transition_cooldown_py
+    - domain_lifecycle_py
+    - delta_init_py
+  description: Comprehensive documentation for the deployment authority and domain lifecycle delta layer. Documents all 4 modules, YAML data files, CTO decisions, and initialization sequence.
+  report_value:
+    category: traceability
+    justification: "Documents delta layer architecture enabling developer onboarding and governance audit"
+  tags:
+    - governance
+    - documentation
+    - delta_layer
+
+- artifact_id: test_governance_layer_report_md
+  file_path: .domainization/reports/test_governance_layer_task7_2.md
+  primary_domain: GOV
+  artifact_type: REPORT
+  lifecycle_status: active
+  created_date: "2026-06-01"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: derived
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Test governance inventory report for MoneyHorst. Documents test baseline, classification, engine/signal coverage gaps, and extension governance recommendations.
+  report_value:
+    category: traceability
+    justification: "Documents test governance layer enabling regression-safe extension of engines, signals, and reports"
+  tags:
+    - governance
+    - testing
+    - inventory
+    - delta_layer
+
+- artifact_id: final_verification_gate_task6_md
+  file_path: .domainization/reports/final_verification_gate_task6.md
+  primary_domain: GOV
+  artifact_type: REPORT
+  lifecycle_status: active
+  created_date: "2026-06-01"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: derived
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Final verification gate report for the deployment-authority-and-domainization-hardening spec. Documents 494/494 tests passing with full Hypothesis statistics.
+  report_value:
+    category: traceability
+    justification: "Documents final verification gate passage enabling spec completion audit trail"
+  tags:
+    - governance
+    - verification
+    - report
+    - delta_layer
+
+- artifact_id: documentation_execution_report_task7_md
+  file_path: .domainization/reports/documentation_execution_report_task7.md
+  primary_domain: GOV
+  artifact_type: REPORT
+  lifecycle_status: active
+  created_date: "2026-06-01"
+  last_modified: "2026-06-01"
+  owner_role: Governance architect
+  ssot_relationship: derived
+  allowed_writers:
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies: []
+  description: Execution report for Task 7 (Documentation phase). Documents preconditions, subtask completion, artifacts produced, and spec closure.
+  report_value:
+    category: traceability
+    justification: "Documents Task 7 execution enabling traceability of documentation phase completion"
+  tags:
+    - governance
+    - execution_report
+    - delta_layer

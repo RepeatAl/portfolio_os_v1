@@ -8,6 +8,10 @@
 __pycache__/
 *.pyc
 
+# Pytest
+.pytest_cache/
+.coverage
+
 # MacOS
 .DS_Store
 
