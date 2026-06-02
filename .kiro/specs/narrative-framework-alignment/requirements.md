@@ -41,9 +41,9 @@ This document does NOT duplicate the Market Organism glossary.
 
 ### Out of Scope
 
-See Section "Out of Scope" below.
+See below.
 
-## Requirements
+## Out of Scope
 
 The following are explicitly excluded from this spec:
 
@@ -60,9 +60,9 @@ The following are explicitly excluded from this spec:
 - Data ingestion or external data source integration
 - Modification of the Temporal_Taxonomy (`velocity` is NOT a new temporal property)
 
-## Out of Scope
+## Requirements
 
-### Requirement 1: Canonical Narrative ID Namespace
+### NFA-REQ-1: Canonical Narrative ID Namespace
 
 **User Story:** As a portfolio architect, I want every canonical narrative to carry a stable, language-independent identifier, so that narrative identity is preserved across language rendering, version changes, and consumer integrations.
 
@@ -80,7 +80,7 @@ The following are explicitly excluded from this spec:
 
 ---
 
-### Requirement 2: Future-Leak Prohibition
+### NFA-REQ-2: Future-Leak Prohibition
 
 **User Story:** As a portfolio architect, I want the Narrative Framework to explicitly prohibit numeric scoring and weighting, so that the definition layer remains pure and does not seed implementation assumptions.
 
@@ -97,7 +97,7 @@ The following are explicitly excluded from this spec:
 
 ---
 
-### Requirement 3: Lifecycle State Machine Canonicalization
+### NFA-REQ-3: Lifecycle State Machine Canonicalization
 
 **User Story:** As a portfolio architect, I want each narrative lifecycle state to carry a canonical ID and formal transition definition, so that consumers reference states unambiguously.
 
@@ -114,7 +114,7 @@ The following are explicitly excluded from this spec:
 
 ---
 
-### Requirement 4: Signal Sensor Relationship Declaration
+### NFA-REQ-4: Signal Sensor Relationship Declaration
 
 **User Story:** As a portfolio architect, I want the Narrative Framework to explicitly declare the relationship between narratives and signals, so that no consumer confuses signals as causal agents of narrative transitions.
 
@@ -131,7 +131,7 @@ The following are explicitly excluded from this spec:
 
 ---
 
-### Requirement 5: Explanation Readiness Contract
+### NFA-REQ-5: Explanation Readiness Contract
 
 **User Story:** As a portfolio architect, I want the Narrative Framework to define how narratives participate in the explanation chain, so that the Explanation Framework can traverse through Level 4 without dead ends.
 
@@ -149,7 +149,7 @@ The following are explicitly excluded from this spec:
 
 ---
 
-### Requirement 6: Cross-Reference Convention Adoption
+### NFA-REQ-6: Cross-Reference Convention Adoption
 
 **User Story:** As a portfolio architect, I want the Narrative Framework to use the canonical cross-reference convention, so that all references to other deliverables are machine-navigable and auditable.
 
@@ -165,7 +165,7 @@ The following are explicitly excluded from this spec:
 
 ---
 
-### Requirement 7: Exclusion Constraints Section
+### NFA-REQ-7: Exclusion Constraints Section
 
 **User Story:** As a portfolio architect, I want the Narrative Framework to include a consolidated exclusion constraints section, so that prohibitions are reviewable in one location.
 
@@ -181,7 +181,7 @@ The following are explicitly excluded from this spec:
 
 ---
 
-### Requirement 8: Narrative Extension Criteria
+### NFA-REQ-8: Narrative Extension Criteria
 
 **User Story:** As a portfolio architect, I want formal criteria for adding new narratives to the canonical registry, so that growth is controlled and consistent.
 
@@ -195,7 +195,7 @@ The following are explicitly excluded from this spec:
 
 ---
 
-### Requirement 9: Dependency_Type Integration
+### NFA-REQ-9: Dependency_Type Integration
 
 **User Story:** As a portfolio architect, I want the Narrative Framework to explicitly distinguish the Narrative dependency mechanism from Narrative-as-Container, so that consumers do not conflate these two uses of the word "Narrative."
 
@@ -211,7 +211,7 @@ The following are explicitly excluded from this spec:
 
 ---
 
-### Requirement 10: Feedback Loop Integration
+### NFA-REQ-10: Feedback Loop Integration
 
 **User Story:** As a portfolio architect, I want the Narrative Framework to describe how narratives participate in feedback loops, so that the non-DAG mandate is respected and circular causation is modeled.
 
@@ -229,7 +229,7 @@ The following are explicitly excluded from this spec:
 
 ---
 
-### Requirement 11: Architectural Compatibility
+### NFA-REQ-11: Architectural Compatibility
 
 **User Story:** As a portfolio architect, I want the Narrative Framework to declare explicit architectural compatibility, so that integration with the existing Portfolio OS ecosystem is preserved.
 
@@ -250,6 +250,8 @@ The following are explicitly excluded from this spec:
 ## Acceptance Criteria Summary
 
 All acceptance criteria are testable by document inspection. No criterion requires runtime behavior, engine execution, or code compilation. Verification is structural: required sections present, required declarations made, prohibited content absent.
+
+All requirements use stable NFA-REQ IDs and are traceable to NAG gaps.
 
 ## Gap Traceability
 
