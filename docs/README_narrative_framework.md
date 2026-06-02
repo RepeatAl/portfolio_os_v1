@@ -1,452 +1,255 @@
+# Narrative Framework
+
 ---
 artifact_id: narrative_framework_md
 primary_domain: ARCH
 artifact_type: SSOT
 lifecycle_status: canonical
 created_date: 2026-05-31
-last_modified: 2026-05-31
+last_modified: 2026-06-02
 owner_role: Defines the ontology of Narrative as a primitive in the MoneyHorst architecture
 ssot_relationship: canonical
 topic: narrative_ontology
 allowed_writers: [ARCH, GOV]
 allowed_readers: [ALL]
-dependencies: [market_organism_framework, engine_roadmap_framework_md, journey_capability_matrix_md]
+dependencies: [market_organism.principles_md, dependency_types_v2_md, temporal_taxonomy_md, expansion_taxonomy_md, explanation_framework_md, language_rendering_framework_md]
+version: v2
+alignment_spec: narrative-framework-alignment
 ---
 
-# NARRATIVE FRAMEWORK
+## 1. Scope Statement
 
-Version: v1
-Status: Canonical Ontology Document
-Position: Foundational primitive definition — required before P0 implementation
+This document defines the Narrative ontology as a formal primitive in the Market Organism architecture. Narrative occupies the second position in the canonical primitive chain (`State_Change → Narrative → System → Asset`) and serves as the explanatory container that organizes how a State_Change's effects are understood by market participants.
 
----
+This is a **definition-layer document**. It declares WHAT a Narrative is, how it relates to other primitives, and what rules govern its lifecycle and membership — nothing more.
 
-## WHY THIS DOCUMENT EXISTS
+For consolidated prohibitions on what this document does NOT contain and does NOT authorize, see Section 15: Exclusion Constraints.
 
-The Engine Roadmap identifies Asset-to-Narrative Registry as the first P0 capability.
-But nowhere in the architecture is "Narrative" formally defined.
+**Explicit exclusions**: This document does NOT contain data, engines, scores, implementation details, or runtime behavior. It does not populate registries, execute algorithms, produce dashboards, assign numeric weights, calculate probabilities, or recommend portfolio allocations.
 
-It appears everywhere:
-- State_Change_Taxonomy has a "Narrative" top-level category
-- Semantic engine detects "narrative_dependency"
-- Investigation Journey traverses "asset to narrative to state change"
-- Dependency_Types includes "Narrative" as a propagation mechanism
+## 2. Glossary Reference
 
-Yet the fundamental questions remain unanswered:
-- What IS a narrative?
-- How does it relate to State_Change?
-- How does it relate to Assets?
-- When does it begin and end?
-- Can narratives contain other narratives?
+All terms used in this document are defined in the canonical glossary:
+→ `.kiro/specs/market-organism-framework/requirements.md`, Section: Glossary
+(See: README_shared_glossary_reference, Section: Glossary Usage Rules)
 
-Without this definition, the Asset-to-Narrative Registry cannot be built correctly.
-Without the registry, P0 cannot function.
-Without P0, no journey works.
+This document does not define terms except for the three amendments below.
 
-This is the last foundational primitive.
+### Glossary Amendments
 
----
+| Term | Definition | Status |
+|------|-----------|--------|
+| Narrative_Container | The structural role of a Narrative as the explanatory grouping that organizes how a State_Change's effects are understood by market participants. Distinguished from `dep.narrative`, which is the propagation mechanism — not the container itself. | CANONICAL |
+| Narrative_Membership | The relationship between an Asset and a Narrative, classified by membership type (primary/secondary/emerging/legacy) and qualitative influence descriptor (strong/moderate/weak). These are categorical labels, not ordinal numeric proxies. | CANONICAL |
+| Narrative_Interaction | A causal relationship between a State_Change and a Narrative, classified by interaction type (Creates/Strengthens/Weakens/Kills/Revives). State_Changes cause interactions; signals detect their effects. | CANONICAL |
 
-## THE PRIMITIVE CHAIN
+**Disambiguation — Narrative_Container vs `dep.narrative`:**
+- **Narrative_Container** refers to the structural ENTITY — the explanatory grouping under which assets are organized. It is a primitive in the chain (`State_Change → Narrative → System → Asset`).
+- **`dep.narrative`** refers to the Dependency_Type — a propagation MECHANISM through shared belief. It is one of 10 equal Dependency_Types and does not have special authority over other propagation mechanisms simply because it shares the word "Narrative."
 
-The complete ontological hierarchy of MoneyHorst:
+These are orthogonal concepts that happen to share the word "Narrative." A State_Change may propagate THROUGH `dep.narrative` (mechanism) INTO a Narrative_Container (entity). The mechanism and the container are not the same thing.
+(See: README_dependency_types_v2, Section: Narrative)
+
+**Governance note**: These amendments are formalized locally inside Narrative Framework v2 for the purpose of this alignment. Updating the central Market Organism glossary (`.kiro/specs/market-organism-framework/requirements.md`, Section: Glossary) is not performed by this spec unless separately authorized by a future governance task. The glossary-first rule remains intact — these terms are defined here before use, and will be proposed for central inclusion as a follow-up action.
+
+## 3. The Primitive Chain
+
+The Market Organism architecture is organized around a canonical primitive chain that defines the causal ordering of all analysis:
 
 ```
-State_Change (Cause — the impulse that starts everything)
-     |
-     v
-Narrative (Container — the explanatory structure that makes expansion legible)
-     |
-     v
-System (Domain — the affected functional area)
-     |
-     v
-Asset (Observation — the measurable endpoint where effects manifest)
+State_Change → Narrative → System → Asset
 ```
 
-- State_Change is the cause.
-- Narrative is the container that makes propagation understandable.
-- System is the affected functional domain.
-- Asset is the observation point.
+This chain is not a pipeline or a data flow — it is the ontological ordering of cause and effect. Every analytical traversal moves from left to right: from root cause to observable endpoint.
 
-The State_Change creates the impulse.
-The Narrative explains WHY the impulse propagates in a particular direction.
-The System identifies WHICH functional area is affected.
-The Asset is WHERE the effect becomes measurable.
+### Primitive Responsibilities
 
----
+| Primitive | Position | Responsibility | Question Answered |
+|-----------|----------|---------------|-------------------|
+| State_Change | Root (1st) | Root cause — the originating event or regime shift that enters the system | "What happened?" |
+| Narrative | 2nd | Explanatory container — the shared belief structure that organizes how market participants interpret the State_Change | "Why does it matter? What do participants believe?" |
+| System | 3rd | Affected functional domain — the operational or structural system impacted by the narrative's explanatory frame | "Which systems are affected?" |
+| Asset | Leaf (4th) | Observable endpoint — the security or instrument where effects ultimately manifest in price or flow | "Which assets are affected?" |
 
-## WHAT IS A NARRATIVE?
+**Invariants:**
+- State_Change is ALWAYS the root cause. No other primitive may be promoted to causal root.
+- Narrative is ALWAYS the explanatory container. It does not cause; it organizes understanding.
+- System is ALWAYS the affected functional domain. It is not conflated with Narrative.
+- Asset is ALWAYS the leaf node. It is never root, never causal, never the starting point of analysis.
 
-### Definition
+### Taxonomy-Before-Assets Principle
 
-A Narrative is a shared market belief structure that connects a State_Change to a set of affected Systems and Assets by providing the causal explanation for WHY the propagation follows a particular path.
+The primitive chain enforces a strict analytical ordering: classify the change FIRST (State_Change), understand the belief (Narrative), identify the system (System), THEN identify assets (Asset). Analysis never begins from assets and works backward.
 
-A Narrative is NOT:
-- A theme (too vague)
-- A sector (too structural)
-- A trend (too temporal)
-- A signal (too atomic)
-- A State_Change (too causal)
+This is the **taxonomy-before-assets** principle: the classification hierarchy is mandatory and inviolable. No system may begin reasoning from an asset and work backward to infer a State_Change. Assets are always leaf nodes — endpoints of a causal chain, never origins.
 
-A Narrative IS:
-- A collective market interpretation of WHY certain assets benefit or suffer from a State_Change
-- The explanatory bridge between cause (State_Change) and effect (Asset movement)
-- The reason capital flows in a particular direction after an impulse
+**Violation**: Any design, engine, or analytical process that starts with an asset (ticker, security, position) and attempts to derive or infer the originating State_Change from asset behavior violates this principle.
 
-### Formal Properties
+(See: README_market_organism_principles, Section: Principle 2 — Taxonomy Precedes Assets)
 
-| Property | Description |
-|----------|-------------|
-| Explanatory | A narrative explains WHY capital flows from A to B after a State_Change |
-| Shared | A narrative exists because multiple market participants believe it |
-| Temporal | A narrative has a birth, a peak, and a death |
-| Directional | A narrative channels propagation in a specific direction |
-| Falsifiable | A narrative can be invalidated by contradicting evidence |
-| Composable | A narrative can contain sub-narratives |
-| Multi-asset | A narrative connects to multiple assets simultaneously |
+### Position in the Explanation Chain
 
----
+Narrative occupies Level 4 in the explanation chain, answering the question "Because of which narratives?" This position connects upward to Level 3 (State_Changes — "What caused this?") and downward to Level 5 (Expansion paths — "How does it spread?"). Every canonical narrative must be reachable from at least one State_Change and must connect to at least one System — no dead ends permitted.
 
-## NARRATIVE vs. STATE_CHANGE
+(See: README_explanation_framework, Section: Explanation Levels)
 
-This is the critical distinction:
 
-| Aspect | State_Change | Narrative |
-|--------|---|---|
-| Nature | An event that happened | A belief about what the event means |
-| Temporality | Discrete moment | Extended duration |
-| Objectivity | Observable fact | Shared interpretation |
-| Example | "Hyperscaler Capex +40% YoY" | "AI Infrastructure buildout will drive demand for power, cooling, and networking for years" |
-| Role in organism | Root node (cause) | Propagation channel (explanation) |
-| Can be wrong? | No (it happened) | Yes (the belief can be invalidated) |
+## 4. What Is a Narrative? (Definition and Formal Properties)
 
-A State_Change triggers a Narrative.
-A Narrative channels the expansion.
+### Formal Definition
 
-The State_Change is: "What happened?"
-The Narrative is: "What does the market believe this means?"
+A **Narrative** is an explanatory container — a shared belief structure held by market participants that organizes how a State_Change's effects are understood, interpreted, and acted upon. It is the second primitive in the canonical chain (`State_Change → Narrative → System → Asset`) and answers the question: "Why does it matter? What do participants believe?"
 
----
+A Narrative does not cause anything. It does not originate events, trigger signals, or generate data. It is the *organizing frame* through which a population of market participants collectively interprets a root-cause State_Change and channels capital accordingly.
 
-## WHEN DOES A NARRATIVE BEGIN?
+**Key ontological properties:**
 
-A Narrative is born when:
-1. A State_Change occurs that creates a new causal explanation
-2. Multiple market participants adopt this explanation
-3. Capital begins flowing based on this explanation
+- A Narrative is always CAUSED by at least one State_Change — it never self-generates.
+- A Narrative CONTAINS assets through membership relationships — it is the grouping mechanism.
+- A Narrative CONNECTS to at least one System — no dead ends are permitted.
+- A Narrative has a LIFECYCLE — it emerges, strengthens, dominates, weakens, goes dormant, or dies.
+- A Narrative is FALSIFIABLE — contradicting evidence can invalidate it.
 
-**Example:**
-- State_Change: "OpenAI launches GPT-4" (March 2023)
-- Narrative born: "AI will transform every industry — companies building AI infrastructure will see massive demand growth"
-- Evidence of birth: Capital flows into Nvidia, AMD, MSFT accelerate; analyst reports adopt the framing
+### Canonical ID Format
 
-A Narrative does NOT require:
-- Universal agreement (some participants may disagree)
-- Formal announcement (it emerges organically)
-- Precise start date (it crystallizes over days/weeks)
-
----
-
-## WHEN DOES A NARRATIVE DIE?
-
-A Narrative dies when:
-1. The underlying belief is invalidated by contradicting evidence
-2. Capital stops flowing based on this explanation
-3. A new Narrative replaces it as the dominant explanation
-
-**Example:**
-- Narrative: "Crypto will replace traditional finance"
-- Death trigger: FTX collapse + regulatory crackdown (2022)
-- Evidence of death: Capital outflows, narrative replaced by "crypto is speculative, not systemic"
-
-A Narrative death is NOT:
-- Instantaneous (it fades over weeks/months)
-- Permanent (narratives can be reborn with new evidence)
-- Binary (it can weaken without fully dying)
-
-### Narrative Lifecycle States
+Every canonical narrative carries a stable, language-independent identifier using the `narrative.*` namespace.
 
 ```
-Emerging --> Strengthening --> Dominant --> Weakening --> Dormant --> Dead
-                                                           ^
-                                                       (can revive)
+Pattern: narrative.[descriptive_token]
 ```
 
-| State | Description | Capital Flow |
-|-------|-------------|-------------|
-| Emerging | New explanation gaining initial believers | Early movers positioning |
-| Strengthening | Growing consensus, more participants adopting | Accelerating inflows |
-| Dominant | Widely accepted as "obvious truth" | Peak positioning, crowding risk |
-| Weakening | Contradicting evidence appearing, some participants exiting | Outflows beginning |
-| Dormant | No longer driving capital flows but not disproven | Neutral |
-| Dead | Fully invalidated, no believers remain | Complete reversal |
+**Token Rules:**
 
----
+| # | Rule | Description |
+|---|------|-------------|
+| 1 | Lowercase only | All characters in the descriptive token must be lowercase |
+| 2 | Underscore-separated | Multi-word tokens use underscores as word separators |
+| 3 | Language-neutral | English descriptive tokens are canonical codes, not display text |
+| 4 | Stable once assigned | Renaming display text does NOT change the canonical ID |
 
-## CAN AN ASSET BELONG TO MULTIPLE NARRATIVES?
+The namespace is flat — hierarchical depth is expressed through naming convention, not through nested IDs. All narratives, regardless of their position in a meta-narrative/sub-narrative hierarchy, occupy the same `narrative.*` namespace.
 
-Yes. This is the norm, not the exception.
+### Assignment Rules
 
-Example — Nvidia belongs to:
-- AI Infrastructure (primary)
-- Semiconductor Cycle (structural)
-- Datacenter Buildout (derivative)
-- Gaming (legacy, weakening)
-- Autonomous Driving (emerging)
+New canonical narrative IDs must satisfy all of the following assignment rules:
 
-### Multi-Narrative Rules
+| # | Rule | Rationale |
+|---|------|-----------|
+| 1 | Unique within namespace | No collisions — each `narrative.*` ID maps to exactly one narrative |
+| 2 | Descriptive of the belief structure | Tokens describe the shared belief, not opaque codes (e.g., `narrative.ai_infrastructure` not `narrative.nar_0042`) |
+| 3 | Language-neutral | English tokens function as canonical codes, not as English-language display text |
+| 4 | Stable once assigned | Immutable after first use in any canonical document — the ID is a permanent key |
 
-1. Every asset has a **primary narrative** — the dominant explanation for its current capital flows
-2. Every asset may have **secondary narratives** — additional explanations that contribute to flows
-3. Narrative membership is **time-dependent** — an asset's primary narrative can change
-4. Narrative membership is **strength-weighted** — some narratives matter more than others for a given asset
-5. When narratives conflict, the **dominant narrative** determines the asset's primary propagation path
+Once a `narrative.*` ID is assigned and used in any canonical document, it MUST NOT be changed, reassigned, or recycled. If a narrative's display text is updated in any language, the canonical ID remains unchanged.
 
-### Narrative Membership Record
+If a narrative is referenced in any canonical document, it SHALL carry a `narrative.*` ID from the moment of first reference.
 
-For the Asset-to-Narrative Registry, each membership requires:
+### Rendering Independence Declaration
 
-```
-asset_id
-narrative_id
-membership_type: primary | secondary | emerging | legacy
-strength: strong | moderate | weak
-since: date when membership began
-evidence: what connects this asset to this narrative
-```
+> Display text in any language is rendering — never identity.
+> Renaming a narrative's display text does NOT change its canonical ID.
 
----
+A narrative's canonical identity is its `narrative.*` ID. All human-readable names — in any language — are renderings of that identity. The rendering may change; the identity is permanent.
 
-## CAN A NARRATIVE CONTAIN OTHER NARRATIVES?
+**Example (illustrative only, not canonical registry entries, not asset registry population, not system registry population):**
 
-Yes. Narratives are hierarchical.
+| Canonical ID | English Rendering | German Rendering | Status |
+|-------------|-------------------|------------------|--------|
+| `narrative.ai_infrastructure` | "AI Infrastructure" | "KI-Infrastruktur" | Same narrative |
+| `narrative.higher_for_longer` | "Higher for Longer" | "Höher für Länger" | Same narrative |
 
-Example:
-```
-AI Transformation (meta-narrative)
-  |
-  |-- AI Infrastructure (sub-narrative)
-  |     |-- Datacenter Buildout
-  |     |-- Power Grid Expansion
-  |     |-- Cooling Infrastructure
-  |     +-- Semiconductor Supply Chain
-  |
-  |-- AI Applications (sub-narrative)
-  |     |-- Enterprise SaaS AI
-  |     |-- Consumer AI
-  |     +-- Autonomous Systems
-  |
-  +-- AI Regulation (sub-narrative)
-        |-- Compute Sovereignty
-        +-- AI Safety Compliance
-```
+Both renderings refer to the same canonical identity. Changing the English display text from "AI Infrastructure" to "AI Compute Infrastructure" does NOT create a new narrative — the canonical ID `narrative.ai_infrastructure` remains unchanged.
 
-### Hierarchy Rules
+(See: README_language_rendering_framework, Section: Rule 4 — Display Text is Never Identity)
 
-1. A meta-narrative contains multiple sub-narratives
-2. Sub-narratives can exist independently (if the meta-narrative weakens, sub-narratives may survive)
-3. A State_Change may activate a sub-narrative without activating the meta-narrative
-4. Hierarchy depth is unlimited but practically 2-3 levels
-5. An asset connects to the MOST SPECIFIC narrative level (not the meta-narrative)
+### Illustrative Examples
 
----
-
-## IS A NARRATIVE TIME-DEPENDENT?
-
-Yes. Absolutely.
-
-Narratives have:
-- **Birth date** — when the explanation first emerged
-- **Peak date** — when maximum capital was flowing based on this explanation
-- **Duration** — how long the narrative has been active
-- **Expected lifespan** — qualitative estimate (months, years, decades)
-- **Regime sensitivity** — which market regimes strengthen or weaken this narrative
-
-### Temporal Properties of Narratives
-
-| Property | Description | Example |
-|----------|-------------|---------|
-| Age | Time since narrative birth | AI Infrastructure: ~2 years (since GPT-4) |
-| Maturity | Position in lifecycle | AI Infrastructure: Dominant |
-| Velocity | Speed of strengthening/weakening | AI Infrastructure: Still accelerating |
-| Regime sensitivity | Which conditions threaten it | Rate hikes threaten growth narratives |
-| Expected duration | Qualitative lifespan estimate | AI Infrastructure: Multi-year (capex cycles are long) |
-
----
-
-## IS A NARRATIVE A STATE_CHANGE?
-
-No. But a State_Change can CREATE, STRENGTHEN, WEAKEN, or KILL a narrative.
-
-The relationship is:
+The following examples demonstrate the canonical ID format in practice. These are **illustrative only, not canonical registry entries, not asset registry population, not system registry population.**
 
 ```
-State_Change --[creates]--> Narrative (new)
-State_Change --[strengthens]--> Narrative (existing)
-State_Change --[weakens]--> Narrative (existing)
-State_Change --[kills]--> Narrative (existing)
-State_Change --[revives]--> Narrative (dormant)
+narrative.ai_infrastructure        — belief that AI requires massive infrastructure buildout
+narrative.higher_for_longer        — belief that interest rates will remain elevated
+narrative.defense_rearmament       — belief that global defense spending will increase structurally
+narrative.compute_sovereignty      — belief that nations will pursue domestic compute capacity
+narrative.ai_transformation        — meta-narrative: belief that AI transforms economic structure
 ```
 
-**Examples:**
-- "Nvidia Guidance Raise" (State_Change) STRENGTHENS "AI Infrastructure" (Narrative)
-- "FTX Collapse" (State_Change) KILLS "Crypto replaces TradFi" (Narrative)
-- "China AI chip ban" (State_Change) CREATES "Compute Sovereignty" (Narrative)
-- "AI model scaling hits diminishing returns" (State_Change) WEAKENS "AI Transformation" (Narrative)
+These examples exist solely to demonstrate the ID format and token rules. They do NOT populate any registry, do NOT create asset memberships, and do NOT establish canonical truth about which narratives exist in the system.
 
-### State_Change to Narrative Interaction Types
+### Qualitative Descriptors Declaration
 
-| Interaction | Description | Effect on Narrative Lifecycle |
-|-------------|-------------|-------------------------------|
-| Creates | State_Change births a new narrative | Narrative enters "Emerging" state |
-| Strengthens | State_Change provides confirming evidence | Narrative moves toward "Dominant" |
-| Weakens | State_Change provides contradicting evidence | Narrative moves toward "Weakening" |
-| Kills | State_Change fully invalidates the belief | Narrative enters "Dead" state |
-| Revives | State_Change provides new evidence for dormant narrative | Narrative moves from "Dormant" to "Emerging" |
+Narrative membership and influence use qualitative categorical labels:
 
----
+- **Membership types**: primary, secondary, emerging, legacy
+- **Influence descriptors**: strong, moderate, weak
 
-## HOW DOES NARRATIVE RELATE TO DEPENDENCY_TYPES?
+These are **categorical labels — not ordinal numeric proxies.** They classify relationships into discrete categories. They do not imply a numeric scale, do not permit arithmetic operations, and do not authorize conversion to scores.
 
-In the Market Organism Framework, "Narrative" is one of 10 Dependency_Types.
+Converting categorical labels to numbers (e.g., strong=3, moderate=2, weak=1) is explicitly prohibited. These descriptors enable human reasoning about narrative structure — they are not inputs to computation.
 
-But here we distinguish two uses:
 
-- **Narrative as Dependency_Type** = the propagation MECHANISM (how effects spread through shared belief)
-- **Narrative as Container** = the explanatory STRUCTURE (what connects state changes to assets)
+## 5. Narrative vs. State_Change
 
-These are two different uses of the same word:
+### The Distinction
 
-| Context | Meaning | Example |
-|---------|---------|---------|
-| Dependency_Type: Narrative | The mechanism by which belief propagates effects | "AI hype drives Nvidia price because market believes AI = Nvidia" |
-| Narrative as Container | The structural grouping that organizes assets under a causal explanation | "AI Infrastructure" as a category containing Nvidia, AMD, Broadcom, Vertiv |
+Narrative and State_Change are both primitives in the canonical chain (`State_Change → Narrative → System → Asset`), but they serve fundamentally different ontological roles:
 
-Both are valid. They operate at different levels:
-- Dependency_Type describes HOW propagation works (through shared belief)
-- Narrative Container describes WHAT the belief IS (the explanatory structure)
+| Primitive | Role | Question Answered | Ontological Function |
+|-----------|------|-------------------|---------------------|
+| State_Change | CAUSE | "What happened?" | The originating event or regime shift that enters the system |
+| Narrative | CONTAINER | "Why does it matter? What do participants believe?" | The explanatory grouping that organizes how a State_Change's effects are understood |
 
----
+A **State_Change** is what triggered the belief. A **Narrative** is what the belief is about.
 
-## NARRATIVE TAXONOMY (Initial Structure)
+State_Changes CREATE narratives. Narratives do NOT create State_Changes.
 
-Based on the State_Change_Taxonomy categories, narratives cluster into families:
+### Causality Direction Declaration
 
-### Macro-Driven Narratives
-Born from Macro State_Changes (Rates, Inflation, Oil, Liquidity, FX)
-
-Examples:
-- "Higher for longer" (rates narrative)
-- "Deglobalization drives inflation" (inflation narrative)
-- "Energy transition" (oil/energy narrative)
-- "Dollar wrecking ball" (FX narrative)
-
-### Corporate-Driven Narratives
-Born from Corporate State_Changes (Earnings, Guidance, Capex, M&A)
-
-Examples:
-- "AI Infrastructure buildout" (capex narrative)
-- "Semiconductor supercycle" (earnings narrative)
-- "Defense spending boom" (guidance narrative)
-
-### Thematic Narratives
-Born from Narrative-category State_Changes (AI, Security, Defense, Robotics, Energy)
-
-Examples:
-- "AI Transformation" (meta-narrative)
-- "Cybersecurity as critical infrastructure" (security narrative)
-- "European defense rearmament" (defense narrative)
-- "Humanoid robotics revolution" (robotics narrative)
-- "Electrification of everything" (energy narrative)
-
-### Event-Driven Narratives
-Born from Event State_Changes (Elections, Wars, Pandemics, Sporting Events)
-
-Examples:
-- "Trump trade" (election narrative)
-- "Defense premium" (war narrative)
-- "Remote work permanent" (pandemic narrative)
-- "Infrastructure spending" (event narrative)
-
----
-
-## IMPLICATIONS FOR ASSET-TO-NARRATIVE REGISTRY
-
-The P0 capability "Asset-to-Narrative Registry" must implement:
-
-1. **Narrative as first-class entity** with lifecycle state, hierarchy, and temporal properties
-2. **Asset-Narrative membership** with type (primary/secondary/emerging/legacy) and strength
-3. **Narrative-State_Change linkage** with interaction type (creates/strengthens/weakens/kills/revives)
-4. **Narrative hierarchy** with meta-narratives containing sub-narratives
-5. **Temporal tracking** — when did this asset join this narrative? When did the narrative's lifecycle change?
-
-### Registry Structure (Conceptual)
+The causal arrow between State_Change and Narrative is **unidirectional and irreversible**:
 
 ```
-Narrative Registry:
-  narrative_id
-  name
-  parent_narrative (nullable — for hierarchy)
-  lifecycle_state (emerging/strengthening/dominant/weakening/dormant/dead)
-  birth_date
-  birth_trigger (State_Change that created it)
-  expected_duration
-  regime_sensitivity
-
-Asset-Narrative Membership:
-  asset_id
-  narrative_id
-  membership_type (primary/secondary/emerging/legacy)
-  strength (strong/moderate/weak)
-  since_date
-  evidence
-
-Narrative-StateChange Interactions:
-  state_change_id
-  narrative_id
-  interaction_type (creates/strengthens/weakens/kills/revives)
-  timestamp
-  evidence
+State_Change ──causes──▶ Narrative
 ```
 
----
+The following invariants govern this relationship:
 
-## WHAT THIS DOCUMENT IS NOT
+1. **State_Change remains the causal root.** No Narrative may be promoted to causal root under any circumstance. A Narrative is always the EFFECT of a State_Change — never its cause.
 
-- NOT an implementation specification (no code, no APIs)
-- NOT a data model (conceptual structure only)
-- NOT a scoring system (no narrative strength scores)
-- NOT a prediction model (narratives are observed, not predicted)
+2. **Narratives do not cause State_Changes.** A narrative may be widely believed, dominant, and driving massive capital flows — but it does not originate events. Events originate narratives.
 
-This document defines WHAT a narrative IS ontologically.
-Implementation details belong to the P0 spec for Asset-to-Narrative Registry.
+3. **Narratives organize understanding; they do not generate facts.** A narrative is the shared interpretive frame that market participants use to make sense of a State_Change. The frame does not produce the event it explains.
 
----
+4. **Signals detect effects; they do not cause them.** A signal may observe evidence that a narrative is strengthening or weakening. The signal is a sensor — it reports what has already happened. It does not trigger narrative transitions. Only State_Changes trigger transitions. (See Section 14 for the full Signal Sensor Relationship Declaration.)
 
-## KEY INSIGHT
+### Illustrative Example
 
-The four primitives of MoneyHorst are now formally defined:
+The following example demonstrates the causality direction. It is **illustrative only** — it does not populate any registry, does not create canonical entries, and does not establish truth about which narratives or State_Changes exist in the system.
+
+**Scenario**: Hyperscaler capex announcements
 
 ```
-State_Change --> Narrative --> System --> Asset
-(Cause)         (Container)   (Domain)   (Observation)
+State_Change:  sc.corporate.capex.hyperscaler_increase
+               (Nvidia announces $40B capex guidance for AI infrastructure)
+
+This State_Change CREATES:
+  narrative.ai_infrastructure
+               (the shared belief that AI requires massive infrastructure buildout)
 ```
 
-- State_Change: What happened? (objective, discrete, observable)
-- Narrative: What does the market believe this means? (shared, temporal, falsifiable)
-- System: Which functional area is affected? (structural, stable)
-- Asset: Where is the effect measurable? (specific, quantifiable)
+**Reading the causality correctly:**
 
-The Narrative is the missing link between cause and observation.
-Without it, the organism has impulses and endpoints but no explanation
-for WHY propagation follows a particular path.
+- The capex announcement (State_Change) **caused** market participants to form and strengthen the belief (Narrative) that AI requires massive infrastructure investment.
+- The narrative (belief about AI infrastructure) did **NOT** cause Nvidia to announce $40B in capex. The corporate decision preceded and produced the narrative — not the reverse.
+- A signal (e.g., increased options volume on semiconductor ETFs) may **detect** that `narrative.ai_infrastructure` is strengthening. The signal does not cause the strengthening. The underlying State_Change caused it.
 
-Now the architecture is complete:
-- Layer 1 defines the territory (Market Organism)
-- Layer 2 defines the navigation (User Journey)
-- Layer 3 defines the muscles (Capability Matrix)
-- Layer 4 defines the training plan (Engine Roadmap)
-- This document defines the last primitive (Narrative Ontology)
+### Why This Matters
 
-Design and tasks may now proceed.
+Confusing the container with the cause is the most common analytical error in narrative-based reasoning. If a Narrative is mistakenly treated as a causal root:
+
+- The primitive chain collapses — analysis begins from a belief rather than from an event
+- The taxonomy-before-assets principle is violated — classification starts from interpretation rather than fact
+- Falsifiability is lost — beliefs without originating events cannot be invalidated by contradicting events
+
+The distinction is not merely semantic. It preserves the analytical integrity of the entire primitive chain.
+
+(See: README_market_organism_principles, Section: Principle 1 — Everything Connects)
