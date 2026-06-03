@@ -625,3 +625,271 @@ evidence: "New geopolitical conflict provides fresh evidence reactivating the do
 
 (See: README_state_change_taxonomy, Section: Classification Hierarchy)
 
+
+## 10. Dependency_Type Integration
+
+The word "Narrative" appears in two distinct roles within the Market Organism architecture: once as a **Dependency_Type** (a propagation mechanism) and once as the **primitive container** defined by this document. These two uses are orthogonal. This section disambiguates them explicitly to prevent conflation.
+
+### Dual-Use Distinction
+
+| Context | Role | Canonical ID Pattern | Meaning |
+|---------|------|---------------------|---------|
+| Dependency_Type | Propagation MECHANISM | `dep.narrative` | How effects spread — through shared belief. One of 10 equal Dependency_Types that describe HOW a State_Change's effects propagate between nodes in the Organism_Graph. |
+| Narrative Container | Explanatory STRUCTURE | `narrative.*` | What the belief IS — the grouping that organizes assets under a shared causal explanation. The second primitive in the canonical chain (`State_Change → Narrative → System → Asset`). |
+
+**Key distinction:**
+
+- `dep.narrative` answers: "By what mechanism did the effect travel?"
+- `narrative.*` answers: "What is the shared belief that organizes these assets?"
+
+These are not the same question. A propagation mechanism is not a container. A container is not a mechanism. They share the word "Narrative" because shared belief is both a way effects spread (mechanism) and a way assets are grouped (structure) — but the two concepts operate at different ontological levels.
+
+### Worked Example: Both Uses Simultaneously
+
+The following example demonstrates both uses of "Narrative" appearing in the same analytical scenario — a State_Change propagating THROUGH `dep.narrative` (mechanism) INTO a Narrative Container (structure). This is **illustrative only, not canonical registry entries, not asset registry population, not system registry population.**
+
+> **State_Change:** `sc.corporate.capex.hyperscaler_increase` (Nvidia raises capex guidance for AI infrastructure)
+>
+> **Propagation mechanism:** The effects of this State_Change spread THROUGH `dep.narrative` — the shared belief mechanism. Market participants interpret the guidance raise as confirming the AI Infrastructure thesis. The belief propagates across participants who hold related positions, causing correlated capital reallocation. `dep.narrative` is the HOW — the channel through which effects travel.
+>
+> **Container destination:** The effects flow INTO `narrative.ai_infrastructure` — the explanatory container that groups Nvidia, AMD, Broadcom, Vertiv, and other assets under the same shared causal explanation ("AI requires massive infrastructure buildout"). `narrative.ai_infrastructure` is the WHAT — the belief structure that organizes the affected assets.
+>
+> **Reading both together:**
+> - `dep.narrative` is HOW belief propagates (mechanism — one of 10 equal dependency types)
+> - `narrative.ai_infrastructure` is WHAT the belief is about (container — the explanatory grouping)
+> - The State_Change travels THROUGH the mechanism INTO the container
+
+**Why this matters:** Without this distinction, a consumer might conflate the propagation channel with the belief structure — treating `dep.narrative` as if it were the narrative itself, or treating `narrative.ai_infrastructure` as if it were a dependency type. These are orthogonal concepts that happen to share a word.
+
+### Authority Declaration
+
+`dep.narrative` is one of 10 equal Dependency_Types. It does not have special authority over other propagation mechanisms simply because it shares the word "Narrative."
+
+The 10 Dependency_Types are equal-authority mechanisms — no single type is privileged, dominant, or more fundamental than another. The fact that this document defines the Narrative ontology does not elevate `dep.narrative` above `dep.flow`, `dep.supply_chain`, `dep.regulatory`, or any other Dependency_Type. Each mechanism describes a different channel through which effects propagate; none is "more real" or "more causal" than another.
+
+**Specifically:**
+- This document (the Narrative Framework) defines the Narrative CONTAINER (`narrative.*`) — not the `dep.narrative` Dependency_Type
+- The `dep.narrative` Dependency_Type is defined and governed by `README_dependency_types_v2` — not by this document
+- This document acknowledges `dep.narrative` exists and disambiguates it from the container concept — it does not claim authority over its definition, scope, or behavior
+
+(See: README_dependency_types_v2, Section: Narrative)
+
+
+
+## 11. Feedback Loop Integration
+
+Narratives participate in Feedback_Loops within the Organism_Graph. Unlike lifecycle progression (which is linear and directional), narrative feedback is circular: effects produced by a narrative's influence can return as confirming evidence that strengthens the originating narrative itself. This self-reinforcing circularity is a structural norm of market behavior — not an anomaly to be eliminated.
+
+Narrative feedback is consistent with Principle 4: Feedback is Structural. Markets are non-DAG systems where effects routinely become causes. Narrative-driven circular causation is one of the primary mechanisms through which this structural feedback manifests.
+
+(See: README_market_organism_principles, Section: Principle 4 — Feedback is Structural)
+
+### Narrative Feedback Loop: Self-Reinforcing Belief
+
+The following illustrative example demonstrates narrative-driven circular causation:
+
+```
+Narrative Feedback Loop: Self-Reinforcing Belief (illustrative only, not canonical registry entries)
+
+narrative.ai_infrastructure strengthens
+  -> More capital flows into AI-related assets (dep.flow)
+  -> Asset prices rise, confirming the thesis (dep.price)
+  -> Rising prices become evidence that the narrative is correct (dep.narrative)
+  -> narrative.ai_infrastructure strengthens further
+
+Feedback_Delay: Month
+```
+
+In this loop, the narrative's influence on capital allocation produces price outcomes that participants interpret as validation of the narrative itself. The effect (rising prices) becomes evidence for the cause (the belief that AI infrastructure is a structural investment theme). This is circular causation — not a linear chain with a beginning and end.
+
+**This example is illustrative only.** It does NOT populate a canonical registry, does NOT create dependency entries, and does NOT establish canonical truth about feedback loops that exist in the system.
+
+### Feedback_Delay
+
+Narrative feedback loops carry **Feedback_Delay** as a qualitative temporal descriptor. Feedback_Delay characterizes the time scale at which the circular reinforcement completes one full cycle — from narrative influence, through market effects, back to narrative-confirming evidence.
+
+Feedback_Delay is a qualitative descriptor (e.g., Day, Week, Month, Quarter) — not a numeric measurement. It describes the characteristic time scale of the feedback cycle, not a precise duration.
+
+(See: README_temporal_taxonomy, Section: Feedback_Delay)
+
+### Distinction: Feedback vs. Lifecycle Progression
+
+Narrative feedback and narrative lifecycle progression are distinct phenomena that operate on different structural principles:
+
+| Property | Narrative Feedback | Narrative Lifecycle Progression |
+|----------|-------------------|-------------------------------|
+| **Structure** | Circular — effects confirm the belief that caused them | Linear — state transitions move in a directed sequence |
+| **Mechanism** | Self-reinforcing belief through market price confirmation | State_Changes trigger transitions between lifecycle states (T1 through T7) |
+| **Direction** | No direction — circular causation has no endpoint | Directional — each transition moves to a defined next state |
+| **Scope** | Occurs WITHIN a lifecycle state | Moves BETWEEN lifecycle states |
+| **Example** | A Dominant narrative stays Dominant through self-reinforcement | A Strengthening narrative becomes Dominant via T3 (Dominate) |
+
+**Key distinction:** Feedback can occur WITHIN a lifecycle state — a Dominant narrative remains Dominant because its effects continually confirm the belief that produced them. Lifecycle progression moves BETWEEN states — a narrative transitions from Strengthening to Dominant because a State_Change provides sufficient confirming evidence to cross the qualitative threshold.
+
+These are not competing explanations. Both phenomena can operate simultaneously: a narrative may be sustained in its current lifecycle state by feedback (circular reinforcement) while also being subject to lifecycle progression triggered by new State_Changes (linear transitions).
+
+(See: Section 6 — Narrative Lifecycle State Machine)
+
+---
+
+## 12. Explanation Readiness Contract (Level 4)
+
+Narratives serve as Level 4 in the 6-level explanation chain. When a portfolio consumer asks "why did this happen?", the explanation traversal moves through progressively deeper levels. At Level 4, the question is: **"Because of which narratives?"**
+
+This section defines the contract that every canonical narrative must satisfy to participate in the explanation chain without producing dead ends or untraceable references.
+
+_Requirements: NFA-REQ-5 (all acceptance criteria)_
+
+### Level 4 Contract
+
+| Property | Value |
+|----------|-------|
+| **Level** | 4 |
+| **Question** | "Because of which narratives?" |
+| **Position in chain** | Between Level 3 (State_Changes) and Level 5 (Expansion paths) |
+| **Information provided** | Narrative canonical ID, lifecycle state, birth trigger State_Change, membership evidence |
+| **Traversal ID type** | `narrative.*` canonical IDs only — never display text |
+
+Explanation traversal at Level 4 provides the consumer with:
+1. The canonical narrative ID (`narrative.*`) that explains the observed effect
+2. The current lifecycle state of that narrative (`narrative.lifecycle.*`)
+3. The birth trigger State_Change (`sc.*`) that originated the narrative
+4. Membership evidence connecting the narrative to the affected entities
+
+### Upward Connection (Level 4 → Level 3)
+
+Every canonical narrative MUST reference at least one originating State_Change (`sc.*` ID). This is the **birth trigger** — the State_Change that caused the narrative to emerge as a shared market belief.
+
+When an explanation traversal moves from Level 4 upward to Level 3, it follows the narrative's birth trigger to the originating State_Change. This provides causal grounding: the narrative exists BECAUSE a specific State_Change introduced the conditions for a shared belief to form.
+
+A narrative without an originating State_Change has no causal root and cannot participate in upward traversal.
+
+### Downward Connection (Level 4 → Level 5)
+
+Every canonical narrative MUST connect to at least one System (`system.*` ID). Narrative membership channels propagation into specific expansion paths — the structural pathways through which the narrative's influence manifests in asset-level outcomes.
+
+When an explanation traversal moves from Level 4 downward to Level 5, it follows the narrative's system membership to identify expansion paths. This provides structural direction: the narrative's influence propagates INTO specific systems through identifiable channels.
+
+A narrative without at least one connected System has no downward path and cannot participate in downward traversal.
+
+### No Dead Ends Guarantee
+
+Every canonical narrative must be:
+- **Reachable FROM** at least one State_Change (upward path exists)
+- **Connected TO** at least one System (downward path exists)
+
+A narrative that fails either condition is not valid for canonical registry inclusion. This guarantee ensures that the explanation chain never terminates at Level 4 — every narrative can be traced upward to its causal origin (Level 3) and downward to its structural manifestation (Level 5).
+
+### Traversal ID Declaration
+
+Explanation traversal uses **only canonical IDs** — never display text. All references within the traversal chain use their respective canonical namespaces:
+- Narratives: `narrative.*` canonical IDs
+- State_Changes: `sc.*` canonical IDs
+- Systems: `system.*` canonical IDs
+
+Display text, human-readable labels, and descriptive names are presentation concerns that exist outside the traversal mechanism. The explanation engine resolves canonical IDs to display text at render time — not at traversal time.
+
+(See: README_explanation_framework, Section: Explanation Levels)
+
+
+## 13. Narrative Extension Criteria
+
+The canonical narrative registry grows through controlled additions. Not every market concept qualifies as a narrative — only those that satisfy the formal criteria defined in this section. These criteria ensure that every canonical narrative is a genuine explanatory container that connects State_Changes to Systems through falsifiable shared belief, rather than a loose theme, sector label, or statistical artifact.
+
+This section defines: (a) what qualifies for canonical inclusion, (b) what does NOT qualify, and (c) the required fields for new narrative registration.
+
+### Inclusion Criteria
+
+A new narrative qualifies for canonical registry inclusion when it satisfies ALL of the following criteria:
+
+| # | Criterion | Verification Method |
+|---|----------|-------------------|
+| 1 | Represents a distinct, shared market belief structure not already covered by existing narratives | Check existing `narrative.*` namespace for overlap — if an existing narrative already captures this belief, the new entry is a duplicate, not an extension |
+| 2 | Is falsifiable — contradicting evidence can invalidate it | State the falsification condition explicitly at registration time. If no falsification condition can be articulated, the concept is an unfalsifiable assertion, not a narrative |
+| 3 | Connects at least one State_Change to at least one System through an identifiable causal explanation | Identify the `sc.*` → `narrative.*` → `system.*` path. If no such path exists, the concept does not function as an explanatory container |
+| 4 | Assigned a canonical `narrative.*` ID before first use in any canonical document | ID follows namespace rules from Section 4: lowercase, underscore-separated, language-neutral, stable once assigned |
+
+**All four criteria are conjunctive.** A candidate that fails any single criterion does not qualify — partial satisfaction is insufficient for canonical inclusion.
+
+### Exclusion Criteria
+
+The following concepts do NOT qualify as canonical narratives, regardless of how frequently they appear in market commentary:
+
+| # | Non-Qualifying Concept | Why It Fails |
+|---|----------------------|-------------|
+| 1 | A theme without an identifiable originating State_Change | No causal root. A narrative must be born from a specific State_Change (Inclusion Criterion 3). A theme that "just exists" without a triggering event is a label, not an explanatory container with a traceable origin in the primitive chain. |
+| 2 | A sector classification without a causal belief | Structural category, not explanatory container. "Technology" or "Healthcare" describe what companies do — they do not represent a shared belief about WHY capital flows in a particular direction. Sector classifications lack the falsifiable causal structure required by Inclusion Criterion 2. |
+| 3 | A statistical pattern without a shared market interpretation | Correlation without causal explanation. A pattern such as "these stocks moved together last quarter" describes observed co-movement — it does not identify a shared belief structure that market participants use to explain and predict capital allocation. Statistical patterns lack the shared interpretive belief required by Inclusion Criterion 1. |
+
+### Required Fields for New Narrative Registration
+
+Every new narrative submitted for canonical inclusion MUST provide the following fields at registration time:
+
+| # | Field | Format | Description |
+|---|-------|--------|-------------|
+| 1 | Canonical ID | `narrative.*` | Unique identifier following namespace rules (Section 4): lowercase, underscore-separated, language-neutral, stable once assigned. Must not collide with any existing `narrative.*` ID. |
+| 2 | Scope definition | Text | What shared belief structure this narrative represents — the causal explanation that market participants use to interpret events and allocate capital. |
+| 3 | Birth trigger State_Change | `sc.*` ID | The originating State_Change that created this narrative. Must reference a valid canonical State_Change. This is the upward connection required by the Explanation Readiness Contract (Section 12). |
+| 4 | At least one connected System | `system.*` ID | At least one System that this narrative connects to through its explanatory structure. This is the downward connection required by the Explanation Readiness Contract (Section 12). |
+| 5 | At least one falsification condition | Text | An explicit statement describing what contradicting evidence would invalidate this narrative. Must be specific enough that an observer could determine whether the condition has been met. |
+| 6 | Initial lifecycle state | `narrative.lifecycle.emerging` | Always `narrative.lifecycle.emerging` at registration. No narrative enters the registry in any other lifecycle state — all narratives begin as emerging beliefs. Lifecycle progression occurs only through subsequent State_Change interactions (Section 6, Section 9). |
+
+**No Dead Ends:** The required fields enforce the No Dead Ends Guarantee from the Explanation Readiness Contract. Every registered narrative is:
+- Reachable FROM at least one State_Change (Field 3: birth trigger)
+- Connected TO at least one System (Field 4: connected system)
+
+This ensures the `sc.*` → `narrative.*` → `system.*` path is complete at registration time — no narrative enters the registry without both upward and downward connections in the explanation chain.
+
+(See: Section 4 — What Is a Narrative?)
+(See: Section 6 — Narrative Lifecycle State Machine)
+(See: Section 12 — Explanation Readiness Contract)
+
+
+## 14. Signal Sensor Relationship Declaration
+
+Signals detect narrative-level effects. They do not cause them. This section establishes the explicit boundary between signal observation and narrative causation — ensuring that no consumer of this framework confuses detection with causation, or treats a sensor reading as a lifecycle trigger.
+
+The following four declarations define the complete relationship between the Signal layer and the Narrative layer:
+
+### Declaration 1: Signals as Sensors
+
+**Signals are sensors that detect narrative-level effects — evidence that propagation has manifested.**
+
+A signal observes the downstream consequences of narrative activity: capital flows that confirm a belief, price movements that reflect narrative momentum, or positioning shifts that indicate narrative participation. The signal reports what it detects. It does not create the condition it observes. The narrative-level effect exists independently of whether any signal detects it — the signal makes the effect visible, not real.
+
+### Declaration 2: Signals Do Not Cause Lifecycle Transitions
+
+**Signals do NOT cause narrative lifecycle transitions — only State_Changes cause transitions.**
+
+Every lifecycle transition defined in Section 6 (T1 through T7) is triggered exclusively by a State_Change. No signal — regardless of its type, frequency, confidence, or source — can trigger a lifecycle transition. A signal may detect evidence that a transition has occurred or is occurring, but detection is not causation. The causal authority for lifecycle transitions belongs solely to State_Changes, as established in Section 5 (Narrative vs. State_Change) and Section 9 (State_Change-to-Narrative Interactions).
+
+### Declaration 3: Signal_Bubble_v0 as Leaf-Node Observations
+
+**Signal_Bubble_v0 signals are leaf-node observations in the Organism_Graph that may detect evidence of narrative membership or narrative lifecycle state — but they do not define or control those states.**
+
+Signal_Bubble_v0 represents the first-generation sensor layer. These signals sit at the leaf nodes of the Organism_Graph — they observe the terminal effects of propagation chains. A signal may detect that an asset is behaving consistently with membership in a particular narrative, or that capital flow patterns suggest a narrative is strengthening. These are observations — evidence that a narrative's influence has manifested at the observable layer. The signal does not define the membership relationship, does not control the lifecycle state, and cannot alter either. Membership and lifecycle state are determined by the structural definitions in this document (Sections 6, 8) and caused by State_Changes (Section 9).
+
+### Declaration 4: Explicit Causation Boundary Statement
+
+**"A signal may detect that a narrative is strengthening. The signal does not cause the strengthening. The underlying State_Change causes it."**
+
+This statement is the canonical formulation of the signal-narrative boundary. It applies universally:
+
+- A signal may detect that a narrative is emerging — the signal does not cause the emergence
+- A signal may detect that a narrative is weakening — the signal does not cause the weakening
+- A signal may detect narrative membership evidence — the signal does not create the membership
+- A signal may detect feedback loop effects — the signal does not drive the feedback
+
+In every case, the causal agent is a State_Change. The signal is the sensor that makes the effect observable to consumers. Confusing the sensor with the cause is a category error that this declaration explicitly prohibits.
+
+### Summary
+
+| # | Declaration | Principle |
+|---|-------------|-----------|
+| 1 | Signals are sensors detecting narrative-level effects | Observation ≠ Causation |
+| 2 | Signals do NOT cause lifecycle transitions — only State_Changes do | Causal authority belongs to State_Changes |
+| 3 | Signal_Bubble_v0 signals are leaf-node observations that do not define or control states | Sensors detect; they do not govern |
+| 4 | "A signal may detect that a narrative is strengthening. The signal does not cause the strengthening. The underlying State_Change causes it." | Canonical boundary statement |
+
+(See: README_market_organism_principles, Section: Architectural Compatibility)
+(See: README_market_organism_principles, Section: Signal Layer as Sensor (Req 9.4))
