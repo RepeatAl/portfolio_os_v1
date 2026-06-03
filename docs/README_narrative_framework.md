@@ -252,7 +252,7 @@ Confusing the container with the cause is the most common analytical error in na
 
 The distinction is not merely semantic. It preserves the analytical integrity of the entire primitive chain.
 
-(See: README_market_organism_principles, Section: Principle 1 — Everything Connects)
+(See: README_market_organism_principles, Section: Principle 1 — Organism over Collection)
 
 
 ## 6. Narrative Lifecycle State Machine (Formalized)
@@ -772,6 +772,8 @@ When an explanation traversal moves from Level 4 downward to Level 5, it follows
 
 A narrative without at least one connected System has no downward path and cannot participate in downward traversal.
 
+(See: README_expansion_taxonomy, Section: Expansion Definition)
+
 ### No Dead Ends Guarantee
 
 Every canonical narrative must be:
@@ -1041,7 +1043,7 @@ This section provides a complete index of all external deliverables referenced t
 
 | # | Target Deliverable | Section Referenced | Citing Section(s) | Context |
 |---|-------------------|-------------------|-------------------|---------|
-| 1 | README_market_organism_principles | Principle 1 — Everything Connects | Section 5 | Primitive chain integrity — narratives connect within the system, not in isolation |
+| 1 | README_market_organism_principles | Principle 1 — Organism over Collection | Section 5 | Primitive chain integrity — narratives connect within the system, not in isolation |
 | 2 | README_market_organism_principles | Principle 2 — Taxonomy Precedes Assets | Section 3 | Taxonomy-before-assets principle — classification hierarchy is mandatory |
 | 3 | README_market_organism_principles | Principle 4 — Feedback is Structural | Section 11 | Feedback loop integration — narrative self-reinforcement is a structural norm |
 | 4 | README_market_organism_principles | Exclusion Constraints | Section 15 | Prohibition alignment — Narrative EC-1 through EC-5 correspond to Market Organism constraints |
