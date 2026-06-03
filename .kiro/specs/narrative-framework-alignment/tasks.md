@@ -325,7 +325,7 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Push to branch `spec/narrative-framework-alignment`
     - _Requirements: Workflow governance_
 
-- [-] 7. Final Documentation and Completion
+- [x] 7. Final Documentation and Completion
   - [x] 7.1 Create implementation guide README
     - Create `docs/README_narrative_framework_alignment_implementation_guide.md`
     - Document: how to USE the aligned Narrative Framework document (not redefine canonical truth)
@@ -333,14 +333,14 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Declare this guide is supplementary — the Narrative Framework v2 is the SSOT
     - _Requirements: User-requested README documentation_
 
-  - [-] 7.2 Final commit and push
+  - [x] 7.2 Final commit and push
     - Stage all remaining files (implementation guide README, any outstanding reports)
     - Commit with message: `docs(narrative-framework): implementation guide and final artifacts`
     - Push to branch `spec/narrative-framework-alignment`
     - _Requirements: Workflow governance_
 
-- [ ] 8. Final Checkpoint — Confirm completion
-  - [~] 8.1 Verify all tasks complete and no unauthorized files modified
+- [-] 8. Final Checkpoint — Confirm completion
+  - [x] 8.1 Verify all tasks complete and no unauthorized files modified
     - Verify every task (1 through 7) is marked `[x]` in tasks.md
     - Verify `docs/README_narrative_framework.md` exists and is the complete 17-section document
     - Verify `docs/README_narrative_framework_alignment_implementation_guide.md` exists
@@ -349,12 +349,12 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - If any task was skipped, document the reason in the completion report
     - _Requirements: Global Execution Rules 2, 16, 17_
 
-  - [~] 8.2 Create final completion report
+  - [x] 8.2 Create final completion report
     - Create `.domainization/reports/narrative_framework_alignment_completion_report_2026-06-02.md`
     - Document: all tasks completed, all verification gates passed, all execution reports present, implementation guide created, no unauthorized files modified, no canonical SSOT mutated, branch ready for review/merge
     - _Requirements: Workflow governance_
 
-  - [~] 8.3 Final commit and push completion report
+  - [-] 8.3 Final commit and push completion report
     - Stage `.domainization/reports/narrative_framework_alignment_completion_report_2026-06-02.md` and updated `tasks.md` (with all `[x]` marks)
     - Commit with message: `docs(narrative-framework): final completion report and task status update`
     - Push to branch `spec/narrative-framework-alignment`
