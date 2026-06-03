@@ -339,7 +339,7 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Push to branch `spec/narrative-framework-alignment`
     - _Requirements: Workflow governance_
 
-- [-] 8. Final Checkpoint — Confirm completion
+- [x] 8. Final Checkpoint — Confirm completion
   - [x] 8.1 Verify all tasks complete and no unauthorized files modified
     - Verify every task (1 through 7) is marked `[x]` in tasks.md
     - Verify `docs/README_narrative_framework.md` exists and is the complete 17-section document
@@ -354,7 +354,7 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Document: all tasks completed, all verification gates passed, all execution reports present, implementation guide created, no unauthorized files modified, no canonical SSOT mutated, branch ready for review/merge
     - _Requirements: Workflow governance_
 
-  - [-] 8.3 Final commit and push completion report
+  - [x] 8.3 Final commit and push completion report
     - Stage `.domainization/reports/narrative_framework_alignment_completion_report_2026-06-02.md` and updated `tasks.md` (with all `[x]` marks)
     - Commit with message: `docs(narrative-framework): final completion report and task status update`
     - Push to branch `spec/narrative-framework-alignment`
