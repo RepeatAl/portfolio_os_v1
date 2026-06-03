@@ -893,3 +893,232 @@ In every case, the causal agent is a State_Change. The signal is the sensor that
 
 (See: README_market_organism_principles, Section: Architectural Compatibility)
 (See: README_market_organism_principles, Section: Signal Layer as Sensor (Req 9.4))
+
+## 15. Exclusion Constraints
+
+This section consolidates all prohibitions that apply to the Narrative Framework. These constraints define what this document does NOT contain, does NOT authorize, and will NOT seed into implementation layers. They are derived from and consistent with Market Organism Exclusion Constraints (Req 8.1–8.7).
+
+### Prohibited Content
+
+| # | Prohibition | Description |
+|---|-------------|-------------|
+| EC-1 | Engine implementations | No Python code, executable logic, or engine behavior. This document defines what a Narrative IS — it does not implement systems that operate on narratives. |
+| EC-2 | Scoring algorithms | No numeric weights, probabilities, ranking systems, or confidence scores. Narrative membership and lifecycle states are described qualitatively — never quantified. |
+| EC-3 | Dashboard specifications | No dashboard designs, report templates, or visualization specifications. How narratives are displayed to users belongs to implementation layers, not to the ontological definition. |
+| EC-4 | Asset lists as root entities | No asset lists or ticker symbols as root-level organizational structures. Assets are leaf nodes in the primitive chain — they do not organize or structure narratives. |
+| EC-5 | Correlation matrices | No correlation matrices or statistical co-movement measures. Narrative membership is declared through causal explanation — never inferred from statistical patterns. |
+| EC-6 | Recommendation/optimization logic | No recommendation logic, portfolio allocation, or optimization. Narratives explain what market participants believe — they do not prescribe what to buy or sell. |
+| EC-7 | Numeric lifecycle thresholds | No numeric thresholds for lifecycle transitions. All transitions are triggered by State_Changes providing qualitative evidence — never by a score crossing a threshold value. |
+| EC-8 | Numeric membership weights | No numeric weights for narrative membership strength. Membership influence is classified categorically (strong/moderate/weak) — never as a number, probability, or computed score. |
+
+### Unified Rationale
+
+**Weights on an incomplete model produce false confidence.** The Narrative Framework defines WHAT a narrative IS ontologically. It establishes the structural and causal relationships between narratives and other primitives. Numeric precision belongs to future implementation phases that build on this ontological foundation — not to the foundation itself.
+
+Premature quantification creates two failure modes:
+1. **False precision** — assigning numeric weights implies a measurement accuracy that does not exist at the definition layer
+2. **Structural contamination** — numeric values in the definition layer constrain implementation choices before the implementation context is known
+
+By maintaining qualitative definitions at Layer 0, the Narrative Framework preserves maximum implementation freedom for future layers while establishing rigorous structural truth.
+
+### Consistency with Market Organism Exclusion Constraints
+
+These 8 exclusion constraints are consistent with and extend the prohibitions defined in the Market Organism Principles (Req 8.1–8.7). The Narrative Framework exclusions apply the same philosophy — definition-layer purity — to the specific domain of narrative ontology.
+
+| Narrative EC | Market Organism EC | Alignment |
+|-------------|-------------------|-----------|
+| EC-1 (Engine implementations) | EC-1 (Engine implementations) | Direct correspondence |
+| EC-2 (Scoring algorithms) | EC-2 (Scoring algorithms) | Direct correspondence |
+| EC-3 (Dashboard specifications) | EC-3 (Dashboard specifications) | Direct correspondence |
+| EC-4 (Asset lists as root entities) | EC-4 (Asset lists as root entities) | Direct correspondence |
+| EC-5 (Correlation matrices) | EC-5 (Correlation matrices) | Direct correspondence |
+| EC-6 (Recommendation/optimization logic) | — | Narrative-specific extension |
+| EC-7 (Numeric lifecycle thresholds) | — | Narrative-specific extension |
+| EC-8 (Numeric membership weights) | — | Narrative-specific extension |
+
+EC-1 through EC-5 are direct correspondences with the Market Organism Exclusion Constraints. EC-6 through EC-8 are narrative-specific extensions that apply the same rationale to narrative-domain concerns not covered by the general Market Organism prohibitions.
+
+(See: README_market_organism_principles, Section: Exclusion Constraints)
+
+## 16. Architectural Compatibility
+
+This section declares the Narrative Framework's compatibility with the existing Portfolio OS architecture. The Narrative Framework formalizes narrative ontology within the existing architectural boundaries — it does not add, remove, or redefine any architectural component. These are declarations of preservation: the Narrative Framework operates WITHIN the existing architecture, not alongside or above it.
+
+### 16.1 12-Domain Model Preservation
+
+**Declaration:** The Narrative Framework preserves the existing 12-domain model without modification. No domains are added, removed, or redefined by this document.
+
+| Domain | Status |
+|--------|--------|
+| GOV | Unchanged |
+| ARCH | Unchanged |
+| SIGNALS | Unchanged |
+| SEMANTICS | Unchanged |
+| REASONING | Unchanged |
+| REPORT | Unchanged |
+| STATE | Unchanged |
+| DATA | Unchanged |
+| USER | Unchanged |
+| DEPLOY | Unchanged |
+| MEMORY | Unchanged |
+| SIM | Unchanged |
+
+The Narrative Framework defines ontology within ARCH's authority. It does not introduce new domains, merge existing domains, or alter the responsibilities or boundaries of any domain in the 12-domain model.
+
+(See: README_market_organism_principles, Section: Architectural Compatibility)
+
+### 16.2 Canonical Chain Preservation
+
+**Declaration:** The Narrative Framework preserves the existing canonical processing chain — its sequence, direction, and domain responsibilities remain exactly as defined in the existing architecture.
+
+```
+SIGNALS → SEMANTICS → REASONING → REPORT
+```
+
+The Narrative Framework constrains what conceptual content flows through the chain (narratives as explanatory containers) but does not alter the chain itself. No stages are added, removed, reordered, or given new responsibilities by this document.
+
+(See: README_market_organism_principles, Section: Canonical Chain Preservation (Req 9.2))
+
+### 16.3 Runtime State Model Preservation
+
+**Declaration:** The Narrative Framework preserves the existing runtime state model — 8 states and 5 integrity dimensions — without modification. No states or dimensions are added, removed, or redefined by this document.
+
+The Narrative Framework defines narrative lifecycle states (`narrative.lifecycle.*`) which are ontological states of a belief structure. These are distinct from and do not interfere with the runtime state model that governs pipeline execution. Narrative lifecycle states describe market participant beliefs; runtime states describe system execution status.
+
+(See: README_market_organism_principles, Section: Runtime State Model Preservation (Req 9.5))
+
+### 16.4 Signal_Bubble_v0 Preservation
+
+**Declaration:** The Narrative Framework preserves all existing Signal_Bubble_v0 signals as first-generation sensors. Existing signals are NOT replaced, deprecated, or restructured by the introduction of narrative ontology.
+
+Signal_Bubble_v0 signals are leaf-node observations in the Organism_Graph that may detect evidence of narrative membership or narrative lifecycle state — but they do not define or control those states. The Narrative Framework formalizes how narratives relate to signals (as sensor targets) without altering the signals themselves.
+
+(See: README_market_organism_principles, Section: Signal_Bubble_v0 Preservation)
+
+### 16.5 Signal Reusability Preservation
+
+**Declaration:** The Narrative Framework preserves the Signal Reusability invariant — all signals remain modeled as reusable Intelligence_Objects, and the 6 canonical request types are unchanged.
+
+The 6 request types preserved without modification:
+1. Single signal value
+2. Composite signal bundle
+3. Signal detail/provenance
+4. Static asset context
+5. Variable market context
+6. Derived intelligence object
+
+No new request types are introduced, and no existing request types are modified or removed by the Narrative Framework. Narrative-related intelligence (e.g., narrative membership evidence, lifecycle state observations) will be served through these existing request types — not through new types.
+
+(See: README_market_organism_principles, Section: Signal Reusability Invariant)
+
+### 16.6 Signal_Lifecycle_Definition Preservation
+
+**Declaration:** The Narrative Framework preserves the 11-field mandatory Signal_Lifecycle_Definition registration gate without modification. No fields are added, removed, or redefined.
+
+The 11 mandatory fields preserved:
+1. `signal_id`
+2. `category`
+3. `owner_domain`
+4. `input_sources`
+5. `classification`
+6. `refresh_policy`
+7. `cache_policy`
+8. `provenance`
+9. `consumers`
+10. `invalidation_rule`
+11. `implementation_status`
+
+Any future signal that detects narrative-related evidence must pass this same 11-field gate before implementation. The Narrative Framework does not create a separate registration process for narrative-detecting signals — they follow the same lifecycle as all other signals.
+
+(See: README_market_organism_principles, Section: Signal_Lifecycle_Definition Gate)
+
+
+## 17. Cross-References
+
+This section provides a complete index of all external deliverables referenced throughout this document. Every `(See: [Deliverable_Name], Section: [Section_Title])` reference used in the body of this document is catalogued here with the section(s) in which it appears and the context for the reference.
+
+### Cross-Reference Table
+
+| # | Target Deliverable | Section Referenced | Citing Section(s) | Context |
+|---|-------------------|-------------------|-------------------|---------|
+| 1 | README_market_organism_principles | Principle 1 — Everything Connects | Section 5 | Primitive chain integrity — narratives connect within the system, not in isolation |
+| 2 | README_market_organism_principles | Principle 2 — Taxonomy Precedes Assets | Section 3 | Taxonomy-before-assets principle — classification hierarchy is mandatory |
+| 3 | README_market_organism_principles | Principle 4 — Feedback is Structural | Section 11 | Feedback loop integration — narrative self-reinforcement is a structural norm |
+| 4 | README_market_organism_principles | Exclusion Constraints | Section 15 | Prohibition alignment — Narrative EC-1 through EC-5 correspond to Market Organism constraints |
+| 5 | README_market_organism_principles | Architectural Compatibility | Sections 14, 16 | Architectural compatibility declarations and signal sensor boundary |
+| 6 | README_market_organism_principles | Signal Layer as Sensor (Req 9.4) | Section 14 | Signal sensor relationship — signals detect, do not cause |
+| 7 | README_market_organism_principles | Canonical Chain Preservation (Req 9.2) | Section 16 | Canonical processing chain SIGNALS→SEMANTICS→REASONING→REPORT unchanged |
+| 8 | README_market_organism_principles | Runtime State Model Preservation (Req 9.5) | Section 16 | Runtime state model (8 states, 5 integrity dimensions) unchanged |
+| 9 | README_market_organism_principles | Signal_Bubble_v0 Preservation | Section 16 | Existing signals preserved as first-generation sensors |
+| 10 | README_market_organism_principles | Signal Reusability Invariant | Section 16 | All signals as Intelligence_Objects, 6 request types preserved |
+| 11 | README_market_organism_principles | Signal_Lifecycle_Definition Gate | Section 16 | 11-field mandatory registration gate preserved |
+| 12 | README_state_change_taxonomy | Classification Hierarchy | Section 9 | State_Change-to-Narrative interaction types — interaction classification aligns with State_Change taxonomy |
+| 13 | README_dependency_types_v2 | Narrative | Sections 2, 10 | dep.narrative mechanism definition — disambiguation from Narrative Container |
+| 14 | README_temporal_taxonomy | Temporal Property Enumeration | Section 6 | Lifecycle state machine — velocity is NOT a Temporal_Taxonomy extension |
+| 15 | README_temporal_taxonomy | Feedback_Delay | Section 11 | Narrative feedback loop temporal descriptor — qualitative time scale of circular reinforcement |
+| 16 | README_expansion_taxonomy | Expansion Definition | Section 12 | Level 5 explanation chain connection — downward traversal from narratives to expansion paths |
+| 17 | README_shared_glossary_reference | Glossary Usage Rules | Section 2 | Glossary reference — canonical glossary usage and amendment governance |
+| 18 | README_explanation_framework | Explanation Levels | Sections 3, 12 | Level 4 contract — narrative position in the 6-level explanation chain |
+| 19 | README_language_rendering_framework | Rule 4 — Display Text is Never Identity | Section 4 | Rendering independence — canonical IDs are identity, display text is rendering |
+
+### Coverage Summary
+
+| Deliverable | References Count | Sections Referenced |
+|-------------|-----------------|-------------------|
+| README_market_organism_principles | 11 | Principle 1, Principle 2, Principle 4, Exclusion Constraints, Architectural Compatibility, Signal Layer as Sensor (Req 9.4), Canonical Chain Preservation (Req 9.2), Runtime State Model Preservation (Req 9.5), Signal_Bubble_v0 Preservation, Signal Reusability Invariant, Signal_Lifecycle_Definition Gate |
+| README_state_change_taxonomy | 1 | Classification Hierarchy |
+| README_dependency_types_v2 | 1 | Narrative |
+| README_temporal_taxonomy | 2 | Temporal Property Enumeration, Feedback_Delay |
+| README_expansion_taxonomy | 1 | Expansion Definition |
+| README_shared_glossary_reference | 1 | Glossary Usage Rules |
+| README_explanation_framework | 1 | Explanation Levels |
+| README_language_rendering_framework | 1 | Rule 4 — Display Text is Never Identity |
+
+**Total external cross-references: 19** (minimum required: 10)
+**Unique deliverables referenced: 8** (all Layer 0 dependencies covered)
+
+### Internal Cross-References
+
+This document also contains internal cross-references between its own sections. These are not catalogued in the table above but follow the format `(See: Section N — Section Title)`. Internal references include:
+
+- Section 7 → Section 13 (Narrative Extension Criteria)
+- Section 8 → Section 3 (The Primitive Chain)
+- Section 8 → Section 5 (Narrative vs. State_Change)
+- Section 11 → Section 6 (Narrative Lifecycle State Machine)
+- Section 13 → Section 4 (What Is a Narrative?)
+- Section 13 → Section 6 (Narrative Lifecycle State Machine)
+- Section 13 → Section 12 (Explanation Readiness Contract)
+
+### Verification Note
+
+Every `(See: [Deliverable_Name], Section: [Section_Title])` reference used in the body of this document (Sections 1–16) appears in the cross-reference table above. This table was compiled by scanning all 16 preceding sections for external references and cataloguing each instance. No external reference used in the document body is omitted from this table.
+
+
+---
+
+## --- Satisfies (requirement traceability table) ---
+
+The following table maps each NFA-REQ requirement to the section(s) of this document that satisfy it. This provides bidirectional traceability between the requirements specification (`.kiro/specs/narrative-framework-alignment/requirements.md`) and the implemented deliverable.
+
+| Requirement | Description | Satisfying Sections |
+|-------------|-------------|---------------------|
+| NFA-REQ-1 | Canonical Narrative ID Namespace | Section 4 (What Is a Narrative? — Definition and Formal Properties), Section 7 (Narrative Hierarchy — Containment Rules), Section 8 (Multi-Narrative Membership) |
+| NFA-REQ-2 | Future-Leak Prohibition | Section 1 (Scope Statement), Section 6 (Narrative Lifecycle State Machine), Section 8 (Multi-Narrative Membership), Section 15 (Exclusion Constraints) |
+| NFA-REQ-3 | Lifecycle State Machine Canonicalization | Section 6 (Narrative Lifecycle State Machine), Section 9 (State_Change-to-Narrative Interactions) |
+| NFA-REQ-4 | Signal Sensor Relationship Declaration | Section 5 (Narrative vs. State_Change), Section 14 (Signal Sensor Relationship Declaration), Section 16 (Architectural Compatibility) |
+| NFA-REQ-5 | Explanation Readiness Contract | Section 3 (The Primitive Chain), Section 12 (Explanation Readiness Contract) |
+| NFA-REQ-6 | Cross-Reference Convention Adoption | Section 2 (Glossary Reference), Section 9 (State_Change-to-Narrative Interactions), Section 10 (Dependency_Type Integration), Section 11 (Feedback Loop Integration), Section 12 (Explanation Readiness Contract), Section 17 (Cross-References) |
+| NFA-REQ-7 | Exclusion Constraints Section | Section 1 (Scope Statement), Section 15 (Exclusion Constraints) |
+| NFA-REQ-8 | Narrative Extension Criteria | Section 7 (Narrative Hierarchy — Containment Rules), Section 13 (Narrative Extension Criteria) |
+| NFA-REQ-9 | Dependency_Type Integration | Section 2 (Glossary Reference), Section 10 (Dependency_Type Integration) |
+| NFA-REQ-10 | Feedback Loop Integration | Section 11 (Feedback Loop Integration) |
+| NFA-REQ-11 | Architectural Compatibility | YAML Metadata Header, Section 3 (The Primitive Chain), Section 11 (Feedback Loop Integration), Section 14 (Signal Sensor Relationship Declaration), Section 16 (Architectural Compatibility) |
+
+### Coverage Confirmation
+
+- **Total requirements**: 11 (NFA-REQ-1 through NFA-REQ-11)
+- **Requirements covered**: 11/11 (100%)
+- **Sections contributing to satisfaction**: All 17 sections + YAML Metadata Header
+- **Traceability direction**: Requirement → Section (forward); Section → Requirement (reverse via section headers)
+
+Every requirement defined in the alignment spec has at least one satisfying section in this document. No requirement is left unaddressed.
