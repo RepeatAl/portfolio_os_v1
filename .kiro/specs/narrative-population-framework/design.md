@@ -1,6 +1,6 @@
 # Design Document — Narrative Population Framework
 
-## 1. Overview
+## Overview
 
 This design defines the structure for the first controlled registry population of the Narrative Registry within Portfolio OS.
 
@@ -24,7 +24,7 @@ This design defines the structure for the first controlled registry population o
 
 ---
 
-## 2. Population Architecture
+## Architecture
 
 ### Population Flow
 
@@ -84,7 +84,7 @@ This design defines the structure for the first controlled registry population o
 
 ---
 
-## 3. Candidate Classification Model
+## Components and Interfaces
 
 ### Status: DRAFT INPUT ONLY
 
@@ -132,7 +132,7 @@ Any candidate may be promoted, demoted, merged, or rejected during human review.
 
 ---
 
-## 4. Wave 1 Decision Model
+## Wave 1 Decision Model
 
 ### Decisions Requiring Human Approval
 
@@ -163,7 +163,7 @@ The following decisions CANNOT be made by this design — they require explicit 
 
 ---
 
-## 5. Candidate Field Template
+## Data Models
 
 ### Status: TEMPLATE ONLY — NOT A REGISTRY ENTRY
 
@@ -231,7 +231,7 @@ backlog_or_reject_reason: null  # Only populated for non-Wave-1 candidates
 
 ---
 
-## 6. Evidence Justification Format
+## Evidence Justification Format
 
 ### Purpose
 
@@ -310,7 +310,7 @@ valuation_trap_guard_status: |
 
 ---
 
-## 7. Credit / Solvency / Valuation Trap Integration
+## Credit / Solvency / Valuation Trap Integration
 
 ### Purpose
 
@@ -367,7 +367,7 @@ This guard prevents:
 
 ---
 
-## 8. Collision Check Design
+## Collision Check Design
 
 ### Purpose
 
@@ -429,7 +429,7 @@ This is the highest-risk collision area in the current candidate set:
 
 ---
 
-## 9. Backlog and Rejection Design
+## Backlog and Rejection Design
 
 ### Purpose
 
@@ -510,7 +510,7 @@ Not all candidates qualify for Wave 1. This section defines the governance model
 
 ---
 
-## 10. Registry Mutation Design
+## Registry Mutation Design
 
 ### Purpose
 
@@ -570,11 +570,49 @@ This section defines the structural rules governing HOW the Narrative Registry w
 
 ---
 
-## 11. Verification Strategy
+## Correctness Properties
 
-### Purpose
+### Property 1: Registry Immutability During Design
 
-This section maps all 14 verification gates (VG-POP-1 through VG-POP-14) that must pass before and after registry mutation. These gates are defined in the requirements document and are operationalized here with specific check procedures.
+The `narratives: []` list in `docs/registries/narrative_registry.yaml` must remain empty throughout requirements and design phases. Verified by inspecting the registry file after design completion.
+
+**Validates: Requirements 7.3, 7.5**
+
+### Property 2: Candidate-Only Language
+
+All narrative references in design deliverables use "candidate" or "proposed" prefix. No final canonical `narrative.*` ID is declared before human approval. Verified by text search for unqualified `narrative.*` declarations.
+
+**Validates: Requirements 5.3, 6.3**
+
+### Property 3: Inclusion Criteria Conjunctivity
+
+Every Wave 1 candidate must satisfy ALL 11 evaluation gates simultaneously. Failure on ANY single gate disqualifies the candidate. Verified by gate checklist execution per candidate.
+
+**Validates: Requirements 2.4, 1.2**
+
+### Property 4: Evidence-Before-Registration
+
+No candidate may be registered without documented Market Evidence justification. Evidence must reference observed facts, provenance, and contradiction review. Verified by evidence justification document inspection.
+
+**Validates: Requirements 3.1, 11.2**
+
+### Property 5: No Asset-First Contamination
+
+No registered narrative may be derived from asset lists, portfolio baskets, or statistical co-movement. Every narrative must trace to a shared belief with State_Change origin. Verified by reviewing each candidate's derivation path.
+
+**Validates: Requirements 4.1, 4.2**
+
+### Property 6: Human Approval Completeness
+
+Every registered entry must have documented human approval for scope, canonical ID, falsification condition, connected systems, and birth trigger. Verified by approval record inspection.
+
+**Validates: Requirements 6.1, 6.2**
+
+### Property 7: No SSOT Mutation
+
+Narrative Framework v2, Market Organism Layer 0, central glossary, and Market Evidence Framework remain unchanged after population. Only `narratives: []` is modified. Verified by diff against main.
+
+**Validates: Requirements 7.1, 8.1**
 
 ### Verification Gate Mapping
 
@@ -625,7 +663,53 @@ This section maps all 14 verification gates (VG-POP-1 through VG-POP-14) that mu
 
 ---
 
-## 12. Requirement Traceability
+## Error Handling
+
+### Gate Failure Handling
+
+- If ANY pre-mutation verification gate fails: registry mutation is BLOCKED. No entries are appended. Failure is reported to human with specific gate ID and failure reason.
+- If post-mutation gate (VG-POP-14) fails: ROLLBACK required. Revert `narrative_registry.yaml` to pre-mutation state. Report to human.
+- Gate failures during design/planning phase (VG-POP-1, VG-POP-2): stop and report — do not proceed to task phase.
+
+### Collision Detection Handling
+
+- If exact ID collision detected: REJECT candidate immediately. Cannot proceed.
+- If semantic overlap detected: flag for human review. Human decides: merge, defer, or redefine scope.
+- If unresolvable overlap: both candidates are deferred until human provides boundary decision.
+
+### Evidence Insufficiency Handling
+
+- If evidence is insufficient for a candidate: mark `evidence_readiness: insufficient` and move candidate to backlog.
+- Do NOT proceed with registration if evidence gaps cannot be documented and justified.
+- Contradiction evidence that cannot be resolved: flag for human — do not suppress.
+
+### Ambiguity Policy
+
+- If ambiguity exists in scope, trigger, or classification: flag explicitly. Do NOT resolve silently.
+- Create a blocker note in the execution report.
+- Human must resolve before registration can proceed.
+
+---
+
+## Testing Strategy
+
+### Verification Approach
+
+This spec produces documentation and governance artifacts — not executable code. Therefore, traditional unit/integration testing does not apply. Verification is structural:
+
+1. **Document inspection** — verify all required sections and fields are present
+2. **Gate checklist execution** — run VG-POP-1 through VG-POP-14 as verification gates
+3. **Schema compliance** — verify candidate entries match `narrative_registry.yaml` schema
+4. **Cross-reference validation** — verify all `(See: ...)` references point to existing documents
+5. **Collision check execution** — verify no semantic overlap between Wave 1 candidates
+
+### Property-Based Testing Applicability
+
+PBT does NOT apply to this feature. The deliverable is a governance-controlled registry population — not executable code with inputs/outputs. There are no algorithms, parsers, or business logic functions to test with generated inputs. Verification is structural: required fields present, prohibited fields absent, gates passed, human approvals documented.
+
+---
+
+## Requirement Traceability
 
 ### Purpose
 
@@ -656,7 +740,7 @@ This section maps every requirement (NPF-REQ-1 through NPF-REQ-12) to the design
 
 ---
 
-## 13. Open Human Decisions
+## Open Human Decisions
 
 ### Purpose
 
