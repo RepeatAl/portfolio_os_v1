@@ -713,6 +713,49 @@ The following categories illustrate the types of facts the evidence layer may co
 - Guidance
 - Valuation multiple
 
+**Credit, Solvency, and Balance Sheet Facts:**
+- Gross debt
+- Net debt
+- Short-term debt due
+- Long-term debt due
+- Debt maturity schedule
+- Cash and equivalents
+- Available liquidity
+- Undrawn credit facilities
+- Operating cash flow
+- Free cash flow
+- Interest expense
+- Interest coverage
+- Debt-to-EBITDA
+- Net debt-to-EBITDA
+- FCF-to-debt
+- Current ratio
+- Quick ratio
+- Refinancing wall
+- Covenant headroom
+- Credit rating
+- Credit rating outlook
+- CDS spread
+- Bond yield
+- Bond price
+- Lease liabilities
+- Purchase obligations
+- Off-balance-sheet commitments
+- Pension obligations
+- Pension plan assets
+- Pension funding gap
+- Post-retirement benefit obligations
+- Goodwill
+- Intangible assets
+- Impairment charges
+- Goodwill-to-equity
+- LBO history
+- LBO debt burden
+- Sponsor ownership overhang
+- Dividend commitments
+- Buyback commitments
+- Working capital stress
+
 **Macro Facts:**
 - Macro indicator
 - Inflation data
@@ -747,6 +790,28 @@ Every Calculated_Signal carries:
 - Signals are **not causes** — a signal detecting narrative strengthening does not cause the strengthening
 - Signals are **not recommendations** — a bullish signal does not mean "buy"
 - Signals are **not portfolio weights** — signal magnitude is not position sizing
+
+### Credit / Solvency Signal Categories (Illustrative Only)
+
+The following signal categories illustrate credit and solvency-related signals. These are signal categories only — not populated instances, not recommendations, and no numeric scoring is introduced.
+
+- `liquidity_stress_signal` — detects deterioration in cash/liquidity relative to near-term obligations
+- `refinancing_risk_signal` — detects approaching debt maturities with weak refinancing capacity
+- `cashflow_debt_coverage_signal` — detects FCF coverage of total debt trending below sustainability
+- `interest_coverage_deterioration_signal` — detects interest expense consuming growing share of operating income
+- `debt_maturity_wall_signal` — detects concentrated near-term debt maturities
+- `covenant_pressure_signal` — detects leverage or coverage approaching covenant limits
+- `pension_underfunding_signal` — detects pension plan assets falling below obligation thresholds
+- `off_balance_sheet_leverage_signal` — detects material lease/obligation burden not in headline debt
+- `lease_adjusted_leverage_signal` — detects total leverage when operating leases are capitalized
+- `lbo_balance_sheet_stress_signal` — detects overleveraged structures from prior leveraged acquisitions
+- `credit_spread_widening_signal` — detects market pricing increasing default probability via CDS/bonds
+- `bond_market_distress_signal` — detects abnormal bond price declines indicating credit concern
+- `rating_downgrade_risk_signal` — detects negative outlook or watchlist placement by rating agencies
+- `goodwill_impairment_risk_signal` — detects goodwill-to-equity levels where impairment becomes likely
+- `valuation_trap_risk_signal` — detects combination of low multiples + weak credit/solvency evidence
+
+**Clarification**: These are sensor categories. They detect conditions — they do not cause them. They are not recommendations. They do not produce scores. They are not portfolio weights.
 
 ---
 
@@ -792,6 +857,12 @@ Evidence containers are organized by conceptual namespace. These define the TYPE
 | `evidence.asset.*` | Evidence about specific asset conditions | "What evidence exists about NVDA fundamental trajectory?" |
 | `evidence.system.*` | Evidence about system-level conditions | "What evidence shows semiconductor system under stress?" |
 | `evidence.macro.*` | Evidence about macro conditions | "What evidence indicates inflation persistence?" |
+| `evidence.credit_risk.*` | Evidence about company/entity credit and default risk | "What evidence indicates elevated default risk for Company X?" |
+| `evidence.solvency.*` | Evidence about balance sheet sustainability and debt serviceability | "What evidence shows Company Y can service its obligations?" |
+| `evidence.balance_sheet_quality.*` | Evidence about asset quality, goodwill, impairment risk | "What evidence indicates balance sheet impairment risk?" |
+| `evidence.liquidity.*` | Evidence about cash runway, facility availability, near-term obligation coverage | "What evidence shows Company Z has insufficient liquidity runway?" |
+| `evidence.pension_obligation.*` | Evidence about pension funding gaps and post-retirement obligations | "What evidence shows pension underfunding exposure?" |
+| `evidence.off_balance_sheet.*` | Evidence about leases, purchase obligations, and hidden liabilities | "What evidence reveals material off-balance-sheet leverage?" |
 
 **Clarification**: These are conceptual namespaces defining container TYPES. They are NOT populated registries. No evidence objects are created by this README. Population requires implementation in the DATA and SIGNALS domains.
 
@@ -803,12 +874,14 @@ Downstream consumers use evidence according to defined contracts. Each consumer 
 
 | Consumer | Rights | Prohibitions |
 |----------|--------|--------------|
-| **Narrative Population** | Read evidence to justify candidate inclusion | Cannot create evidence; cannot mutate registry without governance approval |
+| **Narrative Population** | Read evidence to justify candidate inclusion; may consume credit evidence if it supports/contradicts a narrative candidate | Cannot create evidence; cannot mutate registry without governance approval |
 | **Narrative Lifecycle** | Read evidence to justify state transitions | Cannot trigger transitions directly — only State_Changes do |
 | **Asset-to-Narrative** | Read evidence to justify qualitative membership assessment | Cannot create numeric membership weights from evidence |
-| **Portfolio Health** | Read evidence for concentration, volatility, correlation, breadth, liquidity assessment | Cannot alter evidence to improve apparent health |
-| **Allocation** | Read evidence to inform allocation decisions | Cannot redefine facts or signals to justify positions |
-| **Reports** | Read evidence for explanation and presentation | Cannot alter evidence for presentation purposes |
+| **Portfolio Health** | Read evidence for concentration, volatility, correlation, breadth, liquidity, leverage, and solvency assessment | Cannot alter evidence to improve apparent health |
+| **Company Quality Assessment** | Read solvency, credit, balance sheet, and obligation evidence for quality evaluation | Cannot convert evidence into buy/sell recommendations |
+| **Valuation Interpretation** | Read credit, solvency, cashflow, liquidity, and obligation evidence before labeling anything undervalued | Cannot declare undervaluation without solvency evidence; cannot ignore credit risk |
+| **Allocation** | Read evidence including credit-risk evidence to inform allocation decisions | Cannot redefine facts or signals to justify positions |
+| **Reports** | Read evidence including credit evidence for explanation and presentation | Cannot alter evidence for presentation purposes |
 | **Dashboards** | Read rendered states (consumer outputs) | Consume rendered results only — not raw evidence directly |
 
 ### Universal Consumer Rules
@@ -946,6 +1019,12 @@ The following rules prevent the evidence layer from drifting into scoring, ranki
 | 6 | No using narrative popularity as evidence | How many people believe a narrative is not a fact about the narrative's truth. |
 | 7 | No using asset performance alone as narrative truth | A stock going up does not prove a narrative is correct. |
 | 8 | No collapsing facts, signals, evidence, and narratives into one object | These are separate layers with separate governance. |
+| 9 | No treating low P/E or low EV/EBITDA as undervaluation without solvency evidence | Valuation multiples alone cannot distinguish undervaluation from value trap. |
+| 10 | No ignoring pension obligations or lease liabilities when assessing balance sheet risk | Off-balance-sheet items are material evidence. |
+| 11 | No treating credit ratings as final truth | Ratings are facts/evidence inputs — not authoritative conclusions within this framework. |
+| 12 | No treating LBO ownership or sponsor history as automatically bad | Sponsor involvement must be evidenced through leverage, cashflow, and covenant facts — not assumed. |
+| 13 | No converting credit-risk evidence into buy/sell recommendations inside this framework | Recommendations are Decision_Objects — outside evidence scope. |
+| 14 | No turning credit-risk labels into hidden numeric scores | "High refinancing risk" is categorical — not "default probability: 0.35". |
 
 ---
 
@@ -1006,9 +1085,181 @@ EVIDENCE OBJECT: Portfolio health — concentration risk
 
 **All examples above are illustrative only.** They do NOT create facts, signals, or evidence objects. They do NOT populate any registry or data store.
 
+### Example D: Apparent Undervaluation vs Credit Risk (Illustrative Only)
+
+```
+FACTS:
+  - Company Z trades at 6x EV/EBITDA (vs sector median 12x)
+    → fact_type: valuation_multiple, entity: Company Z, value: 6x
+  - Company Z net debt = $8.2B, EBITDA = $1.4B
+    → fact_type: net_debt_to_ebitda, entity: Company Z, value: 5.9x
+  - Company Z FCF = $180M, total debt service = $620M/yr
+    → fact_type: fcf_to_debt, entity: Company Z, value: 0.29x
+  - Company Z 5Y bond yield = 11.2% (vs 5.8% 12 months ago)
+    → fact_type: bond_yield, entity: Company Z, value: 11.2%
+  - Company Z $3.1B debt due within 18 months
+    → fact_type: refinancing_wall, entity: Company Z, value: 3.1B USD
+
+SIGNALS:
+  - refinancing_risk_signal: state=elevated, direction=increasing, magnitude=strong
+  - cashflow_debt_coverage_signal: state=stressed, direction=decreasing, magnitude=strong
+  - credit_spread_widening_signal: state=distressed, direction=increasing, magnitude=strong
+  - valuation_trap_risk_signal: state=elevated, direction=stable, magnitude=moderate
+
+EVIDENCE OBJECT: Credit risk + valuation trap assessment
+  → supports: "value trap risk" interpretation
+  → contradicts: "undervalued opportunity" interpretation
+  → input_signals: [refinancing_risk, cashflow_coverage, credit_spread, valuation_trap_risk]
+  → evidence_readiness: high
+  → contradiction_level: high (low multiple contradicts credit distress)
+  → consumer_scope: [company_quality, allocation, report, portfolio_health]
+
+INTERPRETATION (downstream consumer, NOT evidence layer):
+  → "Low valuation multiple likely reflects market pricing of refinancing risk
+     and weak cashflow coverage — value trap candidate, not undervaluation"
+
+DECISION (outside this framework entirely):
+  → Allocation must review but NO recommendation is generated here
+```
+
+**This example is illustrative only.** It does NOT create facts, signals, or evidence objects. It does NOT assess any real company. It demonstrates how credit/solvency evidence prevents premature undervaluation conclusions.
+
 ---
 
-## 30. Future Frameworks Enabled
+## 30. Credit, Solvency, and Balance Sheet Evidence
+
+### First-Class Evidence Domain
+
+Company solvency evidence is a **first-class evidence domain** in the Market Evidence Framework. It is not subordinate to earnings, growth, or valuation evidence. Solvency facts and signals carry equal weight in the evidence hierarchy and must be consulted before any valuation interpretation.
+
+### Credit ≠ Valuation
+
+Credit and default risk is fundamentally different from valuation:
+
+| Aspect | Valuation | Credit/Solvency |
+|--------|-----------|-----------------|
+| Question | "Is this cheap or expensive relative to earnings?" | "Can this entity service its obligations and survive?" |
+| Risk | Overpaying for growth | Permanent capital loss from default |
+| Evidence type | Multiples, growth rates, peer comparison | Debt levels, cashflow coverage, liquidity, obligations |
+| Failure mode | Multiple compression (recoverable) | Default, restructuring (often permanent) |
+
+### Value Trap Warning
+
+**Cheap valuation may be a value trap if credit evidence is weak.**
+
+A low valuation multiple (P/E, EV/EBITDA, P/FCF) does not automatically indicate undervaluation. The market may be correctly pricing:
+- Default risk (insufficient cashflow to service debt)
+- Refinancing risk (approaching maturities with no clear refinancing path)
+- Pension burden (unfunded obligations consuming future cashflow)
+- Covenant stress (approaching triggers that could accelerate debt)
+- Balance sheet impairment (goodwill or intangible assets at risk of writedown)
+- LBO legacy leverage (debt from prior leveraged acquisitions compressing equity value)
+
+### Evidence Categories Required
+
+The following evidence must be CAPTURED (not scored, not ranked, not weighted):
+
+**Liquidity Evidence:**
+- Cash and equivalents
+- Available undrawn facilities
+- Operating cash flow relative to near-term obligations
+- Liquidity runway (months/quarters of coverage)
+
+**Debt Structure Evidence:**
+- Total debt (gross and net)
+- Maturity schedule (when debt comes due)
+- Refinancing wall (concentrated near-term maturities)
+- Interest coverage (EBIT/interest expense)
+- Debt-to-EBITDA (leverage ratio)
+- FCF-to-debt (ability to delever organically)
+
+**Obligation Evidence:**
+- Pension obligations and funding gap
+- Operating lease liabilities (IFRS 16/ASC 842 capitalized)
+- Purchase obligations and minimum payments
+- Off-balance-sheet commitments (guarantees, variable-interest entities)
+- Post-retirement benefit obligations
+
+**Market Pricing Evidence:**
+- CDS spread (market-implied default probability proxy)
+- Bond yields and spreads to benchmark
+- Bond prices (discount indicating distress)
+- Credit rating and outlook changes
+
+**Balance Sheet Quality Evidence:**
+- Goodwill and intangible assets relative to equity
+- Impairment charges (historical pattern)
+- Asset quality and recoverability
+- Working capital stress indicators
+
+**LBO/Sponsor Evidence:**
+- LBO-originated debt levels
+- Sponsor ownership percentage and overhang
+- Dividend recapitalization history
+- Debt-funded buyback or distribution history
+
+### Framework Limitations
+
+This framework:
+- Does NOT make credit ratings or credit assessments
+- Does NOT produce default probability estimates
+- Does NOT generate buy/sell recommendations based on credit evidence
+- Does NOT replace professional credit analysis
+- DOES capture and organize the factual evidence that credit analysis requires
+- DOES ensure credit evidence is available alongside valuation evidence
+- DOES prevent premature valuation conclusions without solvency context
+
+---
+
+## 31. Valuation Trap Boundary
+
+### Core Rule
+
+**Low valuation is not automatically undervaluation. Valuation interpretation MUST consume credit, solvency, cashflow, liquidity, and obligation evidence before reaching any conclusion.**
+
+### Interpretation Boundary
+
+| Status | Requires |
+|--------|----------|
+| "Potentially undervalued" | Low multiple AND strong solvency evidence AND adequate liquidity AND manageable obligations |
+| "Value trap risk" | Low multiple AND weak solvency evidence OR liquidity stress OR approaching debt wall OR covenant pressure |
+| "Insufficient evidence" | Low multiple BUT solvency/credit evidence not yet assembled |
+
+### What This Section Authorizes
+
+- Evidence containers that group valuation facts alongside credit/solvency facts
+- Signals that detect the COMBINATION of low multiples + weak credit indicators
+- Consumer contracts that require solvency evidence before valuation conclusions
+
+### What This Section Does NOT Authorize
+
+- Scoring models that compute "probability of value trap"
+- Ranking of companies by "trap risk"
+- Automated buy/sell triggers based on credit evidence
+- Default probability models
+- Confidence intervals on credit assessments
+
+### Anti-Pattern: Valuation Without Solvency
+
+The following interpretation pattern is PROHIBITED:
+
+```
+❌ WRONG: "Company X trades at 5x EBITDA vs peers at 12x → undervalued"
+```
+
+The following pattern is REQUIRED:
+
+```
+✅ CORRECT: "Company X trades at 5x EBITDA. Credit evidence shows:
+            net_debt_to_ebitda: 6.2x, interest_coverage: 1.8x,
+            refinancing_wall: $2.4B due in 14 months, bond_yield: 9.8%.
+            Valuation interpretation must account for credit risk before
+            concluding undervaluation."
+```
+
+---
+
+## 32. Future Frameworks Enabled
 
 This README enables the following future specs and frameworks by establishing the evidence layer they will consume:
 
@@ -1021,10 +1272,14 @@ This README enables the following future specs and frameworks by establishing th
 | Portfolio Health Evidence | Provides container types for portfolio health assessment |
 | Allocation Evidence Contract | Defines how allocation logic consumes evidence without redefining it |
 | Report Evidence Rendering | Defines how reports consume and present evidence |
+| Company Credit Evidence Framework | Provides fact/signal model for credit and solvency evidence |
+| Balance Sheet Quality Framework | Provides evidence categories for asset quality and impairment risk |
+| Valuation Evidence Contract | Defines requirement for solvency evidence before valuation conclusions |
+| Credit Risk Evidence Contract | Defines how credit-risk evidence is organized and consumed |
 
 ---
 
-## 31. Verification Expectations
+## 33. Verification Expectations
 
 Future verification gates for implementations consuming this framework should check:
 
@@ -1036,10 +1291,16 @@ Future verification gates for implementations consuming this framework should ch
 | 4 | No registry mutation | Ensure evidence consumption does not auto-mutate registries |
 | 5 | No asset-first narrative creation | Ensure narratives are not derived from asset lists |
 | 6 | Consumer contract clarity | Ensure each consumer respects its rights and prohibitions |
+| 7 | Credit/solvency evidence boundary preservation | Ensure credit evidence is not converted to scores or default probabilities |
+| 8 | No valuation shortcut from multiples to undervaluation | Ensure solvency evidence is consulted before valuation conclusions |
+| 9 | No hidden credit scoring | Ensure qualitative credit labels are not secretly numeric |
+| 10 | No hidden default probability model | Ensure no implied probability calculation exists in evidence layer |
+| 11 | Pension/off-balance obligations represented as evidence categories | Ensure these are captured, not ignored |
+| 12 | LBO-related leverage represented as evidence category only | Ensure LBO history is factual evidence, not a judgment |
 
 ---
 
-## 32. Satisfies / Cross-References (Expanded)
+## 34. Satisfies / Cross-References (Expanded)
 
 | Target Deliverable | Section Referenced | Context |
 |-------------------|-------------------|---------|
@@ -1061,6 +1322,8 @@ Future verification gates for implementations consuming this framework should ch
 | portfolio_health_framework_md | (future) | Health evidence consumption |
 | correlation_dependency_framework_md | (future) | Correlation evidence boundaries |
 | report_reasoning_system_md | (future) | Report evidence rendering |
+| decision_governance_md | (future) | Decision layer boundary — evidence feeds into but does not replace |
+| scoring_methodology_framework_md | (future, out-of-scope downstream consumer) | Scoring may consume evidence labels but is not part of this framework |
 
 ---
 
