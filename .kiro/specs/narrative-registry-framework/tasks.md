@@ -127,8 +127,8 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Push to branch `spec/narrative-registry-framework`
     - _Requirements: Workflow governance, Global Execution Rule 16_
 
-- [ ] 4. Verification Gates VG-1 through VG-9
-  - [ ] 4.1 VG-1: Structural Completeness
+- [x] 4. Verification Gates VG-1 through VG-9
+  - [x] 4.1 VG-1: Structural Completeness
     - Verify `docs/registries/narrative_registry.yaml` exists
     - Verify YAML metadata header is present and valid
     - Verify governance section is present with all required fields
@@ -136,7 +136,7 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Produce pass/fail result with evidence
     - _Requirements: VG-1 gate_
 
-  - [ ] 4.2 VG-2: No Population
+  - [x] 4.2 VG-2: No Population
     - Open actual `docs/registries/narrative_registry.yaml`
     - Verify `narratives` list is empty (length 0)
     - Fail if list contains anything
@@ -144,28 +144,28 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Produce pass/fail result with evidence
     - _Requirements: VG-2 gate, Global Execution Rules 3-8_
 
-  - [ ] 4.3 VG-3: No Future-Leak
+  - [x] 4.3 VG-3: No Future-Leak
     - Verify that prohibited fields (`score`, `weight`, `probability`, `confidence`, `rank`, `asset_list`, `ticker_symbols`, `numeric_threshold`, `membership_weight`) do NOT appear as allowed registry entry fields, governance inputs, or schema extensions
     - These terms MAY appear only inside explicit Prohibited Fields / Exclusion Constraints sections where they are listed as forbidden
     - Fail if any prohibited term appears as an allowed field
     - Produce pass/fail result with evidence
     - _Requirements: VG-3 gate, NRF-REQ-9_
 
-  - [ ] 4.4 VG-4: Namespace Correctness
+  - [x] 4.4 VG-4: Namespace Correctness
     - Verify governance rules reference `narrative.*` pattern
     - Verify collision_check_required is true
     - Verify immutable_fields includes narrative_id
     - Produce pass/fail result with evidence
     - _Requirements: VG-4 gate, NRF-REQ-3_
 
-  - [ ] 4.5 VG-5: Lifecycle Governance
+  - [x] 4.5 VG-5: Lifecycle Governance
     - Verify lifecycle_transition_authority is defined
     - Verify initial_lifecycle_state is `narrative.lifecycle.emerging`
     - Verify governance README documents evidence requirements
     - Produce pass/fail result with evidence
     - _Requirements: VG-5 gate, NRF-REQ-6_
 
-  - [ ] 4.6 VG-6: Artifact Registry Compatibility
+  - [x] 4.6 VG-6: Artifact Registry Compatibility
     - Verify `narrative_registry_yaml` entry exists in `.domainization/artifact_registry.yaml`
     - Verify artifact_type is SSOT
     - Verify topic is `narrative_registry`
@@ -173,14 +173,14 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Produce pass/fail result with evidence
     - _Requirements: VG-6 gate, NRF-REQ-8_
 
-  - [ ] 4.7 VG-7: Rendering Independence
+  - [x] 4.7 VG-7: Rendering Independence
     - Verify no display text is used as identity in governance rules
     - Verify amendment_rules declares display_name as freely_changeable
     - Verify no language-specific text appears as canonical ID
     - Produce pass/fail result with evidence
     - _Requirements: VG-7 gate, NRF-REQ-2.6_
 
-  - [ ] 4.8 VG-8: Market Organism Compatibility
+  - [x] 4.8 VG-8: Market Organism Compatibility
     - Verify 12-domain model is preserved (no new domains added)
     - Verify canonical chain is unchanged
     - Verify no Market Organism Layer 0 SSOT was modified
@@ -188,7 +188,7 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Produce pass/fail result with evidence
     - _Requirements: VG-8 gate_
 
-  - [ ] 4.9 VG-9: Narrative Framework v2 Compatibility
+  - [x] 4.9 VG-9: Narrative Framework v2 Compatibility
     - Verify required fields match Narrative Framework v2 Section 13 Extension Criteria
     - Verify lifecycle states reference Section 6 states
     - Verify No Dead Ends is enforceable (birth_trigger + connected_systems required)
@@ -196,7 +196,7 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Produce pass/fail result with evidence
     - _Requirements: VG-9 gate_
 
-  - [ ] 4.10 Create verification gate report
+  - [x] 4.10 Create verification gate report
     - Create `.domainization/reports/narrative_registry_framework_verification_gate_report.md`
     - Document pass/fail for each gate (VG-1 through VG-9)
     - Include evidence for each gate
@@ -204,14 +204,14 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - If any gate FAILS: stop and report to user
     - _Requirements: Verification Gate Governance_
 
-  - [ ] 4.11 Commit and push verification gate report
+  - [x] 4.11 Commit and push verification gate report
     - Stage `.domainization/reports/narrative_registry_framework_verification_gate_report.md`
     - Commit with message: `docs(narrative-registry): verification gate report VG-1 through VG-9`
     - Push to branch `spec/narrative-registry-framework`
     - _Requirements: Workflow governance, Global Execution Rule 16_
 
-- [ ] 5. Final Completion
-  - [ ] 5.1 Verify all tasks complete and no unauthorized files modified
+- [-] 5. Final Completion
+  - [x] 5.1 Verify all tasks complete and no unauthorized files modified
     - Verify every task (1 through 4) is marked `[x]` in tasks.md
     - Verify `docs/registries/narrative_registry.yaml` exists and `narratives: []` is empty
     - Verify `docs/registries/README_narrative_registry_governance.md` exists
@@ -221,12 +221,12 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - If any unauthorized file was modified, create a blocker report and stop
     - _Requirements: Global Execution Rules 17, 18_
 
-  - [ ] 5.2 Create final completion report
+  - [x] 5.2 Create final completion report
     - Create `.domainization/reports/narrative_registry_framework_completion_report_2026-06-03.md`
     - Document: all tasks completed, all verification gates passed, all reports present, registry file is schema-only, `narratives: []` confirmed empty, artifact registered, governance README created, no unauthorized files modified, no population performed, branch ready for review/merge
     - _Requirements: Workflow governance_
 
-  - [ ] 5.3 Final commit and push
+  - [-] 5.3 Final commit and push
     - Stage `.domainization/reports/narrative_registry_framework_completion_report_2026-06-03.md` and updated `tasks.md`
     - Commit with message: `docs(narrative-registry): final completion report and task status update`
     - Push to branch `spec/narrative-registry-framework`
