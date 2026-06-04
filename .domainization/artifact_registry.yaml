@@ -3717,3 +3717,32 @@ artifacts:
     - governance
     - execution_report
     - delta_layer
+
+  # ======================================================================
+  # NARRATIVE REGISTRY
+  # ======================================================================
+
+- artifact_id: narrative_registry_yaml
+  file_path: docs/registries/narrative_registry.yaml
+  primary_domain: ARCH
+  artifact_type: SSOT
+  lifecycle_status: draft
+  created_date: "2026-06-03"
+  last_modified: "2026-06-03"
+  owner_role: Portfolio Architect
+  ssot_relationship: canonical
+  topic: narrative_registry
+  allowed_writers:
+    - ARCH
+    - GOV
+  allowed_readers:
+    - ALL
+  dependencies:
+    - narrative_framework_md
+    - market_organism.principles_md
+    - state_change_taxonomy_md
+  description: "Canonical registry of recognized narratives with governance rules. Schema-only until population spec."
+  tags:
+    - narrative
+    - registry
+    - governance
