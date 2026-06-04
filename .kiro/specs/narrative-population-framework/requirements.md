@@ -1,6 +1,6 @@
-# Requirements Document: Narrative Population Framework
+# Requirements Document
 
-## 1. Purpose
+## Introduction
 
 This spec governs the first controlled population of the Narrative Registry. It answers the question: **"Which first narratives may officially exist in Portfolio OS?"**
 
@@ -56,7 +56,7 @@ This is a requirements-only document. It defines WHAT must be true before narrat
 
 ---
 
-## 3. Definitions / Glossary Policy
+## Glossary
 
 ### Glossary Reference
 
@@ -83,7 +83,7 @@ All terms used in this document are defined in the canonical glossary unless ame
 
 ---
 
-## 4. Requirements
+## Requirements
 
 ### NPF-REQ-1: Population Boundary
 
