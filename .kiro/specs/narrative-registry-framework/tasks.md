@@ -44,8 +44,8 @@ The following rules apply to EVERY task in this plan. They are not optional. The
 
 ## Tasks
 
-- [ ] 1. Registry Directory and Schema-Only File
-  - [ ] 1.1 Create registry directory and schema-only YAML file
+- [x] 1. Registry Directory and Schema-Only File
+  - [x] 1.1 Create registry directory and schema-only YAML file
     - Create directory `docs/registries/`
     - Create `docs/registries/narrative_registry.yaml` with:
       - YAML metadata header (artifact_id, primary_domain, artifact_type, lifecycle_status, created_date, last_modified, owner_role, ssot_relationship, topic, allowed_writers, allowed_readers, dependencies, version, alignment_spec)
@@ -56,19 +56,19 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Verify no placeholder/sample/illustrative/real narrative IDs appear anywhere in the file
     - _Requirements: NRF-REQ-1, NRF-REQ-2, NRF-REQ-5, NRF-REQ-6_
 
-  - [ ] 1.2 Create execution report for schema-only file
+  - [x] 1.2 Create execution report for schema-only file
     - Create `.domainization/reports/narrative_registry_framework_task1_schema_file.md`
     - Document: file created, metadata included, governance section included, `narratives: []` is empty, no entries present, invariants preserved
     - _Requirements: Workflow governance_
 
-  - [ ] 1.3 Commit and push schema-only file + report
+  - [x] 1.3 Commit and push schema-only file + report
     - Stage BOTH `docs/registries/narrative_registry.yaml` AND `.domainization/reports/narrative_registry_framework_task1_schema_file.md`
     - Commit with message: `docs(narrative-registry): create schema-only narrative registry file`
     - Push to branch `spec/narrative-registry-framework`
     - _Requirements: Workflow governance, Global Execution Rule 16_
 
-- [ ] 2. Artifact Registry Integration
-  - [ ] 2.1 Register narrative registry in artifact registry
+- [x] 2. Artifact Registry Integration
+  - [x] 2.1 Register narrative registry in artifact registry
     - Add entry to `.domainization/artifact_registry.yaml` with:
       - artifact_id: narrative_registry_yaml
       - file_path: docs/registries/narrative_registry.yaml
@@ -89,19 +89,19 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Do NOT add a REGISTRY artifact type
     - _Requirements: NRF-REQ-8_
 
-  - [ ] 2.2 Create execution report for artifact registration
+  - [x] 2.2 Create execution report for artifact registration
     - Create `.domainization/reports/narrative_registry_framework_task2_artifact_registration.md`
     - Document: registration metadata added, no lifecycle_state_machine.yaml mutation, no new artifact type added, artifact_registry.yaml only modified for this single entry
     - _Requirements: Workflow governance_
 
-  - [ ] 2.3 Commit and push artifact registration + report
+  - [x] 2.3 Commit and push artifact registration + report
     - Stage BOTH `.domainization/artifact_registry.yaml` AND `.domainization/reports/narrative_registry_framework_task2_artifact_registration.md`
     - Commit with message: `docs(narrative-registry): register narrative registry in artifact registry`
     - Push to branch `spec/narrative-registry-framework`
     - _Requirements: Workflow governance, Global Execution Rule 16_
 
-- [ ] 3. Governance README
-  - [ ] 3.1 Create governance README
+- [x] 3. Governance README
+  - [x] 3.1 Create governance README
     - Create `docs/registries/README_narrative_registry_governance.md`
     - Include:
       - Purpose statement (supplementary guide — Narrative Framework v2 is the ontology SSOT)
@@ -116,12 +116,12 @@ The following rules apply to EVERY task in this plan. They are not optional. The
       - Cross-reference to Narrative Framework v2 as ontology SSOT
     - _Requirements: NRF-REQ-3, NRF-REQ-4, NRF-REQ-6, NRF-REQ-7_
 
-  - [ ] 3.2 Create execution report for governance README
+  - [x] 3.2 Create execution report for governance README
     - Create `.domainization/reports/narrative_registry_framework_task3_governance_readme.md`
     - Document: README created, procedures documented, warnings included, no population performed
     - _Requirements: Workflow governance_
 
-  - [ ] 3.3 Commit and push governance README + report
+  - [x] 3.3 Commit and push governance README + report
     - Stage BOTH `docs/registries/README_narrative_registry_governance.md` AND `.domainization/reports/narrative_registry_framework_task3_governance_readme.md`
     - Commit with message: `docs(narrative-registry): create governance procedures README`
     - Push to branch `spec/narrative-registry-framework`
