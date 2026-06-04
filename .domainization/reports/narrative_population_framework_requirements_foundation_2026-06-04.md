@@ -80,7 +80,7 @@ All acceptance criteria are verifiable by document inspection. No criterion requ
 | NPG-08 | NPF-REQ-5 | Tasks phase — populate after entries exist |
 | NPG-09 | NPF-REQ-5.2 | Design phase — optional field |
 | NPG-10 | NPF-REQ-5.2 | Design phase — hierarchy policy |
-| NPG-11 | NPF-REQ-11 | Addressed — consumed as draft from branch |
+| NPG-11 | NPF-REQ-11 | Resolved — Market Evidence canonical on main |
 | NPG-12 | NPF-REQ-12 | Addressed — valuation trap guard rule |
 
 All 12 gaps mapped. No gaps deferred without explicit resolution path.
@@ -108,11 +108,9 @@ All 12 gaps mapped. No gaps deferred without explicit resolution path.
 
 ## Market Evidence Framework Availability
 
-**Status**: Available and consumed.
+**Status**: Canonical on main (resolved).
 
-Market Evidence Framework (`docs/README_market_evidence_framework.md`) is not yet merged to `main` (still on `spec/market-evidence-framework-foundation`). It was merged into this working branch to satisfy the requirement that it be consumed as input. Requirements explicitly reference it as a draft dependency and note this status in Gap NPG-11.
-
-Once Market Evidence Framework is merged to `main`, this gap closes automatically.
+Market Evidence Framework (`docs/README_market_evidence_framework.md`) has been merged to `main` and is now canonical. Gap NPG-11 is resolved. Requirements reference it as a canonical dependency.
 
 ---
 

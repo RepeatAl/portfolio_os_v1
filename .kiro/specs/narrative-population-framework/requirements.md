@@ -406,7 +406,7 @@ This rule prevents the following anti-patterns:
 | NPG-08 | Related_narratives empty in Wave 1 | Cannot cross-reference | LOW | NPF-REQ-5 | Tasks | No |
 | NPG-09 | Velocity assessment requires human judgment | No algorithmic determination | LOW | NPF-REQ-5.2 | Design | No |
 | NPG-10 | Meta-narrative hierarchy unclear | Parent may not exist yet | MEDIUM | NPF-REQ-5.2 | Design | No |
-| NPG-11 | Market Evidence Framework not yet canonical on main | Draft status dependency | MEDIUM | NPF-REQ-11 | Requirements (consumed as draft) | No — consumed from branch |
+| NPG-11 | Market Evidence Framework canonical on main | Dependency resolved | LOW | NPF-REQ-11 | Requirements (resolved) | Yes — resolved after merge |
 | NPG-12 | Credit/solvency evidence required for valuation-sensitive narratives | Missing evidence may block candidates | LOW | NPF-REQ-12 | Design | No — addressed by guard rule |
 
 ---
