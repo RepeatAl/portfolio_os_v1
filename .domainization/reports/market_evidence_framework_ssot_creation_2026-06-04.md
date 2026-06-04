@@ -2,14 +2,14 @@
 
 **Date**: 2026-06-04
 **Branch**: `spec/market-evidence-framework-foundation`
-**Type**: SSOT README creation
+**Type**: SSOT README creation (expanded)
 **Status**: COMPLETE
 
 ---
 
 ## Executive Summary
 
-Created `docs/README_market_evidence_framework.md` as a canonical SSOT definition-layer document defining the evidence layer for Portfolio OS. The document establishes ontological boundaries between observed facts, calculated signals, evidence containers, and higher-level constructs that consume evidence.
+Created and expanded `docs/README_market_evidence_framework.md` as a canonical SSOT definition-layer document defining the evidence layer for Portfolio OS. The document establishes ontological boundaries between observed facts, calculated signals, evidence containers, and higher-level constructs that consume evidence. The expanded version includes 32 sections covering all required elements.
 
 ---
 
@@ -17,24 +17,46 @@ Created `docs/README_market_evidence_framework.md` as a canonical SSOT definitio
 
 | File | Path | Status |
 |------|------|--------|
-| Market Evidence Framework README | `docs/README_market_evidence_framework.md` | ✅ Created |
+| Market Evidence Framework README | `docs/README_market_evidence_framework.md` | ✅ Created + Expanded |
 
 ---
 
-## Document Contents
+## Document Contents (32 Sections)
 
 The README defines:
 
-1. **Evidence Hierarchy** — Three-layer model: Observed_Facts → Calculated_Signals → Evidence_Containers
-2. **Evidence vs. Narrative distinction** — Evidence detects; narratives explain beliefs. These are categorically different.
-3. **Sensor Principle** — All evidence elements are sensors. None possess causal authority. Only State_Changes cause transitions.
-4. **Evidence Production Rules** — Provenance, immutability, reproducibility, separation of production/consumption, no circular dependencies
-5. **System Function Support** — How evidence supports narrative lifecycle assessment, regime detection, risk evaluation, allocation, and reporting
-6. **Evidence Layer Boundaries** — What the layer IS and is NOT (not a narrative, not a decision engine, not a scorer, not an allocator)
-7. **Exclusion Constraints** — 10 explicit prohibitions (no engines, no code, no scoring, no allocation, no dashboards, no causal authority)
-8. **Architectural Compatibility** — 12-domain model preserved, canonical chain preserved, primitive chain orthogonality
-9. **Cross-References** — Proper `(See: [Deliverable], Section: [Title])` format throughout
-10. **Invariants** — 10 invariants that all systems interacting with evidence must preserve
+1. **Scope Statement** — Definition-layer purpose and exclusions
+2. **Glossary Reference** — Local glossary candidates (Observed_Fact, Calculated_Signal, Evidence_Container, Evidence_Consumer, Evidence_Provenance)
+3. **Evidence Hierarchy** — Three-layer model: Observed_Facts → Calculated_Signals → Evidence_Containers
+4. **Evidence Is Not Narrative** — Categorical distinction between evidence and narrative
+5. **Signals Are Sensors, Not Causes** — Sensor principle extended to all evidence consumers
+6. **Evidence Production Rules** — Provenance, immutability, reproducibility, separation, no circular dependencies
+7. **How Evidence Supports System Functions** — Narrative lifecycle, regime, risk, allocation, reporting
+8. **Evidence Layer Boundaries** — What the layer IS and is NOT
+9. **Exclusion Constraints** — 10 explicit prohibitions
+10. **Architectural Compatibility** — 12-domain model, canonical chain, primitive chain orthogonality
+11. **Cross-References** — Canonical format throughout
+12. **Invariants** — 10 invariants
+13. **Purpose** — How Portfolio OS captures, normalizes, interprets, and exposes evidence
+14. **Scope (Expanded)** — In-scope and out-of-scope with full enumeration
+15. **Core Primitive Chain** — Raw_Data → Fact → Signal → Evidence_Object → Interpretation_Object → Decision_Object
+16. **Relationship to Market Organism Framework** — State_Change as root, evidence as observer
+17. **Relationship to Narrative Framework** — Evidence supports/contradicts narratives without becoming one
+18. **Relationship to Narrative Registry** — Consumption rules, no direct mutation
+19. **Fact Model** — 12 canonical fact fields + illustrative fact categories
+20. **Signal Model** — 11 canonical signal fields + clarifications
+21. **Evidence Object Model** — 12 canonical evidence object fields + quality clarification
+22. **Evidence Container Types** — 7 conceptual namespaces
+23. **Consumer Contracts** — Rights and prohibitions per consumer
+24. **Boundary Rules** — 9 hard boundary rules
+25. **Supported Entity Types** — 14 entity types with clarification
+26. **Evidence Quality Labels** — 4 qualitative label sets (no numeric scoring)
+27. **Provenance Requirements** — 5 provenance rules + anti-patterns
+28. **Anti-Drift Rules** — 8 prohibitions preventing scoring/ranking drift
+29. **Example Flows** — 3 illustrative examples (AI infrastructure, contradiction, portfolio health)
+30. **Future Frameworks Enabled** — 7 future frameworks this README enables
+31. **Verification Expectations** — 6 verification checks for future implementations
+32. **Satisfies / Cross-References (Expanded)** — Full cross-reference table with canonical format
 
 ---
 
@@ -45,6 +67,23 @@ The README defines:
 - `docs/market_organism/README_state_change_taxonomy.md` (Classification Hierarchy)
 - `docs/market_organism/README_expansion_taxonomy.md` (Expansion Definition)
 - `docs/registries/narrative_registry.yaml` (governance rules, prohibited fields)
+
+---
+
+## Boundaries Enforced
+
+- Definition-layer only — no implementation
+- No facts, signals, or evidence objects created
+- No narrative registry mutation
+- No narrative entries added
+- No asset-to-narrative mappings created
+- No scoring, ranking, probability, or confidence logic
+- No engines, dashboards, or runtime code
+- No Market Organism Layer 0 SSOT modification
+- No Narrative Framework v2 modification
+- No central glossary modification
+- All examples marked as illustrative only
+- All cross-references use canonical format: `(See: [Deliverable_Name], Section: [Section_Title])`
 
 ---
 
@@ -97,6 +136,10 @@ dependencies:
 - Human review of the Market Evidence Framework README
 - Registration in `.domainization/artifact_registry.yaml` (separate task if needed)
 - Lifecycle progression: draft → review → canonical (after human approval)
+
+## Recommendation
+
+This README is **ready to be used as input for Narrative Population Preflight**. It defines the evidence model, consumer contracts, and boundary rules that the population framework needs to reference when justifying candidate narrative registration.
 
 ---
 

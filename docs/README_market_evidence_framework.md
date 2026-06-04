@@ -493,6 +493,577 @@ The following invariants MUST be preserved by all systems that interact with the
 
 ---
 
+## 13. Purpose
+
+The Market Evidence Framework defines how Portfolio OS captures, normalizes, interprets, and exposes factual market evidence without turning it into narratives or decisions too early.
+
+Evidence is the factual substrate that all higher-level constructs consume. Narratives explain why things matter. Decisions allocate capital. Reports communicate state. But BEFORE any of these can act, they need evidence — observed facts and calculated signals organized into consumable containers.
+
+This framework ensures that:
+- Facts remain facts (immutable, verifiable, source-attributed)
+- Signals remain sensors (derived, reproducible, non-causal)
+- Evidence remains organized (grouped, provenance-linked, consumer-ready)
+- Interpretation remains separate from observation (consumers interpret; evidence does not)
+- Decisions remain downstream (evidence informs; it does not dictate)
+
+The framework prevents premature collapse — the failure mode where observations, beliefs, and actions merge into a single undifferentiated layer, losing traceability, falsifiability, and governance control.
+
+---
+
+## 14. Scope (Expanded)
+
+### In Scope
+
+- Raw observed facts (source-level data points before and after normalization)
+- Normalized facts (source-attributed, timestamped, typed observations)
+- Calculated signals (derived values from defined formulas applied to facts)
+- Interpreted signal states (qualitative readings: direction, magnitude labels, freshness)
+- Evidence containers (structured groupings of facts and signals around analytical questions)
+- Provenance (complete chain of custody from source to final evidence form)
+- Consumer contracts (how downstream systems consume evidence without altering it)
+- Support / contradiction relationships (how evidence relates to narratives, regimes, risks)
+- Boundaries between evidence, narratives, regimes, risks, decisions, and reports
+
+### Out of Scope
+
+The following are explicitly excluded from this framework:
+
+| # | Exclusion | Rationale |
+|---|-----------|-----------|
+| 1 | Data ingestion implementation | Implementation belongs to DATA domain execution |
+| 2 | API integrations | Implementation detail |
+| 3 | Scraping or crawling logic | Implementation detail |
+| 4 | Trading logic | Decision layer, not evidence layer |
+| 5 | Portfolio recommendations | Decision layer |
+| 6 | Scoring engines | Consumer-side interpretation, not evidence |
+| 7 | Ranking engines | Consumer-side interpretation, not evidence |
+| 8 | Probability models | Consumer-side computation, not evidence |
+| 9 | Confidence scoring | Consumer-side computation, not evidence |
+| 10 | Asset-to-narrative mappings | Separate registry (future spec) |
+| 11 | Narrative registry population | Separate spec (narrative-population-framework) |
+| 12 | Dashboards | REPORT domain implementation |
+| 13 | Runtime code | Implementation layer |
+
+---
+
+## 15. Core Primitive Chain
+
+The evidence chain defines the ordered progression from raw observation to downstream action:
+
+```
+Raw_Data → Fact → Signal → Evidence_Object → Interpretation_Object → Decision_Object
+```
+
+### Primitive Definitions
+
+| # | Primitive | Definition | Layer |
+|---|-----------|-----------|-------|
+| 1 | **Raw_Data** | Source-level observation before normalization. Untyped, unvalidated, potentially malformed. Exists in the ingestion buffer only. | Pre-evidence |
+| 2 | **Fact** | Normalized, source-attributed, timestamped observation. Typed, validated, immutable once recorded. The atomic unit of evidence. | Evidence (Layer 1) |
+| 3 | **Signal** | Calculated or interpreted state derived from one or more facts. Reproducible, formula-attributed, sensor-only. | Evidence (Layer 2) |
+| 4 | **Evidence_Object** | Structured support/contradiction bundle grouping facts and signals around an analytical question. Question-oriented, non-authoritative. | Evidence (Layer 3) |
+| 5 | **Interpretation_Object** | Semantic conclusion produced by a consumer that reads evidence. Used by narrative assessment, regime detection, risk evaluation, and reporting. | Consumer layer |
+| 6 | **Decision_Object** | Downstream action logic (allocation, rebalancing, position sizing). Outside this framework entirely. | Decision layer |
+
+### Chain Boundaries
+
+```
+THIS FRAMEWORK COVERS:          OUTSIDE THIS FRAMEWORK:
+─────────────────────────        ─────────────────────────
+Raw_Data                         (pre-evidence, ingestion concern)
+Fact                             ← defined here
+Signal                           ← defined here
+Evidence_Object                  ← defined here
+Interpretation_Object            (consumer concern, defined by consumers)
+Decision_Object                  (decision concern, outside evidence)
+```
+
+The Market Evidence Framework owns Facts, Signals, and Evidence_Objects. Raw_Data is an input concern (DATA domain ingestion). Interpretation_Objects and Decision_Objects are consumer concerns defined by their respective domains.
+
+---
+
+## 16. Relationship to Market Organism Framework
+
+### State_Change Remains Root/Cause
+
+The Market Organism Framework establishes that State_Changes are the causal root of all market propagation. The Market Evidence Framework does NOT alter this:
+
+- State_Changes CAUSE market effects
+- Evidence OBSERVES those effects
+- Evidence does NOT create causality by itself
+- Detecting a fact does not cause the fact
+- Calculating a signal does not cause the condition the signal detects
+
+### Evidence Observes, Supports, Contradicts, or Qualifies
+
+Evidence relates to the Market Organism primitives through four verbs:
+
+| Verb | Meaning |
+|------|---------|
+| **Observes** | Records that something happened (fact creation) |
+| **Supports** | Provides factual basis consistent with a hypothesis |
+| **Contradicts** | Provides factual basis inconsistent with a hypothesis |
+| **Qualifies** | Adds context, nuance, or boundary conditions to an interpretation |
+
+### Complementary Roles
+
+| Framework | Answers | Authority |
+|-----------|---------|-----------|
+| Market Organism | "How do systems change?" | Causal mechanism and propagation |
+| Market Evidence | "What did we observe, and how strongly does it support interpretations?" | Factual substrate and sensor readings |
+
+These frameworks are complementary — not competing. The Organism explains causation. Evidence provides the factual foundation that makes causation assessable.
+
+(See: README_market_organism_principles, Section: Principle 1 — Organism over Collection)
+(See: README_market_organism_principles, Section: Principle 6 — Causation over Correlation)
+
+---
+
+## 17. Relationship to Narrative Framework
+
+### Narrative as Explanatory Container
+
+The Narrative Framework v2 defines a narrative as an explanatory container — a shared belief structure. The Market Evidence Framework supports narratives without becoming one:
+
+- **Evidence supports narratives** — facts and signals may confirm that a narrative's thesis is playing out
+- **Evidence contradicts narratives** — facts and signals may show a narrative's thesis is failing
+- **Evidence does NOT become a narrative** — evidence is observation, not belief
+- **A portfolio category is NOT evidence** — grouping assets is not observing facts
+- **An asset basket is NOT evidence** — holding positions is not detecting conditions
+
+### Evidence Precedes Narrative Lifecycle Movement
+
+Evidence is REQUIRED before narrative population or lifecycle transitions:
+
+- Before registering a new narrative: evidence of the birth trigger State_Change must exist
+- Before transitioning lifecycle state: evidence of the qualifying State_Change must exist
+- Evidence informs the assessment — the State_Change causes the transition
+
+(See: README_narrative_framework, Section: 6. Narrative Lifecycle State Machine)
+(See: README_narrative_framework, Section: 13. Extension Criteria)
+(See: README_narrative_framework, Section: 14. Signal Sensor Relationship Declaration)
+
+---
+
+## 18. Relationship to Narrative Registry
+
+### Division of Responsibility
+
+| Registry/Framework | Question Answered |
+|-------------------|-------------------|
+| Narrative Registry | "Which narratives officially exist?" |
+| Market Evidence Framework | "What factual/signaled evidence exists?" |
+
+### Consumption Rules
+
+- Narrative Population MUST consume evidence before creating registry entries
+- No evidence object may DIRECTLY mutate the Narrative Registry
+- Evidence informs the human/ARCH decision to register — it does not auto-register
+- The registry remains governance-controlled; evidence is sensor-controlled
+
+(See: README_narrative_registry_governance, Section: Creation Procedure)
+(See: README_narrative_registry_governance, Section: Inclusion Criteria Gate)
+
+---
+
+## 19. Fact Model
+
+### Canonical Fact Characteristics
+
+Every Fact in the evidence layer carries the following attributes:
+
+| # | Field | Description |
+|---|-------|-------------|
+| 1 | `fact_id` | Unique identifier for the fact |
+| 2 | `source` | Originating data source (exchange, filing, release, feed) |
+| 3 | `entity` | The subject of the observation (company, index, macro series, etc.) |
+| 4 | `entity_type` | Classification of the entity (asset, index, benchmark, macro_series, etc.) |
+| 5 | `fact_type` | Category of observation (earnings, guidance, price, volume, macro_indicator, etc.) |
+| 6 | `value` | The observed value (numeric, text, or structured) |
+| 7 | `unit` | Unit of measurement (USD, %, bps, ratio, etc.) |
+| 8 | `period` | Time period the fact describes (Q4 2025, FY2026, 2026-01-15, etc.) |
+| 9 | `timestamp` | When the fact was recorded in the system |
+| 10 | `source_timestamp` | When the source published/released the data |
+| 11 | `provenance` | Chain of custody from source to system |
+| 12 | `normalization_status` | Whether the fact has been normalized (raw / normalized / validated) |
+
+### Fact Categories (Illustrative Only)
+
+The following categories illustrate the types of facts the evidence layer may contain. These are illustrative only — not a canonical exhaustive list, not populated instances, and not registry entries.
+
+**Market Data Facts:**
+- Index level
+- Index return
+- Volume
+- Relative strength
+- Overbought/oversold condition
+- Volatility
+- Liquidity
+- Correlation to index
+- Correlation to benchmark
+- Correlation to peers
+- Money flow
+
+**Fundamental Facts:**
+- Earnings per share
+- Revenue growth
+- Gross margin
+- Operating margin
+- Capex
+- Guidance
+- Valuation multiple
+
+**Macro Facts:**
+- Macro indicator
+- Inflation data
+- Rates data
+
+---
+
+## 20. Signal Model
+
+### Canonical Signal Characteristics
+
+Every Calculated_Signal carries:
+
+| # | Field | Description |
+|---|-------|-------------|
+| 1 | `signal_id` | Unique identifier for the signal |
+| 2 | `input_facts` | List of fact_ids used as inputs |
+| 3 | `signal_type` | Classification of the signal (momentum, trend, threshold, composite, etc.) |
+| 4 | `entity` | The entity the signal describes |
+| 5 | `calculation_window` | Time window over which the signal is calculated |
+| 6 | `state` | Qualitative reading (e.g., bullish/neutral/bearish, elevated/normal/depressed) |
+| 7 | `direction` | Qualitative direction (increasing/stable/decreasing) |
+| 8 | `magnitude_label` | Qualitative magnitude (strong/moderate/weak/negligible) |
+| 9 | `freshness` | How current the signal is (current/stale/expired/unknown) |
+| 10 | `provenance` | Calculation formula reference and input chain |
+| 11 | `limitations` | Known limitations or conditions under which the signal may be unreliable |
+
+### Signal Clarifications
+
+- Signals are **derived observations** — they transform facts into interpretable states
+- Signals are **sensors** — they detect conditions, they do not create them
+- Signals are **not causes** — a signal detecting narrative strengthening does not cause the strengthening
+- Signals are **not recommendations** — a bullish signal does not mean "buy"
+- Signals are **not portfolio weights** — signal magnitude is not position sizing
+
+---
+
+## 21. Evidence Object Model
+
+### Canonical Evidence Object Characteristics
+
+Every Evidence_Object carries:
+
+| # | Field | Description |
+|---|-------|-------------|
+| 1 | `evidence_id` | Unique identifier for the evidence object |
+| 2 | `supports` | What hypothesis/narrative/state this evidence supports |
+| 3 | `contradicts` | What hypothesis/narrative/state this evidence contradicts |
+| 4 | `related_to` | Entities, narratives, or systems this evidence relates to |
+| 5 | `input_facts` | List of fact_ids grouped into this evidence |
+| 6 | `input_signals` | List of signal_ids grouped into this evidence |
+| 7 | `evidence_type` | Classification (narrative_support, regime_indicator, risk_signal, health_metric) |
+| 8 | `evidence_readiness` | Qualitative label: high / medium / low / insufficient |
+| 9 | `contradiction_level` | Qualitative label: high / medium / low / none |
+| 10 | `freshness` | How current the evidence is (current/stale/expired/unknown) |
+| 11 | `provenance_chain` | Full chain from source facts through signals to this evidence object |
+| 12 | `consumer_scope` | Which consumers may read this evidence (narrative, regime, risk, health, allocation, report) |
+
+### Evidence Quality Clarification
+
+`evidence_readiness` and `contradiction_level` are **qualitative labels only**. They are categorical descriptors — NOT numeric scores, NOT ordinal rankings, NOT confidence intervals. They enable human reasoning about evidence completeness — they are not inputs to computation.
+
+Future scoring governance may authorize numeric models that consume these labels. This framework does not authorize such models. Until separately authorized, these remain qualitative.
+
+---
+
+## 22. Evidence Container Types
+
+Evidence containers are organized by conceptual namespace. These define the TYPES of containers — not populated instances.
+
+| Namespace | Purpose | Example Question |
+|-----------|---------|-----------------|
+| `evidence.narrative.*` | Evidence supporting/contradicting narrative hypotheses | "What evidence supports narrative.ai_infrastructure strengthening?" |
+| `evidence.regime.*` | Evidence indicating regime state | "What evidence indicates monetary tightening regime?" |
+| `evidence.risk.*` | Evidence revealing risk conditions | "What evidence shows concentration risk in portfolio?" |
+| `evidence.portfolio_health.*` | Evidence about portfolio state | "What is the evidence for portfolio health degradation?" |
+| `evidence.asset.*` | Evidence about specific asset conditions | "What evidence exists about NVDA fundamental trajectory?" |
+| `evidence.system.*` | Evidence about system-level conditions | "What evidence shows semiconductor system under stress?" |
+| `evidence.macro.*` | Evidence about macro conditions | "What evidence indicates inflation persistence?" |
+
+**Clarification**: These are conceptual namespaces defining container TYPES. They are NOT populated registries. No evidence objects are created by this README. Population requires implementation in the DATA and SIGNALS domains.
+
+---
+
+## 23. Consumer Contracts
+
+Downstream consumers use evidence according to defined contracts. Each consumer has specific rights and prohibitions:
+
+| Consumer | Rights | Prohibitions |
+|----------|--------|--------------|
+| **Narrative Population** | Read evidence to justify candidate inclusion | Cannot create evidence; cannot mutate registry without governance approval |
+| **Narrative Lifecycle** | Read evidence to justify state transitions | Cannot trigger transitions directly — only State_Changes do |
+| **Asset-to-Narrative** | Read evidence to justify qualitative membership assessment | Cannot create numeric membership weights from evidence |
+| **Portfolio Health** | Read evidence for concentration, volatility, correlation, breadth, liquidity assessment | Cannot alter evidence to improve apparent health |
+| **Allocation** | Read evidence to inform allocation decisions | Cannot redefine facts or signals to justify positions |
+| **Reports** | Read evidence for explanation and presentation | Cannot alter evidence for presentation purposes |
+| **Dashboards** | Read rendered states (consumer outputs) | Consume rendered results only — not raw evidence directly |
+
+### Universal Consumer Rules
+
+1. Consumers READ evidence — they do not WRITE or ALTER it
+2. Consumers INTERPRET evidence — the interpretation belongs to the consumer, not to the evidence
+3. Consumers must CITE evidence — every interpretation must reference specific evidence_ids
+4. Consumers must respect PROVENANCE — they cannot use evidence without its chain of custody
+5. Consumers must handle CONTRADICTION — contradicting evidence cannot be silently discarded
+
+---
+
+## 24. Boundary Rules
+
+The following hard rules define the boundaries of the evidence layer:
+
+| # | Rule | Rationale |
+|---|------|-----------|
+| 1 | Facts do not imply recommendations | Observation ≠ Action |
+| 2 | Signals do not cause state changes | Sensors ≠ Causes |
+| 3 | Evidence does not mutate registries | Evidence informs governance — it does not bypass it |
+| 4 | Narratives do not own facts | Facts exist independently of any narrative |
+| 5 | Assets do not define narratives | Assets are leaf nodes — never causal roots |
+| 6 | Portfolio categories do not define narratives | Categories are convenience groupings — not causal beliefs |
+| 7 | Scores and weights are not part of this framework | Scoring is a consumer concern, not an evidence concern |
+| 8 | Evidence must remain provenance-linked | No orphan evidence — every piece traces back to source |
+| 9 | Every interpretation must be traceable back to facts/signals | No ungrounded claims |
+
+---
+
+## 25. Supported Entity Types
+
+The evidence layer may observe facts and calculate signals about the following entity types:
+
+| Entity Type | Description | Example |
+|-------------|-------------|---------|
+| `asset` | Individual security or instrument | NVDA, AAPL, BTC |
+| `index` | Market index | S&P 500, NASDAQ, DAX |
+| `benchmark` | Performance reference | Russell 2000, MSCI World |
+| `peer_group` | Comparable entities | Hyperscaler peers, Defense primes |
+| `sector` | Economic sector | Technology, Healthcare |
+| `industry` | Sub-sector classification | Semiconductors, Cybersecurity |
+| `company` | Corporate entity | Nvidia, Microsoft |
+| `macro_series` | Macroeconomic data series | CPI, Fed Funds Rate, PMI |
+| `commodity` | Physical commodity | Crude Oil, Natural Gas, Copper |
+| `currency` | Currency pair or rate | EUR/USD, DXY |
+| `rate` | Interest rate | US 10Y Treasury, Fed Funds |
+| `country` | Sovereign entity | USA, Germany, Japan |
+| `system` | Functional system (per Expansion Taxonomy) | system.semiconductor_manufacturing |
+| `narrative_candidate` | Proposed narrative under evaluation | candidate.ai_infrastructure |
+
+**Clarification**: Entity type support does NOT mean all entity registries exist yet. A canonical `system.*` registry does not exist. A canonical `asset.*` registry does not exist. The evidence framework can observe these entity types — it does not require their formal registration first.
+
+---
+
+## 26. Evidence Quality Labels
+
+All quality labels in this framework are **qualitative only**. No numeric scoring is authorized.
+
+### evidence_readiness
+
+| Label | Meaning |
+|-------|---------|
+| `high` | Multiple confirming facts/signals from primary sources; recent; consistent |
+| `medium` | Some facts/signals available; may have gaps or staleness |
+| `low` | Limited facts/signals; significant gaps; relies on secondary sources |
+| `insufficient` | Not enough evidence to support any interpretation |
+
+### contradiction_level
+
+| Label | Meaning |
+|-------|---------|
+| `high` | Strong contradicting evidence exists alongside supporting evidence |
+| `medium` | Some contradicting signals present; interpretation is contested |
+| `low` | Minor contradictions; overall evidence direction is clear |
+| `none` | No contradicting evidence detected |
+
+### freshness
+
+| Label | Meaning |
+|-------|---------|
+| `current` | Evidence is from the most recent available period |
+| `stale` | Evidence is from a prior period; newer data may exist |
+| `expired` | Evidence is from a period no longer relevant to current assessment |
+| `unknown` | Freshness cannot be determined |
+
+### provenance_quality
+
+| Label | Meaning |
+|-------|---------|
+| `primary` | Direct from authoritative source (exchange, filing, official release) |
+| `secondary` | From a reliable intermediary (data aggregator, verified news) |
+| `derived` | Calculated from other evidence (signal from facts) |
+| `unknown` | Provenance cannot be fully established |
+
+**Prohibition**: These labels MUST NOT be converted to numbers. `high` ≠ 3, `medium` ≠ 2, `low` ≠ 1. They are categorical. Arithmetic operations on these labels are prohibited.
+
+---
+
+## 27. Provenance Requirements
+
+Every piece of evidence must satisfy provenance requirements:
+
+| Requirement | Applies To | Description |
+|-------------|-----------|-------------|
+| Source identity | All facts | The originating source must be identified (exchange name, filing type, release authority) |
+| Source timestamp | All facts | When the source published the data (where available) |
+| Calculation window | Calculated signals | The time window over which the calculation operates |
+| Input linkage | Signals, Evidence_Objects | Input facts/signals must be explicitly referenced by ID |
+| Derivation chain | Interpretations | Any interpretation must expose its full evidence chain back to facts |
+
+### Provenance Anti-Patterns
+
+The following are violations of provenance requirements:
+
+- A signal with no identified input facts
+- An evidence object with no provenance chain
+- An interpretation citing "general market conditions" without specific evidence_ids
+- A fact with no source attribution
+- A derived value with no formula reference
+
+---
+
+## 28. Anti-Drift Rules
+
+The following rules prevent the evidence layer from drifting into scoring, ranking, or decision-making territory:
+
+| # | Prohibition | Why |
+|---|-------------|-----|
+| 1 | No hidden scoring | Quality labels are not scores. Do not compute aggregates from them. |
+| 2 | No hidden ranking | Evidence objects have no rank or priority order. |
+| 3 | No hidden confidence values | "Evidence_readiness: high" is not "confidence: 0.9". |
+| 4 | No hidden portfolio allocation logic | Evidence does not determine position sizes. |
+| 5 | No using evidence labels as pseudo-weights | "High evidence_readiness" does not mean "allocate more". |
+| 6 | No using narrative popularity as evidence | How many people believe a narrative is not a fact about the narrative's truth. |
+| 7 | No using asset performance alone as narrative truth | A stock going up does not prove a narrative is correct. |
+| 8 | No collapsing facts, signals, evidence, and narratives into one object | These are separate layers with separate governance. |
+
+---
+
+## 29. Example Flows (Illustrative Only)
+
+The following examples demonstrate how evidence flows through the hierarchy. They are **illustrative only** — not canonical entries, not populated instances, and not registry mutations.
+
+### Example A: AI Infrastructure Evidence
+
+```
+FACT: Microsoft announces $50B AI data center capex for FY2027
+  → fact_type: capex, entity: Microsoft, value: 50B USD
+
+SIGNAL: Hyperscaler capex acceleration signal
+  → input_facts: [Microsoft capex, Google capex, Meta capex]
+  → state: accelerating, direction: increasing, magnitude: strong
+
+EVIDENCE OBJECT: AI infrastructure narrative support
+  → supports: candidate.ai_infrastructure
+  → input_signals: [hyperscaler_capex_acceleration]
+  → evidence_readiness: high
+  → contradiction_level: none
+```
+
+### Example B: Narrative Contradiction Evidence
+
+```
+FACT: Company X cuts FY guidance by 20%, citing demand slowdown
+  → fact_type: guidance, entity: Company X, value: -20%
+
+SIGNAL: Earnings deterioration signal for Company X
+  → input_facts: [Company X guidance cut, Company X EPS miss]
+  → state: deteriorating, direction: decreasing, magnitude: strong
+
+EVIDENCE OBJECT: Narrative weakening candidate
+  → contradicts: candidate.some_narrative
+  → input_signals: [earnings_deterioration]
+  → evidence_readiness: medium
+  → contradiction_level: high
+```
+
+### Example C: Portfolio Health Evidence
+
+```
+FACT: Portfolio top-5 positions represent 62% of total value
+  → fact_type: concentration, entity: portfolio, value: 62%
+
+SIGNAL: Concentration risk signal
+  → input_facts: [position_weights]
+  → state: elevated, direction: increasing, magnitude: moderate
+
+EVIDENCE OBJECT: Portfolio health — concentration risk
+  → related_to: portfolio_health
+  → input_signals: [concentration_risk]
+  → evidence_readiness: high
+  → consumer_scope: [portfolio_health, risk, report]
+```
+
+**All examples above are illustrative only.** They do NOT create facts, signals, or evidence objects. They do NOT populate any registry or data store.
+
+---
+
+## 30. Future Frameworks Enabled
+
+This README enables the following future specs and frameworks by establishing the evidence layer they will consume:
+
+| Future Framework | How This README Enables It |
+|-----------------|---------------------------|
+| Narrative Population Framework | Provides evidence model for justifying candidate narrative registration |
+| Narrative Lifecycle Framework | Provides evidence model for justifying lifecycle state transitions |
+| Asset-to-Narrative Registry | Provides evidence model for justifying qualitative membership |
+| Market Regime Evidence | Provides container types for regime detection evidence |
+| Portfolio Health Evidence | Provides container types for portfolio health assessment |
+| Allocation Evidence Contract | Defines how allocation logic consumes evidence without redefining it |
+| Report Evidence Rendering | Defines how reports consume and present evidence |
+
+---
+
+## 31. Verification Expectations
+
+Future verification gates for implementations consuming this framework should check:
+
+| # | Verification | Purpose |
+|---|-------------|---------|
+| 1 | Fact/signal/evidence boundary preservation | Ensure layers are not collapsed |
+| 2 | No scoring leakage | Ensure qualitative labels are not converted to numbers |
+| 3 | Provenance completeness | Ensure every evidence piece has full provenance |
+| 4 | No registry mutation | Ensure evidence consumption does not auto-mutate registries |
+| 5 | No asset-first narrative creation | Ensure narratives are not derived from asset lists |
+| 6 | Consumer contract clarity | Ensure each consumer respects its rights and prohibitions |
+
+---
+
+## 32. Satisfies / Cross-References (Expanded)
+
+| Target Deliverable | Section Referenced | Context |
+|-------------------|-------------------|---------|
+| README_market_organism_principles | Principle 1: Organism over Collection | Evidence observes organism-level propagation |
+| README_market_organism_principles | Principle 2: Taxonomy Precedes Assets | Evidence does not start from assets |
+| README_market_organism_principles | Principle 6: Causation over Correlation | Evidence provides causal substrate, not correlation |
+| README_narrative_framework | Section 5: Narrative vs. State_Change | Evidence/narrative boundary |
+| README_narrative_framework | Section 6: Lifecycle State Machine | Evidence supports lifecycle assessment |
+| README_narrative_framework | Section 13: Extension Criteria | Evidence required before registration |
+| README_narrative_framework | Section 14: Signal Sensor Relationship | Sensor principle |
+| README_narrative_framework | Section 15: Exclusion Constraints | Prohibition alignment |
+| README_narrative_registry_governance | Creation Procedure | Evidence consumed during registration |
+| README_narrative_registry_governance | Inclusion Criteria Gate | Evidence justifies criteria satisfaction |
+| README_state_change_taxonomy | Classification Hierarchy | Evidence about State_Changes |
+| README_expansion_taxonomy | Expansion Definition | Evidence about propagation |
+| README_shared_glossary_reference | Glossary Usage Rules | Term definitions |
+| signal_calculation_framework_md | (future) | Signal calculation definitions |
+| data_ingestion_normalization_framework_md | (future) | Fact normalization procedures |
+| portfolio_health_framework_md | (future) | Health evidence consumption |
+| correlation_dependency_framework_md | (future) | Correlation evidence boundaries |
+| report_reasoning_system_md | (future) | Report evidence rendering |
+
+---
+
 *Last updated: 2026-06-04*
 *Authority: ARCH (primary), GOV (review)*
 *Ontology alignment: Narrative Framework v2, Market Organism Principles*
