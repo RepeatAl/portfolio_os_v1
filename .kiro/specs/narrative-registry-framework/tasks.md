@@ -210,7 +210,7 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Push to branch `spec/narrative-registry-framework`
     - _Requirements: Workflow governance, Global Execution Rule 16_
 
-- [-] 5. Final Completion
+- [x] 5. Final Completion
   - [x] 5.1 Verify all tasks complete and no unauthorized files modified
     - Verify every task (1 through 4) is marked `[x]` in tasks.md
     - Verify `docs/registries/narrative_registry.yaml` exists and `narratives: []` is empty
@@ -226,7 +226,7 @@ The following rules apply to EVERY task in this plan. They are not optional. The
     - Document: all tasks completed, all verification gates passed, all reports present, registry file is schema-only, `narratives: []` confirmed empty, artifact registered, governance README created, no unauthorized files modified, no population performed, branch ready for review/merge
     - _Requirements: Workflow governance_
 
-  - [-] 5.3 Final commit and push
+  - [x] 5.3 Final commit and push
     - Stage `.domainization/reports/narrative_registry_framework_completion_report_2026-06-03.md` and updated `tasks.md`
     - Commit with message: `docs(narrative-registry): final completion report and task status update`
     - Push to branch `spec/narrative-registry-framework`
