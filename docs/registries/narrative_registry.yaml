@@ -1,0 +1,72 @@
+# ============================================================
+# NARRATIVE REGISTRY — Schema-Only Definition
+# ============================================================
+# This file defines the governance rules and schema for the
+# Narrative Registry. It contains ZERO narrative entries.
+# Population requires a separate authorized spec.
+#
+# Authority: Narrative Framework v2 (ontology SSOT)
+# Purpose: Define WHICH narratives exist (governance + schema)
+# Spec: narrative-registry-framework
+# ============================================================
+
+# ============================================================
+# SECTION 1: FILE METADATA
+# ============================================================
+---
+artifact_id: narrative_registry_yaml
+primary_domain: ARCH
+artifact_type: SSOT
+lifecycle_status: draft
+created_date: "2026-06-03"
+last_modified: "2026-06-03"
+owner_role: Portfolio Architect
+ssot_relationship: canonical
+topic: narrative_registry
+allowed_writers: [ARCH, GOV]
+allowed_readers: [ALL]
+dependencies: [narrative_framework_md, market_organism.principles_md, state_change_taxonomy_md]
+version: v1
+alignment_spec: narrative-registry-framework
+---
+
+# ============================================================
+# SECTION 2: GOVERNANCE RULES
+# ============================================================
+governance:
+  creation_authority: [ARCH, GOV]
+  lifecycle_transition_authority: [ARCH]
+  review_authority: [GOV]
+  initial_lifecycle_state: narrative.lifecycle.emerging
+  collision_check_required: true
+  immutable_fields: [narrative_id]
+  amendment_rules:
+    scope_definition: refinable
+    connected_systems: additive_only
+    falsification_condition: refinable
+    display_name: freely_changeable
+    narrative_id: immutable
+  prohibited_fields:
+    - score
+    - weight
+    - numeric_strength
+    - probability
+    - confidence
+    - rank
+    - priority_order
+    - asset_list
+    - ticker_symbols
+    - correlation_matrix
+    - recommendation
+    - numeric_threshold
+    - membership_weight
+
+# ============================================================
+# SECTION 3: REGISTRY ENTRIES (empty — population is a future spec)
+# ============================================================
+narratives: []
+
+# ============================================================
+# SECTION 4: RETIRED ENTRIES (empty)
+# ============================================================
+retired_narratives: []
