@@ -41,7 +41,7 @@ The following files may be created or modified during task execution:
 
 ## Tasks
 
-- [ ] 0. Pre-Execution Safety Verification
+- [x] 0. Pre-Execution Safety Verification
   - [x] 0.1 Verify branch state and registry preconditions
     - Confirm branch is `spec/narrative-population-framework` and up to date with main
     - Confirm `docs/registries/narrative_registry.yaml` exists
@@ -66,7 +66,7 @@ The following files may be created or modified during task execution:
     - Push to `spec/narrative-population-framework`
     - _Requirements: Global Execution Rule 15_
 
-- [ ] 1. Candidate Field Preparation
+- [x] 1. Candidate Field Preparation
   - [x] 1.1 Prepare field template: AI Infrastructure
     - Prepare all candidate fields for `narrative.ai_infrastructure` (PROPOSED ID):
       - candidate_label, proposed_narrative_id, display_name
@@ -120,7 +120,7 @@ The following files may be created or modified during task execution:
     - Push to `spec/narrative-population-framework`
     - _Requirements: Global Execution Rule 15_
 
-- [ ] 2. Evidence Justification Preparation
+- [x] 2. Evidence Justification Preparation
   - [x] 2.1 Prepare evidence justification: AI Infrastructure
     - Write evidence justification summary for `narrative.ai_infrastructure`:
       - observed_facts_summary: hyperscaler capex announcements, LLM launch events, data center construction surge
@@ -169,7 +169,7 @@ The following files may be created or modified during task execution:
     - Push to `spec/narrative-population-framework`
     - _Requirements: Global Execution Rule 15_
 
-- [ ] 3. Human Falsification Approval Gate
+- [x] 3. Human Falsification Approval Gate
   - [x] 3.1 Present falsification condition drafts for human review
     - Create `.domainization/reports/narrative_population_framework_falsification_drafts_for_review.md`
     - Present each candidate's falsification condition draft:
@@ -193,7 +193,7 @@ The following files may be created or modified during task execution:
     - Push to `spec/narrative-population-framework`
     - _Requirements: Global Execution Rule 15_
 
-- [ ] 4. Pre-Mutation Verification Gates
+- [x] 4. Pre-Mutation Verification Gates
   - [x] 4.1 Execute VG-POP-1 through VG-POP-4
     - VG-POP-1: Confirm `narratives: []` is empty — no design/task-prep mutation occurred
     - VG-POP-2: Confirm all narrative references use candidate/proposed prefix — no premature canonical IDs
@@ -232,7 +232,7 @@ The following files may be created or modified during task execution:
     - Push to `spec/narrative-population-framework`
     - _Requirements: Global Execution Rule 15_
 
-- [ ] 5. Registry Append Operation
+- [x] 5. Registry Append Operation
   - [x] 5.1 Verify pre-conditions before registry mutation
     - Confirm all VG-POP-1 through VG-POP-13 PASSED
     - Confirm human approved all 3 falsification conditions (no PENDING status remaining)
@@ -262,7 +262,7 @@ The following files may be created or modified during task execution:
     - Push to `spec/narrative-population-framework`
     - _Requirements: Global Execution Rule 15_
 
-- [ ] 6. Post-Mutation Verification
+- [x] 6. Post-Mutation Verification
   - [x] 6.1 Execute post-mutation verification checks
     - Confirm registry contains exactly 3 narratives after append
     - Confirm IDs match: `narrative.ai_infrastructure`, `narrative.defense_rearmament`, `narrative.glp1_obesity_medicine`
@@ -290,8 +290,8 @@ The following files may be created or modified during task execution:
     - Push to `spec/narrative-population-framework`
     - _Requirements: Global Execution Rule 15_
 
-- [ ] 7. Final Completion
-  - [~] 7.1 Verify all tasks complete and no unauthorized files modified
+- [x] 7. Final Completion
+  - [x] 7.1 Verify all tasks complete and no unauthorized files modified
     - Verify tasks 0 through 6 are all marked `[x]`
     - Verify `docs/registries/narrative_registry.yaml` contains exactly 3 narratives
     - Verify all execution reports exist (task0, task1, task2, task5, pre-mutation VG, post-mutation VG)
@@ -299,12 +299,12 @@ The following files may be created or modified during task execution:
     - Verify no excluded candidates appear anywhere in registry
     - _Requirements: Global Execution Rules 14, 15_
 
-  - [~] 7.2 Create final completion report
+  - [x] 7.2 Create final completion report
     - Create `.domainization/reports/narrative_population_framework_completion_report_2026-06-04.md`
     - Document: all tasks complete, all VGs passed, registry contains 3 narratives, all human approvals documented, no unauthorized mutations, branch ready for review/merge
     - _Requirements: workflow governance_
 
-  - [~] 7.3 Final commit and push
+  - [x] 7.3 Final commit and push
     - Stage completion report and updated `tasks.md`
     - Commit: `docs(narrative-population): final completion report and task status update`
     - Push to `spec/narrative-population-framework`
