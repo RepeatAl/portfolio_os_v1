@@ -114,14 +114,14 @@ The following files may be created or modified during task execution:
     - Confirm no registry mutation occurred
     - _Requirements: NPF-REQ-5, workflow governance_
 
-  - [~] 1.5 Commit and push candidate field preparation + report
+  - [x] 1.5 Commit and push candidate field preparation + report
     - Stage report and updated `tasks.md`
     - Commit: `docs(narrative-population): candidate field preparation wave 1`
     - Push to `spec/narrative-population-framework`
     - _Requirements: Global Execution Rule 15_
 
 - [ ] 2. Evidence Justification Preparation
-  - [~] 2.1 Prepare evidence justification: AI Infrastructure
+  - [x] 2.1 Prepare evidence justification: AI Infrastructure
     - Write evidence justification summary for `narrative.ai_infrastructure`:
       - observed_facts_summary: hyperscaler capex announcements, LLM launch events, data center construction surge
       - calculated_signals_summary: capex acceleration signal (where applicable), sector demand signals
@@ -134,7 +134,7 @@ The following files may be created or modified during task execution:
     - Write to report ONLY — no Market Evidence objects created
     - _Requirements: NPF-REQ-3, NPF-REQ-11, Design Section: Evidence Justification Format_
 
-  - [~] 2.2 Prepare evidence justification: Defense Rearmament
+  - [x] 2.2 Prepare evidence justification: Defense Rearmament
     - Write evidence justification summary for `narrative.defense_rearmament`:
       - observed_facts_summary: NATO spending commitments, Ukraine conflict, national defense budget increases
       - birth trigger identification from sc.narrative.defense or sc.events.wars taxonomy
@@ -145,7 +145,7 @@ The following files may be created or modified during task execution:
     - Write to report ONLY — no Market Evidence objects created
     - _Requirements: NPF-REQ-3, NPF-REQ-11_
 
-  - [~] 2.3 Prepare evidence justification: GLP-1 / Obesity Medicine
+  - [x] 2.3 Prepare evidence justification: GLP-1 / Obesity Medicine
     - Write evidence justification summary for `narrative.glp1_obesity_medicine`:
       - observed_facts_summary: FDA approvals (Ozempic/Wegovy/Mounjaro), clinical trial results, prescription volume data
       - birth trigger: specific FDA approval event or Phase 3 trial results
@@ -156,7 +156,7 @@ The following files may be created or modified during task execution:
     - Write to report ONLY — no Market Evidence objects created
     - _Requirements: NPF-REQ-3, NPF-REQ-11_
 
-  - [~] 2.4 Create evidence justification report
+  - [x] 2.4 Create evidence justification report
     - Create `.domainization/reports/narrative_population_framework_task2_evidence_justification.md`
     - Document all 3 evidence summaries
     - Confirm no `fact.*`, `signal.*`, or `evidence.*` objects were created
