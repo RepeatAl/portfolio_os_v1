@@ -29,7 +29,7 @@
 | 6 | Post-mutation verification (VG-POP-14) | 6.1, 6.2, 6.3 |
 | 7 | Final completion | 7.1, 7.2, 7.3 |
 
-**Total**: 8 waves, 28 tasks
+**Total**: 8 execution waves, 31 subtasks
 
 ---
 
@@ -45,7 +45,7 @@
 
 ## Candidates Explicitly Excluded
 
-No task may prepare, reference, or register any of the following:
+No task may prepare, populate fields for, write evidence justification for, or register any of the following. These candidates may be referenced only in exclusion lists, guardrails, verification checks, and blocker reports:
 
 - Energy Infrastructure / Grid Expansion
 - Cybersecurity / Security Infrastructure

@@ -16,7 +16,7 @@ This plan defines the task structure for the first controlled population of the 
 The following rules apply to EVERY task in this plan:
 
 1. Only the 3 approved Wave 1 candidates may be prepared: AI Infrastructure, Defense Rearmament, GLP-1 / Obesity Medicine.
-2. No excluded candidate may receive a registry entry, candidate template, evidence justification, or mutation step.
+2. No excluded candidate may receive a registry entry, candidate template, evidence justification, or mutation step. Excluded candidates may be referenced only in exclusion lists, guardrails, verification checks, and blocker reports.
 3. Candidate IDs remain PROPOSED until actual registry mutation: `narrative.ai_infrastructure`, `narrative.defense_rearmament`, `narrative.glp1_obesity_medicine`.
 4. Registry mutation is BLOCKED until final human approval of candidate-specific falsification conditions.
 5. `tasks.md` creation does not authorize execution.
@@ -58,7 +58,7 @@ The following files may be created or modified during task execution:
     - Document all verification results
     - Confirm registry state: `narratives: []` empty, `retired_narratives: []` empty
     - Confirm human decision capture report exists and is valid
-    - _Requirements: Global Execution Rules 17_
+    - _Requirements: Global Execution Rule 15 / workflow governance_
 
   - [ ] 0.3 Commit and push pre-execution safety report
     - Stage `.domainization/reports/narrative_population_framework_task0_pre_execution_safety.md` and updated `tasks.md`
@@ -316,10 +316,21 @@ The following files may be created or modified during task execution:
 - `narratives: []` MUST remain empty until Wave 5 Task 5.2 is explicitly authorized.
 - All candidate IDs are PROPOSED until registry mutation occurs.
 - Registry mutation is hard-blocked by human falsification approval gate (Wave 3).
-- Excluded candidates MUST NOT appear in any template, evidence justification, or mutation step.
+- Excluded candidates MUST NOT appear in any template, evidence justification, or mutation step. They may be referenced only in exclusion lists, guardrails, verification checks, and blocker reports.
 - No Market Evidence objects, engines, or code are created by this spec.
 - Commit+push subtasks use branch `spec/narrative-population-framework`.
 - Execution reports go to `.domainization/reports/` with descriptive names.
+
+## Execution Stop Boundaries
+
+| Boundary | Condition | Action if Not Met |
+|----------|-----------|-------------------|
+| Before Wave 3 completes | Waves 0–2 prepare documentation only — no mutation risk | Execute freely |
+| Wave 3 (Task 3.2) | Human must approve all 3 falsification conditions | STOP — create blocker report, do NOT proceed to Wave 4 |
+| Before Wave 5 (Task 5.1) | All VG-POP-1 through VG-POP-13 must PASS AND human falsification approval documented | STOP — do NOT mutate registry |
+| Wave 5 (Task 5.2) | Registry append authorized ONLY if ALL preconditions confirmed | STOP — create blocker report if any precondition fails |
+
+**Hard rule**: If human falsification approval is absent at Wave 3, execution MUST stop. It MUST NOT auto-proceed to Waves 4-7. A blocker report must be created and the human must explicitly resume execution after providing approval.
 
 ## Task Dependency Graph
 
