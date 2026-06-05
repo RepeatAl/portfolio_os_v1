@@ -163,14 +163,14 @@ The following files may be created or modified during task execution:
     - Confirm no evidence registry files were created
     - _Requirements: NPF-REQ-3, NPF-REQ-11_
 
-  - [~] 2.5 Commit and push evidence justification + report
+  - [x] 2.5 Commit and push evidence justification + report
     - Stage report and updated `tasks.md`
     - Commit: `docs(narrative-population): evidence justification preparation wave 2`
     - Push to `spec/narrative-population-framework`
     - _Requirements: Global Execution Rule 15_
 
 - [ ] 3. Human Falsification Approval Gate
-  - [~] 3.1 Present falsification condition drafts for human review
+  - [x] 3.1 Present falsification condition drafts for human review
     - Create `.domainization/reports/narrative_population_framework_falsification_drafts_for_review.md`
     - Present each candidate's falsification condition draft:
       - AI Infrastructure: DRAFT condition — PENDING HUMAN APPROVAL
@@ -179,7 +179,7 @@ The following files may be created or modified during task execution:
     - Mark each: `human_approval_status: PENDING`
     - _Requirements: NPF-REQ-6, NPF-REQ-8_
 
-  - [~] 3.2 Verify human falsification approval before proceeding
+  - [x] 3.2 Verify human falsification approval before proceeding
     - CHECK: Has human explicitly approved all 3 falsification conditions?
     - If YES for all 3: update `human_approval_status: APPROVED` per candidate, proceed to Wave 4
     - If ANY are not approved: create blocker report and STOP:
