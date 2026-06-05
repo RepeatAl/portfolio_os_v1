@@ -263,7 +263,7 @@ The following files may be created or modified during task execution:
     - _Requirements: Global Execution Rule 15_
 
 - [ ] 6. Post-Mutation Verification
-  - [~] 6.1 Execute post-mutation verification checks
+  - [x] 6.1 Execute post-mutation verification checks
     - Confirm registry contains exactly 3 narratives after append
     - Confirm IDs match: `narrative.ai_infrastructure`, `narrative.defense_rearmament`, `narrative.glp1_obesity_medicine`
     - Confirm no excluded candidates appear in `narratives`
@@ -277,14 +277,14 @@ The following files may be created or modified during task execution:
     - Execute VG-POP-14: diff against main confirms only `narratives: []` changed
     - _Requirements: NPF-REQ-7, NPF-REQ-8_
 
-  - [~] 6.2 Create post-mutation verification report
+  - [x] 6.2 Create post-mutation verification report
     - Create `.domainization/reports/narrative_population_framework_post_mutation_verification_report.md`
     - Document all post-mutation checks with evidence
     - Confirm overall PASS/FAIL
     - If any check FAILS: stop and report to user
     - _Requirements: NPF-REQ-8, workflow governance_
 
-  - [~] 6.3 Commit and push post-mutation verification report
+  - [x] 6.3 Commit and push post-mutation verification report
     - Stage report and updated `tasks.md`
     - Commit: `docs(narrative-population): post-mutation verification wave 6`
     - Push to `spec/narrative-population-framework`
