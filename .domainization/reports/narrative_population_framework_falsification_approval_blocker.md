@@ -3,23 +3,41 @@
 **Date**: 2026-06-04
 **Spec**: narrative-population-framework
 **Task**: 3.2
-**Status**: BLOCKED — Human approval required
+**Status**: ✅ RESOLVED — Human approval granted for all 3 conditions
 
 ---
 
-## Blocker Summary
+## Resolution
 
-**Registry mutation is BLOCKED.** Execution cannot proceed beyond Wave 3 until the human Portfolio Architect explicitly approves all 3 falsification conditions.
-
----
-
-## Current Approval Status
+**All 3 falsification conditions APPROVED by Portfolio Architect on 2026-06-05.**
 
 | Candidate | Proposed ID | Falsification Condition | Approval Status |
 |-----------|-------------|------------------------|-----------------|
-| AI Infrastructure | `narrative.ai_infrastructure` | TWO-OF-FOUR: capex reduction >30% + construction decline >40% + demand normalization + overcapacity statements (within 12 months) | ❌ NOT APPROVED (hardened v2) |
-| Defense Rearmament | `narrative.defense_rearmament` | BOTH: NATO spending commitment reversal + procurement indicator weakening for 12+ months | ❌ NOT APPROVED (hardened v2) |
-| GLP-1 / Obesity Medicine | `narrative.glp1_obesity_medicine` | ANY-OF-THREE: regulatory restriction + clinical failure + payor/adoption failure | ❌ NOT APPROVED (hardened v2) |
+| AI Infrastructure | `narrative.ai_infrastructure` | TWO-OF-FOUR: capex reduction >30% + construction decline >40% + demand normalization + overcapacity statements (within 12 months) | ✅ APPROVED |
+| Defense Rearmament | `narrative.defense_rearmament` | BOTH: NATO spending commitment reversal + procurement indicator weakening for 12+ months | ✅ APPROVED |
+| GLP-1 / Obesity Medicine | `narrative.glp1_obesity_medicine` | ANY-OF-THREE: regulatory restriction + clinical failure + payor/adoption failure | ✅ APPROVED |
+
+---
+
+## Additional Requirements from Approval
+
+1. **AI Infrastructure**: The defined hyperscaler cohort must be explicitly documented before Wave 5 registry mutation.
+2. **Wave 4 must still execute**: Approval does NOT authorize skipping pre-mutation verification gates.
+3. **Wave 5 gated**: Registry append only if all VG-POP gates PASS and approved conditions are documented in entries.
+
+---
+
+## Execution May Now Proceed
+
+- ✅ Wave 4: Pre-Mutation Verification Gates — UNBLOCKED
+- ✅ Wave 5: Registry Append — UNBLOCKED (after Wave 4 passes)
+- ✅ Wave 6: Post-Mutation Verification — UNBLOCKED (after Wave 5)
+- ✅ Wave 7: Final Completion — UNBLOCKED (after Wave 6)
+
+---
+
+*Blocker resolved: 2026-06-05*
+*Approved by: Portfolio Architect (CTO)*
 
 ---
 

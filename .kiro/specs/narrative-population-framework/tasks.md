@@ -187,14 +187,14 @@ The following files may be created or modified during task execution:
     - Registry mutation MUST NOT proceed without all 3 conditions approved
     - _Requirements: NPF-REQ-6, NPF-REQ-8, Design Section: Human Decisions Captured_
 
-  - [~] 3.3 Commit and push approval gate artifacts
+  - [x] 3.3 Commit and push approval gate artifacts
     - Stage all reports and updated `tasks.md`
     - Commit: `docs(narrative-population): falsification approval gate wave 3`
     - Push to `spec/narrative-population-framework`
     - _Requirements: Global Execution Rule 15_
 
 - [ ] 4. Pre-Mutation Verification Gates
-  - [~] 4.1 Execute VG-POP-1 through VG-POP-4
+  - [x] 4.1 Execute VG-POP-1 through VG-POP-4
     - VG-POP-1: Confirm `narratives: []` is empty — no design/task-prep mutation occurred
     - VG-POP-2: Confirm all narrative references use candidate/proposed prefix — no premature canonical IDs
     - VG-POP-3: Confirm each of the 3 candidates satisfies all 4 inclusion criteria with documented evidence
@@ -202,7 +202,7 @@ The following files may be created or modified during task execution:
     - Record pass/fail per gate with evidence
     - _Requirements: NPF-REQ-8, Design Section: Correctness Properties_
 
-  - [~] 4.2 Execute VG-POP-5 through VG-POP-9
+  - [x] 4.2 Execute VG-POP-5 through VG-POP-9
     - VG-POP-5: Confirm no candidate was derived from asset lists, portfolio baskets, or co-movement patterns
     - VG-POP-6: Confirm zero numeric scores, weights, probabilities, confidence values anywhere
     - VG-POP-7: Confirm each candidate has an identified `sc.*` birth trigger
@@ -211,7 +211,7 @@ The following files may be created or modified during task execution:
     - Record pass/fail per gate with evidence
     - _Requirements: NPF-REQ-8_
 
-  - [~] 4.3 Execute VG-POP-10 through VG-POP-13
+  - [x] 4.3 Execute VG-POP-10 through VG-POP-13
     - VG-POP-10: Confirm documented human approval for scope, ID, falsification per candidate
     - VG-POP-11: Confirm each entry complies with `narrative_registry.yaml` schema (all required fields, no prohibited fields)
     - VG-POP-12: Confirm no semantic overlap between the 3 entries without declared parent-child
@@ -219,14 +219,14 @@ The following files may be created or modified during task execution:
     - Record pass/fail per gate with evidence
     - _Requirements: NPF-REQ-8_
 
-  - [~] 4.4 Create pre-mutation verification report
+  - [x] 4.4 Create pre-mutation verification report
     - Create `.domainization/reports/narrative_population_framework_pre_mutation_verification_report.md`
     - Document pass/fail for VG-POP-1 through VG-POP-13
     - Include evidence for each gate
     - If any gate FAILS: stop and report to user — do NOT proceed to Wave 5
     - _Requirements: NPF-REQ-8, Design Section: Correctness Properties_
 
-  - [~] 4.5 Commit and push verification report
+  - [x] 4.5 Commit and push verification report
     - Stage report and updated `tasks.md`
     - Commit: `docs(narrative-population): pre-mutation verification gates wave 4`
     - Push to `spec/narrative-population-framework`
