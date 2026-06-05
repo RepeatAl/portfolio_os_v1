@@ -86,42 +86,45 @@ This design defines the structure for the first controlled registry population o
 
 ## Components and Interfaces
 
-### Status: DRAFT INPUT ONLY
+### Status: WAVE 1 HUMAN-APPROVED (3 candidates)
 
-The following classifications are inherited from the preflight assessment. They are used here as **design input only** — they are:
-- NOT registry entries
-- NOT final canonical IDs
-- NOT approved candidates
-- NOT immutable
+Wave 1 composition has been approved by the Portfolio Architect. The following classifications reflect human decisions captured in the Human Decisions Captured section.
 
-Any candidate may be promoted, demoted, merged, or rejected during human review.
+### Wave 1 APPROVED (Human-Approved for Task Planning)
 
-### Wave 1 Proposed (Candidates)
+| # | Candidate Label | Proposed ID | Status |
+|---|----------------|-------------|--------|
+| 1 | AI Infrastructure | `narrative.ai_infrastructure` | APPROVED for Wave 1 task planning — PROPOSED until registration |
+| 2 | Defense Rearmament | `narrative.defense_rearmament` | APPROVED for Wave 1 task planning — PROPOSED until registration |
+| 3 | GLP-1 / Obesity Medicine | `narrative.glp1_obesity_medicine` | APPROVED for Wave 1 task planning — PROPOSED until registration |
 
-| # | Candidate Label | Rationale for Wave 1 Consideration |
-|---|----------------|-----------------------------------|
-| 1 | AI Infrastructure | Strong shared belief, identifiable State_Change (ChatGPT launch / LLM scaling), multiple connected systems |
-| 2 | Defense Rearmament | Clear geopolitical State_Change trigger, broad shared belief, connected systems identifiable |
-| 3 | Energy Infrastructure / Grid Expansion | Infrastructure demand State_Change, connected to AI and electrification systems |
-| 4 | Cybersecurity / Security Infrastructure | Threat landscape State_Change, distinct from AI but connected |
-| 5 | GLP-1 / Obesity Medicine | Scientific breakthrough State_Change, distinct market belief, connected healthcare systems |
+**Note**: These IDs are approved for task planning only. They become canonical ONLY when registry mutation is explicitly executed in the authorized task phase.
+
+### Wave 1 NOT APPROVED — Deferred
+
+| # | Candidate Label | Decision | Disposition |
+|---|----------------|----------|-------------|
+| 4 | Energy Infrastructure / Grid Expansion | NOT approved for Wave 1 | Moved to needs_refinement/backlog. Await AI Infrastructure registration before evaluating overlap boundary. Do NOT merge into AI Infrastructure. |
+| 5 | Cybersecurity / Security Infrastructure | NOT approved for Wave 1 | Moved to backlog for later wave consideration. |
 
 ### Needs Refinement (Not Yet Wave 1 Ready)
 
 | # | Candidate Label | Issue | Path to Resolution |
 |---|----------------|-------|-------------------|
-| 1 | AI Semiconductors | Overlap risk with AI Infrastructure — may be sub-narrative | Boundary decision required (human) |
-| 2 | Cloud AI | May be a system (`system.cloud_compute`), not a narrative | Reconceptualization needed |
-| 3 | Maritime / Logistics | Scope too broad, needs triggering event isolation | Scope narrowing required |
-| 4 | Consumer Re-acceleration | No clear State_Change birth trigger identified | Trigger identification needed |
+| 1 | Energy Infrastructure / Grid Expansion | Deferred from Wave 1; overlap with AI Infrastructure boundary unclear | Re-evaluate after AI Infrastructure is registered |
+| 2 | AI Semiconductors | NOT in Wave 1. Possible future sub-narrative or system-level exposure under AI Infrastructure. Do not register independently. | Boundary decision deferred |
+| 3 | Cloud AI | May be a system (`system.cloud_compute`), not a narrative | Reconceptualization needed |
+| 4 | Maritime / Logistics | Scope too broad, needs triggering event isolation | Scope narrowing required |
+| 5 | Consumer Re-acceleration | No clear State_Change birth trigger identified | Trigger identification needed |
 
 ### Backlog (Premature or Insufficient Evidence)
 
 | # | Candidate Label | Reason for Deferral |
 |---|----------------|-------------------|
-| 1 | Payments / Money Rails | Insufficient narrative-shaping evidence; may be a system domain |
-| 2 | Space Economy / Private Space Infrastructure | Premature for canonical status; emerging but unproven shared belief |
-| 3 | Humanoid Robotics / Physical AI | Too early; narrative not yet widely shared; limited evidence base |
+| 1 | Cybersecurity / Security Infrastructure | Deferred from Wave 1; later wave candidate |
+| 2 | Payments / Money Rails | Insufficient narrative-shaping evidence; may be a system domain |
+| 3 | Space Economy / Private Space Infrastructure | Premature for canonical status; emerging but unproven shared belief |
+| 4 | Humanoid Robotics / Physical AI | Too early; narrative not yet widely shared; limited evidence base |
 
 ### Rejected (Currently Not Narrative-Shaped)
 
@@ -130,35 +133,51 @@ Any candidate may be promoted, demoted, merged, or rejected during human review.
 | 1 | WM / QSR / Delivery | Portfolio category, not shared belief structure. Fails inclusion criterion 1 (distinct shared belief) and criterion 4 (asset-list-first). | Must demonstrate shared belief origin independent of portfolio construction |
 | 2 | Enterprise Software | Sector label, not narrative. Fails inclusion criterion 1 (distinct shared belief). No identifiable State_Change origin. | Must identify a specific State_Change that makes "enterprise software" a narrative rather than a sector classification |
 
+### Task-Generation Guard
+
+**Future `tasks.md` may ONLY prepare entries for the 3 approved Wave 1 candidates:**
+- AI Infrastructure
+- Defense Rearmament
+- GLP-1 / Obesity Medicine
+
+**tasks.md MUST NOT prepare entries for:**
+- Energy Infrastructure / Grid Expansion
+- Cybersecurity / Security Infrastructure
+- AI Semiconductors
+- Cloud AI
+- Maritime / Logistics
+- Consumer Re-acceleration
+- Payments / Money Rails
+- Space Economy / Private Space Infrastructure
+- Humanoid Robotics / Physical AI
+- WM / QSR / Delivery
+- Enterprise Software
+
 ---
 
 ## Wave 1 Decision Model
 
-### Decisions Requiring Human Approval
+### Decisions — Human-Resolved
 
-The following decisions CANNOT be made by this design — they require explicit human sign-off:
+Human decisions have been captured (see Human Decisions Captured section). The following table reflects current status:
 
-| # | Decision | Options | Design Recommendation | Final Authority |
-|---|----------|---------|----------------------|----------------|
-| 1 | Wave 1 size | 3, 4, or 5 entries | 5 (validates full governance pipeline) | Human |
-| 2 | Candidate inclusion set | Any subset of Wave 1 Proposed | All 5 proposed candidates | Human |
-| 3 | Canonical ID per candidate | e.g., `narrative.ai_infrastructure` | Per candidate template below | Human |
-| 4 | Scope definition per candidate | Natural language boundary | Per candidate template below | Human |
-| 5 | Birth trigger per candidate | Specific `sc.*` State_Change | Per candidate template below | Human |
-| 6 | Connected systems per candidate | List of `system.*` references | Per candidate template below | Human |
-| 7 | Falsification condition per candidate | Concrete, testable condition | Per candidate template below | Human |
-| 8 | Lifecycle approach | All start `emerging`? Or some `active`? | Start all as `emerging` | Human |
-| 9 | AI Infra vs AI Semi boundary | Include, exclude, or parent-child | Exclude AI Semi from Wave 1 | Human |
-| 10 | Energy overlap boundary | Energy + AI overlap handling | Separate narratives, note connection | Human |
+| # | Decision | Resolution | Status |
+|---|----------|-----------|--------|
+| 1 | Wave 1 size | **3 narratives** | ✅ RESOLVED |
+| 2 | Candidate inclusion set | **AI Infrastructure, Defense Rearmament, GLP-1 / Obesity Medicine** | ✅ RESOLVED |
+| 3 | AI Infra vs AI Semi boundary | **AI Semiconductors excluded from Wave 1; future sub-narrative evaluation** | ✅ RESOLVED |
+| 4 | Energy overlap with AI | **Energy Infrastructure deferred to needs_refinement/backlog** | ✅ RESOLVED |
+| 5 | Lifecycle approach | **All `narrative.lifecycle.emerging` with lifecycle history note** | ✅ RESOLVED |
+| 6 | Canonical ID naming approval | **IDs approved for task planning (proposed until mutation)** | ✅ RESOLVED |
+| 7 | Falsification condition approval | **Drafts may be prepared; final approval required before mutation** | ⚠️ PARTIALLY RESOLVED |
 
-### Decision Process
+### Decision Process (Completed Steps)
 
-1. Design prepares candidate field templates (Section 5)
-2. Design documents evidence justification (Section 6)
-3. Human reviews prepared materials
-4. Human makes binding decisions on all 10 items above
-5. Decisions are recorded in task phase execution report
-6. Only AFTER human approval does task phase proceed to registry mutation
+1. ✅ Design prepared candidate field templates
+2. ✅ Human reviewed prepared materials
+3. ✅ Human made binding decisions on items 1-6
+4. ⚠️ Item 7 (falsification) requires final approval before task phase executes
+5. → `tasks.md` may now be created for the 3 approved Wave 1 candidates
 
 
 ---
@@ -740,52 +759,84 @@ This section maps every requirement (NPF-REQ-1 through NPF-REQ-12) to the design
 
 ---
 
+## Human Decisions Captured
+
+**Date**: 2026-06-04
+**Authority**: Portfolio Architect (CTO)
+**Status**: Decisions 1-6 RESOLVED. Decision 7 PARTIALLY RESOLVED.
+
+### Decision 1 — Wave 1 Size
+
+**RESOLVED**: Wave 1 size = **3 narratives**.
+
+### Decision 2 — Wave 1 Candidate Inclusion Set
+
+**RESOLVED**:
+- ✅ **APPROVED for Wave 1**: AI Infrastructure, Defense Rearmament, GLP-1 / Obesity Medicine
+- ❌ **NOT approved for Wave 1**: Energy Infrastructure / Grid Expansion, Cybersecurity / Security Infrastructure
+
+### Decision 3 — AI Infrastructure vs AI Semiconductors Boundary
+
+**RESOLVED**:
+- AI Semiconductors is NOT included in Wave 1
+- Treat as a possible future sub-narrative or system-level exposure under AI Infrastructure
+- Do not register AI Semiconductors independently in Wave 1
+
+### Decision 4 — Energy Infrastructure Overlap Boundary
+
+**RESOLVED**:
+- Energy Infrastructure / Grid Expansion is NOT included in Wave 1
+- Keep as needs_refinement/backlog until AI Infrastructure is registered and energy boundary is clearer
+- Do NOT merge into AI Infrastructure
+- Do NOT register as a separate narrative in Wave 1
+
+### Decision 5 — Lifecycle Approach
+
+**RESOLVED**:
+- All Wave 1 entries use `narrative.lifecycle.emerging` as initial canonical registry state
+- Each Wave 1 entry must include or reference a lifecycle history note: *"Registered as initial canonical state despite existing market maturity; lifecycle history predates registry."*
+- Do NOT backdate lifecycle transitions in Wave 1
+
+### Decision 6 — Candidate ID Naming Approval
+
+**RESOLVED** (for task planning; become canonical only at registry mutation):
+- `narrative.ai_infrastructure` — APPROVED for task planning
+- `narrative.defense_rearmament` — APPROVED for task planning
+- `narrative.glp1_obesity_medicine` — APPROVED for task planning
+
+### Decision 7 — Falsification Condition Approval
+
+**PARTIALLY RESOLVED**:
+- Detailed candidate-specific falsification conditions are NOT finalized
+- `tasks.md` may prepare falsification DRAFTS per candidate
+- Final human approval is required before any registry mutation can proceed
+
+---
+
 ## Open Human Decisions
 
-### Purpose
+### Current Status
 
-This section carries forward all decisions that require human judgment and cannot be resolved by design alone. These decisions MUST be made before the task execution phase can proceed.
+Decisions 1-6 are RESOLVED. One item remains before registry mutation is authorized.
 
-### Decision Register
+### Remaining Decision
 
-| # | Decision | Context | Options | Design Recommendation | Status |
-|---|----------|---------|---------|----------------------|--------|
-| 1 | Wave 1 size | How many narratives in first batch? | 3, 4, or 5 | 5 — validates full pipeline | PENDING HUMAN |
-| 2 | Candidate inclusion set | Which candidates enter Wave 1? | Any subset of 5 proposed | All 5 proposed | PENDING HUMAN |
-| 3 | AI Infra vs AI Semi boundary | Include AI Semiconductors? Parent-child? | Include / Exclude / Parent-child | Exclude from Wave 1; evaluate as sub-narrative later | PENDING HUMAN |
-| 4 | Energy overlap with AI | How to handle shared power demand connection? | Merge / Separate with note / Parent-child | Separate narratives; document intersection | PENDING HUMAN |
-| 5 | Lifecycle approach | All `emerging`? Or some `active`? | All emerging / Mixed based on maturity | All `emerging` initially | PENDING HUMAN |
-| 6 | Canonical ID naming approval | Approve proposed `narrative.*` IDs? | Per candidate approval | Template IDs provided below | PENDING HUMAN |
-| 7 | Falsification approval | Approve falsification conditions? | Per candidate approval | Template conditions provided in task phase | PENDING HUMAN |
+| # | Decision | Status | Blocking? |
+|---|----------|--------|-----------|
+| 7 | Falsification condition approval per candidate | ⚠️ PARTIALLY RESOLVED — drafts needed | YES — blocks registry mutation |
 
-### Proposed Canonical IDs (CANDIDATE — Require Human Approval)
+### What Remains Before tasks.md → Registry Mutation
 
-| # | Candidate Label | Proposed ID | Status |
-|---|----------------|-------------|--------|
-| 1 | AI Infrastructure | `narrative.ai_infrastructure` | PROPOSED — not canonical |
-| 2 | Defense Rearmament | `narrative.defense_rearmament` | PROPOSED — not canonical |
-| 3 | Energy Infrastructure / Grid Expansion | `narrative.energy_infrastructure` | PROPOSED — not canonical |
-| 4 | Cybersecurity / Security Infrastructure | `narrative.cybersecurity` | PROPOSED — not canonical |
-| 5 | GLP-1 / Obesity Medicine | `narrative.glp1_obesity_medicine` | PROPOSED — not canonical |
+1. `tasks.md` prepares falsification condition drafts for the 3 approved candidates
+2. Human reviews and approves each falsification condition
+3. ONLY after falsification approval does registry mutation proceed
 
-### Decision Dependencies
+### What is NOW Unblocked
 
-```
-Decision 1 (Wave 1 size) → Constrains Decision 2 (candidate set)
-Decision 3 (AI boundary) → Informs Decision 2 (if AI Semi included, may push to 6)
-Decision 5 (lifecycle) → Affects field preparation timing
-Decision 6 (ID naming) → Blocks task phase execution
-Decision 7 (falsification) → Blocks task phase execution
-```
-
-### What Happens After Human Decisions
-
-1. Human reviews this design document and the requirements document
-2. Human makes binding decisions on all 7 items above
-3. Decisions are recorded (in task phase or human communication)
-4. Task phase (`tasks.md`) is created AFTER design approval
-5. Task phase executes Steps 5-7 of Population Architecture
-6. Only then does the registry gain its first entries
+- `tasks.md` creation for the 3 approved Wave 1 candidates
+- Candidate field template population (AI Infrastructure, Defense Rearmament, GLP-1)
+- Evidence justification documentation per candidate
+- Falsification draft preparation (for human review, not for immediate mutation)
 
 ---
 
@@ -817,10 +868,10 @@ Decision 7 (falsification) → Blocks task phase execution
 |-------|-------|
 | Spec | narrative-population-framework |
 | Phase | Design |
-| Status | DRAFT — pending human review |
+| Status | HUMAN-APPROVED (Wave 1 decisions captured) — ready for tasks.md |
 | Branch | `spec/narrative-population-framework` |
 | Created | 2026-06-04 |
 | Author | Kiro (design generation) |
 | Authority | CTO / Portfolio Architect |
 | Registry Impact | NONE — design produces zero mutation |
-| Next Step | Human review → tasks.md creation |
+| Next Step | tasks.md creation for 3 approved Wave 1 candidates (after falsification drafts prepared) |
