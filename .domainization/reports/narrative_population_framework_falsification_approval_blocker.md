@@ -1,15 +1,15 @@
 # Narrative Population Framework — Falsification Approval Blocker
 
-**Date**: 2026-06-04
+**Date**: 2026-06-04 (created) → 2026-06-05 (resolved)
 **Spec**: narrative-population-framework
 **Task**: 3.2
-**Status**: ✅ RESOLVED — Human approval granted for all 3 conditions
+**Status**: ✅ CLOSED — Blocker fully resolved. All execution completed.
 
 ---
 
-## Resolution
+## Resolution Summary
 
-**All 3 falsification conditions APPROVED by Portfolio Architect on 2026-06-05.**
+**All 3 falsification conditions were APPROVED by the Portfolio Architect on 2026-06-05.** The blocker was resolved and execution proceeded through Waves 4-7 to completion.
 
 | Candidate | Proposed ID | Falsification Condition | Approval Status |
 |-----------|-------------|------------------------|-----------------|
@@ -19,74 +19,50 @@
 
 ---
 
-## Additional Requirements from Approval
+## Additional Requirements from Approval (All Satisfied)
 
-1. **AI Infrastructure**: The defined hyperscaler cohort must be explicitly documented before Wave 5 registry mutation.
-2. **Wave 4 must still execute**: Approval does NOT authorize skipping pre-mutation verification gates.
-3. **Wave 5 gated**: Registry append only if all VG-POP gates PASS and approved conditions are documented in entries.
-
----
-
-## Execution May Now Proceed
-
-- ✅ Wave 4: Pre-Mutation Verification Gates — UNBLOCKED
-- ✅ Wave 5: Registry Append — UNBLOCKED (after Wave 4 passes)
-- ✅ Wave 6: Post-Mutation Verification — UNBLOCKED (after Wave 5)
-- ✅ Wave 7: Final Completion — UNBLOCKED (after Wave 6)
+1. **AI Infrastructure**: Hyperscaler cohort documented as Microsoft, Google/Alphabet, Meta, Amazon, Oracle — ✅ included in registry entry.
+2. **Wave 4 executed**: Pre-mutation verification gates ran — all 13 VG-POP gates PASSED.
+3. **Wave 5 gated properly**: Registry append executed only after all gates passed and conditions documented in entries.
 
 ---
 
+## Execution Outcome After Resolution
+
+| Wave | Status | Result |
+|------|--------|--------|
+| Wave 0 | ✅ COMPLETE | Pre-Execution Safety Verification |
+| Wave 1 | ✅ COMPLETE | Candidate Field Preparation (3 templates) |
+| Wave 2 | ✅ COMPLETE | Evidence Justification Preparation (3 summaries) |
+| Wave 3 | ✅ COMPLETE | Falsification Approval Gate — APPROVED 2026-06-05 |
+| Wave 4 | ✅ COMPLETE | Pre-Mutation Verification Gates (13/13 PASSED) |
+| Wave 5 | ✅ COMPLETE | Registry Append (3 entries added) |
+| Wave 6 | ✅ COMPLETE | Post-Mutation Verification (all checks PASSED) |
+| Wave 7 | ✅ COMPLETE | Final Completion |
+
+---
+
+## Blocker Lifecycle
+
+| Event | Date | Action |
+|-------|------|--------|
+| Blocker created | 2026-06-04 | Execution stopped at Wave 3 — falsification conditions PENDING |
+| Conditions hardened | 2026-06-04 | Falsification conditions revised to v2 (TWO-OF-FOUR, BOTH, ANY-OF-THREE) |
+| Human approval granted | 2026-06-05 | All 3 conditions APPROVED by Portfolio Architect |
+| Blocker resolved | 2026-06-05 | Execution resumed at Wave 4 |
+| Execution completed | 2026-06-05 | All waves finished, registry populated, blocker CLOSED |
+
+---
+
+## Current State
+
+- **No approval remains pending.** All 3 falsification conditions are approved and documented in the registry entries.
+- **No action remains required.** This blocker is closed.
+- **Registry contains 3 entries** as authorized.
+
+---
+
+*Blocker created: 2026-06-04*
 *Blocker resolved: 2026-06-05*
 *Approved by: Portfolio Architect (CTO)*
-
----
-
-## What Is Blocked
-
-The following tasks CANNOT execute until all 3 falsification conditions are approved:
-
-- Wave 4: Pre-Mutation Verification Gates (Tasks 4.1-4.5)
-- Wave 5: Registry Append Operation (Tasks 5.1-5.4)
-- Wave 6: Post-Mutation Verification (Tasks 6.1-6.3)
-- Wave 7: Final Completion (Tasks 7.1-7.3)
-
----
-
-## What Has Been Completed
-
-| Wave | Status | Description |
-|------|--------|-------------|
-| Wave 0 | ✅ COMPLETE | Pre-Execution Safety Verification |
-| Wave 1 | ✅ COMPLETE | Candidate Field Preparation (3 templates documented) |
-| Wave 2 | ✅ COMPLETE | Evidence Justification Preparation (3 summaries documented) |
-| Wave 3 | ⏳ BLOCKED | Falsification Approval Gate — awaiting human approval |
-
----
-
-## Required Action
-
-The human Portfolio Architect must:
-
-1. Review falsification condition drafts in: `.domainization/reports/narrative_population_framework_falsification_drafts_for_review.md`
-2. For each candidate, explicitly approve or request revision of the falsification condition
-3. Provide approval in writing (commit message, chat message, or approval document)
-
-**Approval format**: "AI Infrastructure falsification condition: APPROVED" (repeat for each candidate)
-
----
-
-## Governance Basis
-
-- **Global Execution Rule 4**: Registry mutation is BLOCKED until final human approval of candidate-specific falsification conditions.
-- **Task 3.2 specification**: "If ANY are not approved: create blocker report and STOP"
-- **Execution Stop Boundary**: "If human falsification approval is absent at Wave 3, execution MUST stop."
-- **NPF-REQ-6**: Falsification conditions require human validation
-- **NPF-REQ-8**: Human approval gate is a hard prerequisite for mutation
-
----
-
-## Resolution
-
-Once all 3 falsification conditions are approved, update this blocker report status to RESOLVED and resume execution at Wave 4.
-
-**EXECUTION STOPPED.** Do not proceed to Wave 4 without explicit human approval.
+*Final status: CLOSED*

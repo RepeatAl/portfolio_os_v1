@@ -300,7 +300,7 @@ The following files may be created or modified during task execution:
     - _Requirements: Global Execution Rules 14, 15_
 
   - [x] 7.2 Create final completion report
-    - Create `.domainization/reports/narrative_population_framework_completion_report_2026-06-04.md`
+    - Create `.domainization/reports/narrative_population_framework_completion_report_2026-06-05.md`
     - Document: all tasks complete, all VGs passed, registry contains 3 narratives, all human approvals documented, no unauthorized mutations, branch ready for review/merge
     - _Requirements: workflow governance_
 
