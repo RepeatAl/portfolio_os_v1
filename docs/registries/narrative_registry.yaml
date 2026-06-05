@@ -1,13 +1,13 @@
 # ============================================================
-# NARRATIVE REGISTRY — Schema-Only Definition
+# NARRATIVE REGISTRY — Wave 1 Population
 # ============================================================
 # This file defines the governance rules and schema for the
-# Narrative Registry. It contains ZERO narrative entries.
-# Population requires a separate authorized spec.
+# Narrative Registry. It contains 3 narrative entries
+# populated by the narrative-population-framework spec.
 #
 # Authority: Narrative Framework v2 (ontology SSOT)
 # Purpose: Define WHICH narratives exist (governance + schema)
-# Spec: narrative-registry-framework
+# Spec: narrative-registry-framework (schema), narrative-population-framework (entries)
 # ============================================================
 
 # ============================================================
@@ -19,7 +19,7 @@ primary_domain: ARCH
 artifact_type: SSOT
 lifecycle_status: draft
 created_date: "2026-06-03"
-last_modified: "2026-06-03"
+last_modified: "2026-06-05"
 owner_role: Portfolio Architect
 ssot_relationship: canonical
 topic: narrative_registry
@@ -62,9 +62,71 @@ governance:
     - membership_weight
 
 # ============================================================
-# SECTION 3: REGISTRY ENTRIES (empty — population is a future spec)
+# SECTION 3: REGISTRY ENTRIES — Wave 1 Population (2026-06-05)
+# Authorized by: narrative-population-framework spec
+# Human approval: All 3 falsification conditions APPROVED 2026-06-05
 # ============================================================
-narratives: []
+narratives:
+  # --- Entry 1: AI Infrastructure ---
+  # Lifecycle note: Registered as initial canonical state despite existing market maturity;
+  # lifecycle history predates registry.
+  - narrative_id: narrative.ai_infrastructure
+    scope_definition: "The shared market belief that artificial intelligence adoption requires massive physical infrastructure buildout — data centers, semiconductors, networking, power — creating a structural multi-year capital expenditure supercycle across the hyperscaler and adjacent supply chain ecosystem."
+    birth_trigger: sc.narrative.ai
+    connected_systems:
+      - system.semiconductor_manufacturing
+      - system.data_center_infrastructure
+      - system.cloud_computing
+    falsification_condition: "The narrative is falsified if at least TWO of the following occur within a 12-month period: (1) The defined hyperscaler cohort (Microsoft, Google/Alphabet, Meta, Amazon, Oracle) reduces AI/data-center capex guidance by more than 30% YoY. (2) Data-center construction starts or committed capacity additions decline by more than 40% YoY. (3) AI accelerator/GPU/networking order backlog or lead-time indicators materially normalize, showing demand is no longer capacity-constrained. (4) Major hyperscalers explicitly state that AI infrastructure buildout is entering a digestion or overcapacity phase rather than expansion."
+    lifecycle_state: narrative.lifecycle.emerging
+    registered_date: "2026-06-05"
+    registered_by: ARCH
+    last_modified: "2026-06-05"
+    display_name:
+      en: "AI Infrastructure"
+      de: "KI-Infrastruktur"
+    evidence_summary: "Hyperscaler capex announcements (MSFT $80B+, GOOG $75B+, META $60B+, AMZN $100B+ cumulative AI infrastructure commitments 2024-2026), ChatGPT launch Nov 2022 as catalyst, LLM scaling breakthroughs driving structural demand. Provenance: corporate earnings disclosures, 10-K filings."
+    lifecycle_history: []
+
+  # --- Entry 2: Defense Rearmament ---
+  # Lifecycle note: Registered as initial canonical state despite existing market maturity;
+  # lifecycle history predates registry.
+  - narrative_id: narrative.defense_rearmament
+    scope_definition: "The shared market belief that geopolitical threat escalation — anchored by the Russia-Ukraine conflict and broader great-power competition — is driving a structural, multi-year increase in global defense spending, procurement, and industrial capacity buildout across NATO and allied nations."
+    birth_trigger: sc.events.wars
+    connected_systems:
+      - system.defense_industrial_base
+      - system.government_procurement
+    falsification_condition: "The narrative is falsified if BOTH occur: (1) NATO/allied defense spending commitments are formally reduced, delayed, or materially deprioritized across the core allied spending cohort. (2) Actual defense procurement indicators weaken materially for at least 12 months, shown by falling defense budget authorizations, cancelled procurement programs, declining order intake/backlog among major defense contractors, or official de-escalation removing the structural rearmament rationale. The condition must distinguish temporary political noise from actual procurement-cycle reversal."
+    lifecycle_state: narrative.lifecycle.emerging
+    registered_date: "2026-06-05"
+    registered_by: ARCH
+    last_modified: "2026-06-05"
+    display_name:
+      en: "Defense Rearmament"
+      de: "Verteidigungsaufrüstung"
+    evidence_summary: "NATO 3% GDP commitment (2024 Washington Summit), Germany EUR100B special defense fund (2022), EU defense spending packages, Ukraine conflict duration exceeding 3 years. Provenance: government budget disclosures, NATO communiqués, defense contractor earnings."
+    lifecycle_history: []
+
+  # --- Entry 3: GLP-1 / Obesity Medicine ---
+  # Lifecycle note: Registered as initial canonical state despite existing market maturity;
+  # lifecycle history predates registry.
+  - narrative_id: narrative.glp1_obesity_medicine
+    scope_definition: "The shared market belief that GLP-1 receptor agonist drugs represent a transformational breakthrough in obesity and metabolic disease treatment, creating a new pharmaceutical category with massive addressable market expansion potential that structurally reshapes healthcare economics."
+    birth_trigger: sc.corporate.guidance
+    connected_systems:
+      - system.pharmaceutical_manufacturing
+      - system.healthcare_delivery
+    falsification_condition: "The narrative is falsified if ANY of the following occur: (1) A major regulator such as FDA or EMA materially restricts GLP-1 usage for obesity or metabolic disease due to safety concerns. (2) Robust long-term clinical evidence shows materially impaired efficacy, unacceptable safety risk, or poor treatment durability. (3) Payor coverage or reimbursement restrictions materially reduce addressable adoption despite clinical efficacy, causing the market expansion thesis to fail. This does not falsify the science alone; it falsifies the investable obesity-medicine expansion narrative."
+    lifecycle_state: narrative.lifecycle.emerging
+    registered_date: "2026-06-05"
+    registered_by: ARCH
+    last_modified: "2026-06-05"
+    display_name:
+      en: "GLP-1 / Obesity Medicine"
+      de: "GLP-1 / Adipositas-Medizin"
+    evidence_summary: "FDA approvals: Ozempic (2017 diabetes, 2021 CV), Wegovy (2021 obesity), Mounjaro (2022), Zepbound (2023 obesity). STEP/SURMOUNT Phase 3 trials demonstrating 15-22% weight loss. Novo Nordisk/Lilly revenue acceleration from GLP-1 segments. Provenance: FDA filings, clinical publications, company earnings."
+    lifecycle_history: []
 
 # ============================================================
 # SECTION 4: RETIRED ENTRIES (empty)

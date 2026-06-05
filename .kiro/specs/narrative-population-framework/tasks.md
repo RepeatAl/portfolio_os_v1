@@ -233,14 +233,14 @@ The following files may be created or modified during task execution:
     - _Requirements: Global Execution Rule 15_
 
 - [ ] 5. Registry Append Operation
-  - [~] 5.1 Verify pre-conditions before registry mutation
+  - [x] 5.1 Verify pre-conditions before registry mutation
     - Confirm all VG-POP-1 through VG-POP-13 PASSED
     - Confirm human approved all 3 falsification conditions (no PENDING status remaining)
     - Confirm `narratives: []` is still empty
     - If any precondition fails: STOP. Create blocker report. Do NOT mutate registry.
     - _Requirements: NPF-REQ-7, NPF-REQ-8_
 
-  - [~] 5.2 Append 3 approved narrative entries to registry
+  - [x] 5.2 Append 3 approved narrative entries to registry
     - Load `docs/registries/narrative_registry.yaml`
     - Append entry 1: `narrative.ai_infrastructure` with all required fields and human-approved falsification
     - Append entry 2: `narrative.defense_rearmament` with all required fields and human-approved falsification
@@ -249,14 +249,14 @@ The following files may be created or modified during task execution:
     - No prohibited fields, no asset fields, no scoring/ranking/probability/confidence values
     - _Requirements: NPF-REQ-7, Design Section: Registry Mutation Design_
 
-  - [~] 5.3 Create registry append execution report
+  - [x] 5.3 Create registry append execution report
     - Create `.domainization/reports/narrative_population_framework_task5_registry_append.md`
     - Document: 3 entries appended, field values per entry, gates passed, human approvals documented
     - Confirm `narratives` list now contains exactly 3 entries
     - Confirm `retired_narratives: []` still empty
     - _Requirements: NPF-REQ-7, workflow governance_
 
-  - [~] 5.4 Commit and push registry append + report
+  - [x] 5.4 Commit and push registry append + report
     - Stage `docs/registries/narrative_registry.yaml` AND execution report AND `tasks.md`
     - Commit: `docs(narrative-population): Wave 1 registry append — 3 approved narratives`
     - Push to `spec/narrative-population-framework`
