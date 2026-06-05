@@ -60,14 +60,14 @@ The following files may be created or modified during task execution:
     - Confirm human decision capture report exists and is valid
     - _Requirements: Global Execution Rule 15 / workflow governance_
 
-  - [~] 0.3 Commit and push pre-execution safety report
+  - [x] 0.3 Commit and push pre-execution safety report
     - Stage `.domainization/reports/narrative_population_framework_task0_pre_execution_safety.md` and updated `tasks.md`
     - Commit: `docs(narrative-population): pre-execution safety verification wave 0`
     - Push to `spec/narrative-population-framework`
     - _Requirements: Global Execution Rule 15_
 
 - [ ] 1. Candidate Field Preparation
-  - [~] 1.1 Prepare field template: AI Infrastructure
+  - [x] 1.1 Prepare field template: AI Infrastructure
     - Prepare all candidate fields for `narrative.ai_infrastructure` (PROPOSED ID):
       - candidate_label, proposed_narrative_id, display_name
       - scope_definition draft
@@ -85,7 +85,7 @@ The following files may be created or modified during task execution:
     - Document in execution report only — do NOT write to registry
     - _Requirements: NPF-REQ-5, NPF-REQ-6, Design Section: Data Models_
 
-  - [~] 1.2 Prepare field template: Defense Rearmament
+  - [x] 1.2 Prepare field template: Defense Rearmament
     - Prepare all candidate fields for `narrative.defense_rearmament` (PROPOSED ID):
       - All same fields as 1.1 for Defense Rearmament
       - birth_trigger draft: sc.narrative.defense or sc.events.wars based on specific triggering event
@@ -96,7 +96,7 @@ The following files may be created or modified during task execution:
     - Document in execution report only — do NOT write to registry
     - _Requirements: NPF-REQ-5, NPF-REQ-6_
 
-  - [~] 1.3 Prepare field template: GLP-1 / Obesity Medicine
+  - [x] 1.3 Prepare field template: GLP-1 / Obesity Medicine
     - Prepare all candidate fields for `narrative.glp1_obesity_medicine` (PROPOSED ID):
       - All same fields as 1.1 for GLP-1
       - birth_trigger draft: sc.corporate.earnings or sc.corporate.guidance based on specific FDA/clinical breakthrough
@@ -107,7 +107,7 @@ The following files may be created or modified during task execution:
     - Document in execution report only — do NOT write to registry
     - _Requirements: NPF-REQ-5, NPF-REQ-6_
 
-  - [~] 1.4 Create candidate field preparation report
+  - [x] 1.4 Create candidate field preparation report
     - Create `.domainization/reports/narrative_population_framework_task1_candidate_field_preparation.md`
     - Document all 3 candidate field templates
     - Mark all falsification conditions as DRAFT / PENDING HUMAN APPROVAL
