@@ -17,9 +17,9 @@
 
 | Candidate | Proposed ID | Falsification Condition | Approval Status |
 |-----------|-------------|------------------------|-----------------|
-| AI Infrastructure | `narrative.ai_infrastructure` | Hyperscaler collective capex guidance reduced >30% YoY AND data center construction starts decline >40% within 12 months | ❌ NOT APPROVED |
-| Defense Rearmament | `narrative.defense_rearmament` | NATO formally reverses 3% GDP commitment AND major conflict de-escalation removes structural rearmament rationale | ❌ NOT APPROVED |
-| GLP-1 / Obesity Medicine | `narrative.glp1_obesity_medicine` | FDA safety action materially restricts GLP-1 usage OR clinical evidence shows long-term efficacy/safety failure | ❌ NOT APPROVED |
+| AI Infrastructure | `narrative.ai_infrastructure` | TWO-OF-FOUR: capex reduction >30% + construction decline >40% + demand normalization + overcapacity statements (within 12 months) | ❌ NOT APPROVED (hardened v2) |
+| Defense Rearmament | `narrative.defense_rearmament` | BOTH: NATO spending commitment reversal + procurement indicator weakening for 12+ months | ❌ NOT APPROVED (hardened v2) |
+| GLP-1 / Obesity Medicine | `narrative.glp1_obesity_medicine` | ANY-OF-THREE: regulatory restriction + clinical failure + payor/adoption failure | ❌ NOT APPROVED (hardened v2) |
 
 ---
 

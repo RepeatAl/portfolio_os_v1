@@ -1,15 +1,16 @@
 # Narrative Population Framework — Falsification Condition Drafts for Human Review
 
-**Date**: 2026-06-04
+**Date**: 2026-06-04 (revised)
 **Spec**: narrative-population-framework
 **Task**: 3.1
-**Status**: PENDING HUMAN APPROVAL
+**Status**: PENDING HUMAN APPROVAL (conditions hardened)
+**Revision**: v2 — hardened falsification conditions
 
 ---
 
 ## Purpose
 
-This document presents the draft falsification conditions for all 3 Wave 1 narrative candidates. Each condition requires explicit human approval before registry mutation can proceed.
+This document presents the hardened draft falsification conditions for all 3 Wave 1 narrative candidates. Each condition requires explicit human approval before registry mutation can proceed.
 
 **Registry mutation is BLOCKED until all 3 conditions below are approved by the Portfolio Architect (human).**
 
@@ -21,12 +22,23 @@ This document presents the draft falsification conditions for all 3 Wave 1 narra
 |-------|-------|
 | Proposed ID | `narrative.ai_infrastructure` |
 | Display Name | AI Infrastructure |
-| Falsification Condition (DRAFT) | Hyperscaler collective capex guidance reduced >30% YoY AND data center construction starts decline >40% within 12 months |
+| Logic Type | TWO-OF-FOUR |
 | Human Approval Status | **⏳ PENDING HUMAN APPROVAL** |
 
-### Rationale for This Condition
+### Falsification Condition (DRAFT — HARDENED)
 
-The AI Infrastructure narrative is sustained by observable, massive capital expenditure commitments from hyperscalers. If these companies collectively reverse their spending guidance by >30% AND physical construction activity declines by >40%, the structural investment thesis would be materially undermined. Both conditions together (AND logic) prevent false negatives from temporary capex adjustments.
+The narrative is falsified if at least TWO of the following occur within a 12-month period:
+
+1. The defined hyperscaler cohort reduces AI/data-center capex guidance by more than 30% YoY.
+2. Data-center construction starts or committed capacity additions decline by more than 40% YoY.
+3. AI accelerator / GPU / networking order backlog or lead-time indicators materially normalize, showing demand is no longer capacity-constrained.
+4. Major hyperscalers explicitly state that AI infrastructure buildout is entering a digestion or overcapacity phase rather than expansion.
+
+The hyperscaler cohort must be explicitly defined before registry mutation.
+
+### Rationale
+
+Avoids over-reliance on one capex metric and prevents false non-falsification. Requires convergence of multiple independent indicators rather than a single data point that could be noisy or temporary.
 
 ---
 
@@ -36,12 +48,21 @@ The AI Infrastructure narrative is sustained by observable, massive capital expe
 |-------|-------|
 | Proposed ID | `narrative.defense_rearmament` |
 | Display Name | Defense Rearmament |
-| Falsification Condition (DRAFT) | NATO formally reverses 3% GDP commitment AND major conflict de-escalation removes structural rearmament rationale |
+| Logic Type | BOTH |
 | Human Approval Status | **⏳ PENDING HUMAN APPROVAL** |
 
-### Rationale for This Condition
+### Falsification Condition (DRAFT — HARDENED)
 
-The Defense Rearmament narrative is sustained by institutional commitments (NATO targets) combined with ongoing geopolitical threat. Falsification requires BOTH the formal reversal of spending commitments AND the removal of the underlying threat driver. Either alone would be insufficient — NATO could reverse targets while threats persist (politically unlikely), or conflicts could de-escalate while institutional momentum continues.
+The narrative is falsified if BOTH occur:
+
+1. NATO/allied defense spending commitments are formally reduced, delayed, or materially deprioritized across the core allied spending cohort.
+2. Actual defense procurement indicators weaken materially for at least 12 months, shown by falling defense budget authorizations, cancelled procurement programs, declining order intake/backlog among major defense contractors, or official de-escalation removing the structural rearmament rationale.
+
+The condition must distinguish temporary political noise from actual procurement-cycle reversal.
+
+### Rationale
+
+Avoids dependence on a single numeric NATO target and requires observable procurement reversal. Political rhetoric alone does not falsify; actual spending and order behavior must confirm.
 
 ---
 
@@ -51,12 +72,22 @@ The Defense Rearmament narrative is sustained by institutional commitments (NATO
 |-------|-------|
 | Proposed ID | `narrative.glp1_obesity_medicine` |
 | Display Name | GLP-1 / Obesity Medicine |
-| Falsification Condition (DRAFT) | FDA safety action materially restricts GLP-1 usage OR clinical evidence shows long-term efficacy/safety failure |
+| Logic Type | ANY-OF-THREE |
 | Human Approval Status | **⏳ PENDING HUMAN APPROVAL** |
 
-### Rationale for This Condition
+### Falsification Condition (DRAFT — HARDENED)
 
-The GLP-1 narrative is sustained by clinical efficacy evidence and regulatory approval. Unlike the other two candidates, this uses OR logic — either a regulatory safety action OR clinical failure would independently undermine the narrative. This reflects the binary nature of pharmaceutical approval: a single material safety finding can collapse the thesis regardless of other factors.
+The narrative is falsified if ANY of the following occur:
+
+1. A major regulator such as FDA or EMA materially restricts GLP-1 usage for obesity or metabolic disease due to safety concerns.
+2. Robust long-term clinical evidence shows materially impaired efficacy, unacceptable safety risk, or poor treatment durability.
+3. Payor coverage or reimbursement restrictions materially reduce addressable adoption despite clinical efficacy, causing the market expansion thesis to fail.
+
+This does not falsify the science alone; it falsifies the investable obesity-medicine expansion narrative.
+
+### Rationale
+
+Incorporates regulatory, clinical, and adoption/access failure paths. Recognizes that a narrative can fail not only from scientific failure but from market access barriers that prevent the thesis from playing out economically.
 
 ---
 
@@ -66,8 +97,9 @@ To approve these falsification conditions, the human reviewer should:
 
 1. Review each condition for clarity, testability, and completeness
 2. Confirm each condition would genuinely falsify the narrative if met
-3. Confirm the logical operators (AND/OR) are appropriate
-4. Provide explicit approval for each candidate individually
+3. Confirm the logical operators (TWO-OF-FOUR / BOTH / ANY-OF-THREE) are appropriate
+4. Confirm the scope (12-month observation window, cohort definitions) is appropriate
+5. Provide explicit approval for each candidate individually
 
 **Approval format**: Explicit written confirmation per candidate (e.g., "AI Infrastructure falsification condition: APPROVED")
 
@@ -77,8 +109,8 @@ To approve these falsification conditions, the human reviewer should:
 
 ## Summary Table
 
-| Candidate | Condition Type | Logic | Status |
-|-----------|---------------|-------|--------|
-| AI Infrastructure | Capex reversal + construction decline | AND | ⏳ PENDING |
-| Defense Rearmament | NATO reversal + conflict de-escalation | AND | ⏳ PENDING |
-| GLP-1 / Obesity Medicine | FDA safety action + clinical failure | OR | ⏳ PENDING |
+| Candidate | Logic Type | Conditions | Status |
+|-----------|-----------|------------|--------|
+| AI Infrastructure | TWO-OF-FOUR | Capex reduction + construction decline + demand normalization + overcapacity statement | ⏳ PENDING |
+| Defense Rearmament | BOTH | Spending commitment reversal + procurement indicator weakening (12 months) | ⏳ PENDING |
+| GLP-1 / Obesity Medicine | ANY-OF-THREE | Regulatory restriction + clinical failure + payor/adoption failure | ⏳ PENDING |
