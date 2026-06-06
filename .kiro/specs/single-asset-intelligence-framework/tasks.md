@@ -120,8 +120,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - _Requirements: SAI-REQ-8_
     - _Verification Gate: VG-SAI-1_
 
-- [ ] 11. Peer / Benchmark Artifact
-  - [ ] 11.1 Create peer/benchmark artifact
+- [x] 11. Peer / Benchmark Artifact
+  - [x] 11.1 Create peer/benchmark artifact
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/peer_benchmark.md`
     - Include: relative strength vs benchmark/sector/peers, correlation, beta decomposition, volatility, drawdown, own-strength vs beta-driven movement
     - State: peer groups non-canonical until Peer Group Registry exists; SAI consumes peer definitions, does not create them; no ranking, scoring, factor model, or trading signal
