@@ -177,7 +177,7 @@ Each of the 24 blocks follows this canonical structure:
 | category | Market Position | Market Position | Market Position |
 | purpose | Diagnose price strength relative to benchmark, sector, and peers | Diagnose correlation structure and beta decomposition | Diagnose competitive positioning relative to peer group |
 | primary_fact_families | Price performance vs benchmark, sector performance, drawdown history | Correlation coefficients, rolling beta, R-squared, factor exposures | Peer financial metrics, market share, growth differentials, margin differentials |
-| primary_signal_families | Relative strength signals, momentum signals, drawdown signals | Correlation regime signals, beta decomposition signals | Peer rank signals, competitive position signals |
+| primary_signal_families | Relative strength signals, momentum signals, drawdown signals | Correlation regime signals, beta decomposition signals | Peer-relative comparison signals, competitive position signals |
 | temporal_resolution | daily | daily | daily |
 | deferred_dependencies | None | Correlation/Dependency Framework | Peer Group Registry |
 
@@ -513,19 +513,27 @@ When SAI progresses to implementation (future, not in this spec), PBT will apply
 | VG-SAI-11 | KPI Mapping Validation Gate | TASK PHASE | Requires KPI sheet mapping per block |
 | VG-SAI-12 | Portfolio Fit Interface Gate | YES | Verify output schema contains no allocation language |
 
-### Design-Phase Gate Execution Summary
+### Design-Phase Gate Readiness Summary
 
-Gates executable NOW (design phase):
-- VG-SAI-1: PASS — all 24 blocks defined with identifiers, categories, purposes, fact/signal families
-- VG-SAI-2: PASS — zero scoring/recommendation language in design document
-- VG-SAI-3: PASS — provenance chain specified in output object schema
-- VG-SAI-4: PASS — all 7 deferred interface contracts declared
-- VG-SAI-5: PASS — block IDs SAI-BLK-01 through SAI-BLK-24 frozen, extension additive only
-- VG-SAI-9: PASS — all blocks assigned temporal resolution with rationale
-- VG-SAI-12: PASS — Portfolio Fit output contains no allocation/sizing language
+No verification gate is completed merely by being mentioned in design.md. All VG-SAI gates require explicit gate execution artifacts before being considered passed. The design document establishes readiness, not gate completion.
 
-Gates requiring task-phase completion:
-- VG-SAI-6, VG-SAI-7, VG-SAI-8, VG-SAI-10, VG-SAI-11 — require detailed mapping artifacts
+Gates READY FOR EXPLICIT GATE EXECUTION (design-phase):
+- VG-SAI-1: READY FOR EXPLICIT GATE EXECUTION — all 24 blocks defined with identifiers, categories, purposes, fact/signal families
+- VG-SAI-2: READY FOR EXPLICIT GATE EXECUTION — zero scoring/recommendation language in design document
+- VG-SAI-3: READY FOR EXPLICIT GATE EXECUTION — provenance chain specified in output object schema
+- VG-SAI-4: READY FOR EXPLICIT GATE EXECUTION — all 7 deferred interface contracts declared
+- VG-SAI-5: READY FOR EXPLICIT GATE EXECUTION — block IDs SAI-BLK-01 through SAI-BLK-24 frozen, extension additive only
+- VG-SAI-9: READY FOR EXPLICIT GATE EXECUTION — all blocks assigned temporal resolution with rationale
+- VG-SAI-12: READY FOR EXPLICIT GATE EXECUTION — Portfolio Fit output contains no allocation/sizing language
+
+Gates REQUIRES TASK-PHASE ARTIFACT:
+- VG-SAI-6: REQUIRES TASK-PHASE ARTIFACT — detailed fact coverage matrix (68 facts → 24 blocks)
+- VG-SAI-7: REQUIRES TASK-PHASE ARTIFACT — detailed signal mapping (23 signals → 24 blocks)
+- VG-SAI-8: REQUIRES TASK-PHASE ARTIFACT — red flag taxonomy (2+ per block with thresholds)
+- VG-SAI-10: REQUIRES TASK-PHASE ARTIFACT — terminology audit against canonical glossary
+- VG-SAI-11: REQUIRES TASK-PHASE ARTIFACT — KPI sheet mapping per block
+
+**NOT AUTO-COMPLETED**: No gate listed above has been auto-completed. Each requires explicit execution with a verification artifact documenting pass/fail evidence.
 
 
 ## Valuation / Value Trap Design

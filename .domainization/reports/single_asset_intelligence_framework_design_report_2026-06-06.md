@@ -45,9 +45,11 @@ All 15 requirements (SAI-REQ-1 through SAI-REQ-15) have architectural responses 
 
 ## Verification Gate Alignment
 
-12 gates preserved with canonical preflight names (VG-SAI-1 through VG-SAI-12). Design identifies 7 gates executable at design phase and 5 requiring task phase completion.
+12 gates preserved with canonical preflight names (VG-SAI-1 through VG-SAI-12).
 
-Design-phase gates (all PASS):
+Design-phase gates are ready for explicit execution. Task-phase gates require additional mapping artifacts. No gate was auto-completed during design.
+
+Design-phase gates (READY FOR EXPLICIT GATE EXECUTION):
 - VG-SAI-1: Requirements Completeness — all 24 blocks defined
 - VG-SAI-2: Boundary Enforcement — zero scoring/recommendation language
 - VG-SAI-3: Provenance Chain — provenance specified in output schema
@@ -56,7 +58,7 @@ Design-phase gates (all PASS):
 - VG-SAI-9: Temporal Resolution — all blocks assigned temporal class
 - VG-SAI-12: Portfolio Fit Interface — no allocation language
 
-Task-phase gates (require detailed mapping work):
+Task-phase gates (REQUIRES TASK-PHASE ARTIFACT):
 - VG-SAI-6: Fact Coverage (68 facts → 24 blocks)
 - VG-SAI-7: Signal Coverage (23 signals → 24 blocks)
 - VG-SAI-8: Red Flag Taxonomy (2+ flags per block)
