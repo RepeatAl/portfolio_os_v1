@@ -27,8 +27,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
 
 ## Tasks
 
-- [ ] 1. Canonical Block Taxonomy Artifact
-  - [ ] 1.1 Create block taxonomy document
+- [x] 1. Canonical Block Taxonomy Artifact
+  - [x] 1.1 Create block taxonomy document
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/block_taxonomy.md`
     - Define all 24 blocks (SAI-BLK-01 through SAI-BLK-24) with: block_id, block_name, category, purpose, fact families, signal families, temporal resolution, output type, provenance requirement, red flag requirement, deferred dependencies, non-scoring boundary statement
     - Organize blocks by category: Foundation, Operational, Financial Stability, Risk, Earnings, Valuation, Market Position, Outlook, Portfolio Context
