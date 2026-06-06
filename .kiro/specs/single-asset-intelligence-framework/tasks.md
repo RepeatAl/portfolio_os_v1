@@ -94,8 +94,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - _Requirements: SAI-REQ-6_
     - _Verification Gate: VG-SAI-9_
 
-- [ ] 8. Deferred Interface Contract Artifacts
-  - [ ] 8.1 Create deferred interface contracts
+- [x] 8. Deferred Interface Contract Artifacts
+  - [x] 8.1 Create deferred interface contracts
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/deferred_interfaces.md`
     - Define contracts for: Valuation Framework, Earnings Intelligence Framework, Peer Group Registry, Portfolio Health Framework, Correlation/Dependency Framework, Signal Calculation Framework, Data Ingestion/Normalization Framework
     - Each contract: what SAI expects to consume, what SAI may emit, what SAI must not define, current limitation, affected SAI blocks
