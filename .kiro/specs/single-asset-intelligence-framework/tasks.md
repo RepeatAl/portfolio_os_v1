@@ -1,4 +1,4 @@
-# Implementation Plan
+# Implementation Plan: Single Asset Intelligence Framework
 
 ## Overview
 
@@ -242,7 +242,7 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
 
 - [ ] 18. Final Task Execution Report
   - [ ] 18.1 Create final tasks report
-    - Create `.domainization/reports/single_asset_intelligence_framework_tasks_report_2026-06-06.md`
+    - Create `.domainization/reports/single_asset_intelligence_framework_task_execution_report_2026-06-06.md`
     - Include: files created, requirements coverage, design coverage, verification gate artifact summary, deferred interface summary, unresolved gaps, confirmations (no implementation, no scoring, no registry mutation, no asset mapping)
     - _Requirements: Governance_
 
