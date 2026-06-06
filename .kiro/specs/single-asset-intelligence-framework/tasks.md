@@ -86,8 +86,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - _Requirements: SAI-REQ-13_
     - _Verification Gate: VG-SAI-8_
 
-- [ ] 7. Temporal Resolution Matrix
-  - [ ] 7.1 Create temporal resolution matrix
+- [x] 7. Temporal Resolution Matrix
+  - [x] 7.1 Create temporal resolution matrix
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/temporal_resolution_matrix.md`
     - Define for each block: block_id, temporal class (quarterly/monthly/daily/real-time), rationale, stale threshold, expired threshold, source cadence dependency, real-time status (prohibited/allowed/future)
     - Explain: filing-based blocks = quarterly, market-relative blocks = daily, real-time = exceptional
