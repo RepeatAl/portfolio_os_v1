@@ -112,8 +112,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - _Requirements: SAI-REQ-7_
     - _Verification Gate: VG-SAI-2_
 
-- [ ] 10. Credit / Solvency Artifact
-  - [ ] 10.1 Create credit/solvency artifact
+- [x] 10. Credit / Solvency Artifact
+  - [x] 10.1 Create credit/solvency artifact
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/credit_solvency.md`
     - Include full scope: gross debt, net debt, maturity schedule, short-term debt, available liquidity, interest coverage, net debt/EBITDA, FCF/debt, lease liabilities, purchase obligations, off-balance commitments, pension obligations, pension funding gap, goodwill/intangibles/impairment, LBO history, sponsor overhang, covenant pressure, bond/CDS/rating evidence
     - State: Credit ratings are inputs, not truth
