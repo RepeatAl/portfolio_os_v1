@@ -136,8 +136,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - _Requirements: SAI-REQ-11_
     - _Verification Gate: VG-SAI-12_
 
-- [ ] 13. KPI Mapping Validation Artifact
-  - [ ] 13.1 Create KPI mapping artifact
+- [x] 13. KPI Mapping Validation Artifact
+  - [x] 13.1 Create KPI mapping artifact
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/kpi_mapping.md`
     - Map at least 80% of KPI-Micro Asset Analysis Sheet items to canonical SAI blocks
     - If KPI sheet is not available in repo, create a placeholder mapping contract and mark external input required
