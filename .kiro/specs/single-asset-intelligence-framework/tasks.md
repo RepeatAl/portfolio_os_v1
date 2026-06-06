@@ -67,8 +67,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - _Requirements: SAI-REQ-5_
     - _Verification Gate: VG-SAI-2_
 
-- [ ] 5. Provenance Contract Artifact
-  - [ ] 5.1 Create provenance contract
+- [x] 5. Provenance Contract Artifact
+  - [x] 5.1 Create provenance contract
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/provenance_contract.md`
     - Define: source_fact_ids, source_signal_ids, timestamps, source_type, evidence_freshness, completeness metadata
     - Define invalid orphan interpretation rule
