@@ -100,6 +100,13 @@
 
 **Proceed to `design.md`** after human review of requirements document.
 
+### Post-Creation Patch Note (2026-06-06)
+
+Verification gate names were corrected to preserve preflight canonical IDs:
+- Requirements gate table now uses exact preflight gate names (VG-SAI-1 = Requirements Completeness Gate, etc.)
+- Per-requirement verification linkages updated to reference correct canonical gate meanings
+- No implementation, registry mutation, SSOT mutation, or design work was performed during this correction
+
 Pre-conditions for design phase:
 1. Human confirms all 15 requirements are correctly scoped
 2. Human confirms boundary enforcement is adequate

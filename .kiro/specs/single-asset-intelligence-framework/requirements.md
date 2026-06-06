@@ -120,7 +120,7 @@ Use canonical glossary reference. Local candidates:
 6. Fact consumption contracts are declarative only — no retrieval logic or implementation
 
 **Related Preflight Section**: Section 7, Section 8
-**Verification Gate**: VG-SAI-2
+**Verification Gate**: VG-SAI-6
 
 ---
 
@@ -152,7 +152,7 @@ Use canonical glossary reference. Local candidates:
 5. Signal consumption contracts are declarative only — no calculation logic or implementation
 
 **Related Preflight Section**: Section 9
-**Verification Gate**: VG-SAI-3
+**Verification Gate**: VG-SAI-7
 
 ---
 
@@ -185,7 +185,7 @@ Use canonical glossary reference. Local candidates:
 6. Provenance requirements do not create circular dependencies between blocks
 
 **Related Preflight Section**: Section 4
-**Verification Gate**: VG-SAI-4
+**Verification Gate**: VG-SAI-3
 
 ---
 
@@ -217,7 +217,7 @@ Use canonical glossary reference. Local candidates:
 6. Boundary enforcement principle stated: "A company can be operationally excellent and still overvalued. A company can be statistically cheap but structurally impaired."
 
 **Related Preflight Section**: Section 3
-**Verification Gate**: VG-SAI-5
+**Verification Gate**: VG-SAI-2
 
 ---
 
@@ -250,7 +250,7 @@ Use canonical glossary reference. Local candidates:
 7. SAI-GAP-10 is explicitly resolved by this requirement
 
 **Related Preflight Section**: Section 6, Gap Analysis
-**Verification Gate**: VG-SAI-6
+**Verification Gate**: VG-SAI-9
 
 ---
 
@@ -286,7 +286,7 @@ Use canonical glossary reference. Local candidates:
 6. No "undervalued" or "overvalued" labels are produced — only contextual interpretation
 
 **Related Preflight Section**: Section 6, Section 10
-**Verification Gate**: VG-SAI-7
+**Verification Gate**: VG-SAI-2
 
 ---
 
@@ -329,7 +329,7 @@ Use canonical glossary reference. Local candidates:
 7. Each category has at least one red flag example documented
 
 **Related Preflight Section**: Section 6, Section 8
-**Verification Gate**: VG-SAI-8
+**Verification Gate**: VG-SAI-1
 
 ---
 
@@ -371,7 +371,7 @@ Use canonical glossary reference. Local candidates:
 7. Working capital efficiency criteria include DSO/DPO/inventory days thresholds
 
 **Related Preflight Section**: Section 6, Section 7
-**Verification Gate**: VG-SAI-9
+**Verification Gate**: VG-SAI-1
 
 ---
 
@@ -450,7 +450,7 @@ Use canonical glossary reference. Local candidates:
 7. Liquidity sensitivity includes ADV-based liquidity assessment criteria
 
 **Related Preflight Section**: Section 6
-**Verification Gate**: VG-SAI-11
+**Verification Gate**: VG-SAI-12
 
 ---
 
@@ -484,7 +484,7 @@ Use canonical glossary reference. Local candidates:
 6. The contract references canonical `narrative_id` format from Narrative Registry
 
 **Related Preflight Section**: Section 5
-**Verification Gate**: VG-SAI-12
+**Verification Gate**: VG-SAI-4
 
 ---
 
@@ -518,7 +518,7 @@ Use canonical glossary reference. Local candidates:
 6. Example red flags from preflight Section 7 are incorporated (e.g., book-to-bill < 1.0, leverage > 4x)
 
 **Related Preflight Section**: Section 7
-**Verification Gate**: VG-SAI-9
+**Verification Gate**: VG-SAI-8
 
 ---
 
@@ -552,7 +552,7 @@ Use canonical glossary reference. Local candidates:
 6. Extension proposal template defined (required fields for new block proposal)
 
 **Related Preflight Section**: Section 6 (Block Architecture Principles)
-**Verification Gate**: VG-SAI-11
+**Verification Gate**: VG-SAI-5
 
 ---
 
@@ -653,20 +653,20 @@ The following gaps identified in the preflight are resolved within this requirem
 
 Gates must be explicitly executed and must not be auto-completed.
 
-| Gate ID | Gate Description | Requirements Covered | Pass Criteria |
-|---------|-----------------|---------------------|---------------|
-| VG-SAI-1 | Block Taxonomy Completeness | SAI-REQ-1 | All 24 blocks defined with stable IDs, categories, and purpose statements |
-| VG-SAI-2 | Fact Consumption Coverage | SAI-REQ-2 | Coverage matrix complete; all 68 fact categories assigned; all blocks have ≥1 fact |
-| VG-SAI-3 | Signal Consumption Coverage | SAI-REQ-3 | Coverage matrix complete; all 23 signal categories assigned; all blocks have ≥1 signal |
-| VG-SAI-4 | Provenance Chain Integrity | SAI-REQ-4 | Provenance specification exists for all 24 blocks; no orphan interpretation paths |
-| VG-SAI-5 | Non-Scoring Constraint | SAI-REQ-5 | Zero scoring/recommendation/allocation language in any deliverable |
-| VG-SAI-6 | Temporal Resolution Assignment | SAI-REQ-6 | All 24 blocks have assigned temporal resolution with rationale |
-| VG-SAI-7 | Valuation Guard Completeness | SAI-REQ-7 | Valuation block requires ≥6 evidence dimensions; solvency requirement documented |
-| VG-SAI-8 | Financial Stability Coverage | SAI-REQ-8 | All listed financial categories have fact mappings; credit ratings as input documented |
-| VG-SAI-9 | Earnings/Operational Coverage | SAI-REQ-9, SAI-REQ-13 | All categories covered; demand reality distinction defined; red flags documented |
-| VG-SAI-10 | Peer/Benchmark Coverage | SAI-REQ-10 | Beta decomposition documented; peer comparison requires defined group |
-| VG-SAI-11 | Portfolio Fit Interface + Extension | SAI-REQ-11, SAI-REQ-14 | Output schema defined; no allocation language; extension rules documented |
-| VG-SAI-12 | Narrative Interface + Completeness | SAI-REQ-12, SAI-REQ-15 | Interface contract documented; completeness taxonomy defined; no mappings created |
+| Gate ID | Gate Name | Requirements Covered | Pass Criteria |
+|---------|-----------|---------------------|---------------|
+| VG-SAI-1 | Requirements Completeness Gate | SAI-REQ-1, SAI-REQ-2, SAI-REQ-3 | All 24 blocks defined; all fact/signal consumption contracts complete |
+| VG-SAI-2 | Boundary Enforcement Gate | SAI-REQ-5 | Zero scoring/recommendation/allocation language in any deliverable |
+| VG-SAI-3 | Provenance Chain Gate | SAI-REQ-4 | Provenance specification exists for all 24 blocks; no orphan interpretation paths |
+| VG-SAI-4 | Interface Contract Gate | SAI-REQ-11, SAI-REQ-12 | All deferred framework interfaces have explicit consumption contracts declared |
+| VG-SAI-5 | Taxonomy Stability Gate | SAI-REQ-1, SAI-REQ-14 | Block IDs frozen; additive-only extension mechanism documented and proven |
+| VG-SAI-6 | Fact Coverage Gate | SAI-REQ-2 | All 68 fact categories assigned to ≥1 block; coverage matrix complete |
+| VG-SAI-7 | Signal Coverage Gate | SAI-REQ-3 | All 23 signal categories assigned to ≥1 block; signal-to-block mapping complete |
+| VG-SAI-8 | Red Flag Taxonomy Gate | SAI-REQ-13 | Each block has ≥2 red flags with evidence criteria; minimum 48 total |
+| VG-SAI-9 | Temporal Resolution Gate | SAI-REQ-6 | All 24 blocks have assigned temporal resolution with rationale (SAI-GAP-10 resolved) |
+| VG-SAI-10 | Cross-Framework Consistency Gate | SAI-REQ-4, SAI-REQ-5 | SAI terminology consistent with Market Evidence, Narrative Framework v2, Market Organism Principles; zero conflicts |
+| VG-SAI-11 | KPI Mapping Validation Gate | SAI-REQ-2 | ≥80% of existing KPI-Micro Asset Analysis Sheet items map to canonical blocks |
+| VG-SAI-12 | Portfolio Fit Interface Gate | SAI-REQ-11, SAI-REQ-15 | Portfolio Fit output schema defined; no allocation language; completeness taxonomy defined |
 
 ---
 
