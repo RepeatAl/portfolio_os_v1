@@ -46,8 +46,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - _Requirements: SAI-REQ-2_
     - _Verification Gate: VG-SAI-6_
 
-- [ ] 3. Signal Consumption Matrix
-  - [ ] 3.1 Create signal-to-block consumption matrix
+- [x] 3. Signal Consumption Matrix
+  - [x] 3.1 Create signal-to-block consumption matrix
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/signal_consumption_matrix.md`
     - Map all 23 signal categories from the preflight to their consuming blocks
     - Verify every block has at least 1 signal category assigned
