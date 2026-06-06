@@ -145,8 +145,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - _Requirements: SAI-REQ-2_
     - _Verification Gate: VG-SAI-11_
 
-- [ ] 14. Cross-Framework Terminology Audit
-  - [ ] 14.1 Create terminology audit artifact
+- [x] 14. Cross-Framework Terminology Audit
+  - [x] 14.1 Create terminology audit artifact
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/terminology_audit.md`
     - Compare SAI terms against: Market Evidence Framework, Narrative Framework v2, Market Organism Principles, Shared Glossary Reference
     - Document any term conflicts as findings (do NOT mutate glossary)
