@@ -35,8 +35,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - _Requirements: SAI-REQ-1, SAI-REQ-14_
     - _Verification Gate: VG-SAI-1, VG-SAI-5_
 
-- [ ] 2. Fact Consumption Matrix
-  - [ ] 2.1 Create fact-to-block consumption matrix
+- [x] 2. Fact Consumption Matrix
+  - [x] 2.1 Create fact-to-block consumption matrix
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/fact_consumption_matrix.md`
     - Map all 68 fact categories from the preflight to their consuming blocks
     - Verify every block has at least 1 fact category assigned
