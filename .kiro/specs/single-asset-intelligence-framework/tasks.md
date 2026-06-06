@@ -77,8 +77,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - _Requirements: SAI-REQ-4_
     - _Verification Gate: VG-SAI-3_
 
-- [ ] 6. Red Flag Taxonomy Artifact
-  - [ ] 6.1 Create red flag taxonomy
+- [x] 6. Red Flag Taxonomy Artifact
+  - [x] 6.1 Create red flag taxonomy
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/red_flag_taxonomy.md`
     - Define at least 2 red flags per block (minimum 48 total)
     - Each red flag includes: red_flag_id, block_id, condition, required evidence, temporal persistence, severity (informational/elevated/critical), provenance requirement, non-action statement
