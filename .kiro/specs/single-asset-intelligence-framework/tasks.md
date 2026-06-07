@@ -220,7 +220,7 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - Record: PASS / FAIL / BLOCKED with evidence
     - _Verification Gate: VG-SAI-11_
 
-  - [ ] 15.12 Execute VG-SAI-12 Portfolio Fit Interface Gate
+  - [x] 15.12 Execute VG-SAI-12 Portfolio Fit Interface Gate
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/gate_vg_sai_12.md`
     - Check: output schema defined; no allocation language; completeness taxonomy defined
     - Record: PASS / FAIL / BLOCKED with evidence
