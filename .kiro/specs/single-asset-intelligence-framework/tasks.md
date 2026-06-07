@@ -184,7 +184,7 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - Record: PASS / FAIL / BLOCKED with evidence
     - _Verification Gate: VG-SAI-5_
 
-  - [ ] 15.6 Execute VG-SAI-6 Fact Coverage Gate
+  - [x] 15.6 Execute VG-SAI-6 Fact Coverage Gate
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/gate_vg_sai_06.md`
     - Check: all 68 fact categories assigned; all blocks have ≥1 fact; matrix complete
     - Record: PASS / FAIL / BLOCKED with evidence
