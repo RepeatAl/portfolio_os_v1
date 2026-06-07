@@ -372,20 +372,21 @@ Any artifact, output, or interpretation that violates these exclusions is non-co
 |---|------|--------|
 | 1 | 4 blocks with deferred signal-family taxonomy-vs-inventory gaps (SAI-BLK-01, SAI-BLK-02, SAI-BLK-14, SAI-BLK-23) | Signal consumption partially unresolvable until Signal Calculation Framework defines taxonomy |
 | 2 | Peer Group Registry unavailable: SAI-BLK-21 peer comparison blocked | Block cannot fully operate without peer group definitions |
+| 3 | Domainization registry not updated — registry approval pending | 31 SAI files require YAML frontmatter or registry entries; human/CTO approval needed |
 | 4 | Domainization registry not updated (Task 17 pending) | SAI artifacts not yet registered in `.domainization/artifact_registry.yaml` |
 
 These items require external input or governance coordination to resolve.
 
 ---
 
-## 19. Future Handoff Notes
+## 19. Future Governance Notes
 
-Two tasks remain for SAI completion:
+SAI task execution is complete. Remaining governance and future work items are outside the completed SAI task plan:
 
-- **Task 17.1 — Registry Readiness Check**: Verify SAI artifacts are ready for registration in the domainization registry. Requires human review of artifact metadata and governance alignment.
-- **Task 18.1 — Final Execution Report**: Produce the final SAI execution summary documenting all completed work, verification gate results, and remaining blockers. Requires human review and CTO sign-off.
-
-Both tasks are governance-level activities requiring human coordination. They do not involve creating implementation code or modifying the SAI specification itself.
+- **Registry registration** still requires human/CTO approval. 31 SAI files need YAML frontmatter or registry entries. No mutation is performed by this spec.
+- **Peer Group Registry** remains a future framework decision. SAI-BLK-21 peer comparison operates in limited mode until the registry exists.
+- **Signal Calculation Framework** taxonomy expansion remains future work. 4 blocks (SAI-BLK-01, 02, 14, 23) have deferred signal-family gaps that will be resolved when the framework defines its taxonomy.
+- **Macro KPI List** is a future macro/regime/dashboard source, not a SAI VG-SAI-11 input. It remains classified as a separate future framework contract.
 
 ---
 

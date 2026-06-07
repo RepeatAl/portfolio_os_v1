@@ -11,27 +11,21 @@
 
 ---
 
-## 1. Source Lookup Performed
+## 1. Source Declaration
 
-The following locations were searched for the canonical KPI-Micro Asset Analysis Sheet:
+**Status (as of 2026-06-07)**: CTO/operator completeness declaration received. The 20 analysis blocks (Geschäftsmodell through Portfolio Fit) are the full and complete canonical KPI-Micro denominator for VG-SAI-11. This declaration supersedes the original source-lookup status.
 
-| Location Searched | Result |
-|-------------------|--------|
-| Repository file search: `kpi`, `KPI`, `kpi_micro`, `kpi-micro` | No files found |
-| Repository file search: `asset_analysis` | No files found |
-| Repository-wide grep: `KPI-Micro`, `KPI.Micro`, `kpi_micro`, `kpi-micro` | References found in specs and preflight only — no standalone source file |
-| `.domainization/reports/` directory | Contains preflight with representative KPI mapping, but no standalone KPI sheet |
-| `.kiro/specs/` directory | References KPI-Micro in requirements and tasks — no standalone source |
-
-**Conclusion**: The canonical KPI-Micro Asset Analysis Sheet does NOT exist as a standalone source file in this repository. The preflight report (`.domainization/reports/single_asset_intelligence_framework_preflight_2026-06-05.md`, Section 7) contains a "Representative KPI-to-Block Mapping" with 20 items derived from a "typical micro asset analysis sheet." This is the only available evidence of KPI sheet contents.
+**Original source lookup**: A standalone KPI-Micro Asset Analysis Sheet file was not found in the repository at initial execution. The preflight contained a 20-item subset described as "representative." The CTO/operator declaration on 2026-06-07 established the 20-block set as the canonical and complete denominator.
 
 ---
 
-## 2. Missing Source Statement
+## 2. Canonical Source Completeness Statement
 
-**Amendment 2026-06-07**: The portfolio operator/CTO has provided an explicit completeness declaration. The 20 analysis blocks (Geschäftsmodell through Portfolio Fit) are declared to be the **full and complete canonical KPI-Micro denominator** for VG-SAI-11 purposes. This supersedes the prior "missing source" status.
+**CTO/operator declaration received**: 2026-06-07
 
-The original preflight contained a "representative" 20-item subset. The CTO declaration confirms that this 20-block set IS the complete canonical source.
+> "The 20 analysis blocks in the KPI-Micro Asset Analysis Sheet — from Geschäftsmodell through Portfolio Fit — are hereby declared to be the full and complete canonical KPI-Micro denominator for VG-SAI-11 purposes."
+
+The 20 KPI-Micro blocks are complete for VG-SAI-11. No further KPI denominator input is required. Macro KPI List (market/regime monitor categories: SPY, QQQ, VIX, GLD, HYG, BTC, etc.) is explicitly out of scope for VG-SAI-11 and future-use only.
 
 ---
 
@@ -110,81 +104,65 @@ All 20 canonical KPI-Micro blocks are mapped to valid SAI blocks. No KPI items i
 | **Items unmapped** | 0 |
 | **Coverage** | **100%** (20/20) — ≥80% criterion satisfied |
 
-### 5.2 SAI Block Coverage by KPI Items
+### 5.2 SAI Block Coverage by Canonical KPI-Micro Items
 
-| Block ID | Block Name | KPI Items Mapped | Items |
-|----------|-----------|-----------------|-------|
-| SAI-BLK-03 | Revenue Quality | 3 | Revenue Growth YoY, Organic Growth, ARR/Recurring % |
-| SAI-BLK-04 | Demand/Pipeline | 3 | Order Intake, Book-to-Bill, Backlog/RPO |
-| SAI-BLK-05 | Margin Quality | 3 | Gross Margin, Operating Margin, EBITDA Margin |
-| SAI-BLK-06 | Cashflow Quality | 2 | Free Cash Flow, FCF Conversion |
-| SAI-BLK-07 | Balance Sheet Quality | 1 | Debt Maturity Schedule |
-| SAI-BLK-08 | Credit/Solvency Risk | 2 | Net Debt/EBITDA, Interest Coverage |
-| SAI-BLK-10 | Pension Obligations | 1 | Pension Funding Status |
-| SAI-BLK-12 | Customer Concentration | 1 | Customer Concentration |
-| SAI-BLK-16 | Guidance/Estimate Revisions | 1 | Estimate Revisions (3M) |
-| SAI-BLK-17 | Valuation Context | 2 | EV/EBITDA, FCF Yield |
-| SAI-BLK-19 | Relative Strength | 1 | Relative Strength vs. Index |
+VG-SAI-11 validates the mapping of the canonical KPI-Micro denominator to SAI blocks — it does not require every SAI block to have a KPI-Micro item. The denominator is the KPI-Micro sheet (20 blocks), not the full 24-block SAI taxonomy.
 
-### 5.3 Blocks Without KPI Items in Available Source
+The following SAI blocks receive direct KPI-Micro coverage:
 
-The following 13 blocks have no representative KPI items in the preflight source. This does NOT indicate a gap in SAI architecture — it reflects the limited scope of the available representative mapping (20 items from a typical sheet, not the full canonical sheet).
+| Block ID | Block Name | KPI-Micro Items Mapped |
+|----------|-----------|----------------------|
+| SAI-BLK-02 | Business Model Quality | Geschäftsmodell |
+| SAI-BLK-03 | Revenue Quality | Umsatzqualität |
+| SAI-BLK-04 | Demand/Pipeline | Nachfrage / Pipeline |
+| SAI-BLK-05 | Margin Quality | Margenqualität |
+| SAI-BLK-06 | Cashflow Quality | Cashflow, Capex / Produktionskapazität, Kapitalallokation |
+| SAI-BLK-07 | Balance Sheet Quality | Bilanzqualität, Capex / Produktionskapazität, Kapitalallokation |
+| SAI-BLK-08 | Credit/Solvency Risk | Verbindlichkeiten / Off-Balance-Sheet, M&A / LBO-Risiko |
+| SAI-BLK-09 | Hidden Liabilities | Verbindlichkeiten / Off-Balance-Sheet, Regulatorik / Litigation |
+| SAI-BLK-11 | Working Capital | Working Capital |
+| SAI-BLK-12 | Customer Concentration | Kundenkonzentration |
+| SAI-BLK-13 | Supply Chain Stability | Supply Chain Stability |
+| SAI-BLK-14 | Pricing Power | Pricing Power |
+| SAI-BLK-15 | Earnings Quality | Stock-Based Compensation / Verwässerung |
+| SAI-BLK-16 | Guidance/Estimate Revisions | Markt-/Konsensprognosen |
+| SAI-BLK-17 | Valuation Context | Bewertung |
+| SAI-BLK-18 | Value Trap Guard | Reverse DCF / implizite Erwartungen |
+| SAI-BLK-24 | Portfolio Fit | Portfolio Fit |
 
-| Block ID | Block Name | Reason for Absence |
-|----------|-----------|-------------------|
-| SAI-BLK-01 | Asset Identity | Qualitative — not typically in numeric KPI sheets |
-| SAI-BLK-02 | Business Model Quality | Qualitative — not typically in numeric KPI sheets |
-| SAI-BLK-09 | Hidden Liabilities | Off-balance items not typically in standard KPI sheets |
-| SAI-BLK-11 | Working Capital | Not in preflight representative set (but Working Capital KPIs exist in practice) |
-| SAI-BLK-13 | Supply Chain Stability | Qualitative — not typically in numeric KPI sheets |
-| SAI-BLK-14 | Pricing Power | Qualitative — rarely in numeric KPI sheets |
-| SAI-BLK-15 | Earnings Quality | Derived quality metrics, not standard KPI sheet items |
-| SAI-BLK-18 | Value Trap Guard | Composite interpretation, not a standalone KPI |
-| SAI-BLK-20 | Benchmark/Sector/Peer Correlation | Market-derived, not fundamental KPI sheet items |
-| SAI-BLK-21 | Peer Comparison | Requires peer definitions, not standalone KPI items |
-| SAI-BLK-22 | Company Outlook | Qualitative forward-looking, not numeric KPI |
-| SAI-BLK-23 | Asset-Class Outlook | Macro/sector-level, not asset-level KPI sheet items |
-| SAI-BLK-24 | Portfolio Fit | Portfolio-level construct, not asset-level KPI |
+### 5.3 SAI Blocks Without Direct KPI-Micro Items
+
+The following SAI blocks have no direct KPI-Micro item. This is not a coverage gap — the denominator is the KPI-Micro sheet, not the SAI taxonomy. These blocks are identity, market-position, outlook, pension-specific, or portfolio-framework blocks that are outside the scope of a fundamental company KPI sheet by design.
+
+| Block ID | Block Name | Reason for Absence from KPI-Micro Sheet |
+|----------|-----------|----------------------------------------|
+| SAI-BLK-01 | Asset Identity | Classification block, not a diagnostic KPI |
+| SAI-BLK-10 | Pension Obligations | Covered implicitly via Bilanzqualität |
+| SAI-BLK-19 | Relative Strength | Market-position metric, not fundamental KPI |
+| SAI-BLK-20 | Benchmark/Sector/Peer Correlation | Market-derived, not fundamental KPI |
+| SAI-BLK-21 | Peer Comparison | Requires peer definitions, not standalone KPI |
+| SAI-BLK-22 | Company Outlook | Qualitative forward-looking, out of scope for KPI sheet |
+| SAI-BLK-23 | Asset-Class Outlook | Macro/sector-level, not asset-level KPI |
 
 ---
 
 ## 6. Unmapped Item List
 
-**No items are unmapped.** All 20 available representative KPI items from the preflight map to canonical SAI blocks.
+**No items are unmapped.** All 20 canonical KPI-Micro items map to valid SAI blocks.
 
 ---
 
 ## 7. Partial Mapping List
 
-**No items are partially mapped.** Each of the 20 available KPI items maps cleanly to exactly one primary SAI block.
+**No items are partially mapped.** Each of the 20 canonical KPI-Micro items maps to at least one primary SAI block.
 
 ---
 
-## 8. Placeholder Mapping Contract
+## 8. Macro KPI List Exclusion
 
-Because the full canonical KPI-Micro Asset Analysis Sheet is not available in the repository, the following placeholder contract defines the interface expectations for a future complete mapping.
+The Macro KPI List (market/regime monitor categories including SPY, QQQ, VIX, GLD, HYG, BTC, combination reading rules, etc.) is **NOT** part of the VG-SAI-11 denominator. It is classified as a future macro signal/dashboard contract source. No Macro KPI items are included in this artifact or in VG-SAI-11.
 
-### 8.1 Expected Source Fields (For Future Complete Mapping)
-
-When the canonical KPI-Micro Asset Analysis Sheet becomes available, the following fields are expected for each KPI item:
-
-| Field | Description | Purpose |
-|-------|-------------|---------|
-| kpi_id | Unique identifier for the KPI item | Stable reference for mapping |
-| kpi_name | Human-readable name of the KPI | Clarity and traceability |
-| kpi_category | Domain grouping (Revenue, Margin, Cashflow, Balance Sheet, Valuation, Market, etc.) | Organizational structure |
-| data_type | Numeric, percentage, ratio, categorical, qualitative | Determines fact category alignment |
-| temporal_cadence | How frequently this KPI is updated (quarterly, monthly, daily) | Temporal resolution alignment |
-| source_type | Corporate filing, market data, management disclosure, derived | Provenance alignment |
-| current_usage | How this KPI is currently used in practice | Mapping rationale basis |
-
-### 8.2 External Input Required Statement
-
-> **EXTERNAL INPUT REQUIRED**: The full, canonical KPI-Micro Asset Analysis Sheet must be provided by the portfolio operator (human authority) for this mapping to achieve complete coverage. The preflight representative mapping (20 items) provides partial validation. Complete validation per VG-SAI-11 (≥80% coverage) depends on access to the full sheet.
-
-### 8.3 No Invented KPI Contents Statement
-
-This artifact does NOT invent, assume, or fabricate KPI sheet contents that are not present in the available source material. The 20 items mapped in Section 4 are exclusively from the preflight's representative mapping. No additional items have been created by this artifact.
+(See: .domainization/reports/single_asset_intelligence_framework_kpi_source_intake_review_2026-06-07.md)
 
 ---
 
@@ -214,7 +192,8 @@ This artifact provides the mapping evidence for VG-SAI-11. The gate execution ar
 This artifact is a definition-layer document. It has been verified to contain:
 
 - ✓ Zero implementation code
-- ✓ Zero KPI invention — all items sourced from preflight representative mapping
+- ✓ Zero KPI invention — all 20 items are from the CTO/operator-declared canonical KPI-Micro denominator
+- ✓ No Macro KPI items included
 - ✓ Zero KPI source file mutation
 - ✓ Zero scoring, ranking, recommendation, allocation, or trading logic
 - ✓ Zero formula creation
@@ -222,7 +201,6 @@ This artifact is a definition-layer document. It has been verified to contain:
 - ✓ Zero registry or SSOT mutations
 - ✓ Zero asset-to-narrative mappings
 - ✓ Zero narrative mappings
-- ✓ Zero verification gate auto-completion
 - ✓ All cross-references in canonical (See: [Deliverable], Section: [Title]) format
 
 ---
@@ -232,7 +210,8 @@ This artifact is a definition-layer document. It has been verified to contain:
 (See: requirements.md, Section: SAI-REQ-2 — Fact Consumption Contracts)
 (See: fact_consumption_matrix.md, Section: Block Coverage Matrix)
 (See: block_taxonomy.md, Section: All 24 Blocks)
-(See: .domainization/reports/single_asset_intelligence_framework_preflight_2026-06-05.md, Section: 7 — Representative KPI-to-Block Mapping)
+(See: gates/gate_vg_sai_11.md, Section: VG-SAI-11 Gate Execution)
+(See: .domainization/reports/single_asset_intelligence_framework_kpi_source_intake_review_2026-06-07.md)
 
 ---
 
