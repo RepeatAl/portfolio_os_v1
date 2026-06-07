@@ -5,20 +5,41 @@
 **Spec**: single-asset-intelligence-framework
 **Authority**: ARCH
 **Task**: 15.11 Execute VG-SAI-11 KPI Mapping Validation Gate
-**Execution Date**: 2026-06-06
+**Initial Execution Date**: 2026-06-06 (BLOCKED)
+**Re-execution Date**: 2026-06-07 (PASS — CTO/operator completeness declaration received)
 **Status**: EXECUTED
 
 ---
 
 ## 1. Gate Purpose
 
-VG-SAI-11 verifies that ≥80% of existing KPI-Micro Asset Analysis Sheet items are mapped to canonical SAI blocks. This requires the full canonical KPI-Micro sheet to be available and mappable.
+VG-SAI-11 verifies that ≥80% of existing KPI-Micro Asset Analysis Sheet items are mapped to canonical SAI blocks.
 
 This is the formal gate execution artifact for VG-SAI-11. No other VG-SAI gate is executed by this artifact.
 
 ---
 
-## 2. Input Artifacts Checked
+## 2. History
+
+**2026-06-06 — Initial execution: BLOCKED**
+
+The initial execution was BLOCKED because no standalone KPI-Micro Asset Analysis Sheet file existed in the repository. The preflight contained only a "representative" 20-item subset, and no CTO/operator completeness declaration was available. The ≥80% criterion could not be assessed.
+
+**2026-06-07 — Re-execution: PASS**
+
+CTO/operator completeness declaration received. The 20 analysis blocks (Geschäftsmodell through Portfolio Fit) are declared to be the full and complete canonical KPI-Micro denominator. All 20 items map to valid SAI blocks. 100% coverage. ≥80% criterion satisfied. Gate status changed to PASS.
+
+---
+
+## 3. CTO/Operator Completeness Declaration
+
+> **"The 20 analysis blocks in the KPI-Micro Asset Analysis Sheet — from Geschäftsmodell through Portfolio Fit — are hereby declared to be the full and complete canonical KPI-Micro denominator for VG-SAI-11 purposes."**
+
+Declaration received: 2026-06-07. Reference: CTO-APPROVED SOURCE DECLARATION prompt context.
+
+---
+
+## 4. Input Artifacts Checked (Re-execution)
 
 | # | Artifact | Scanned |
 |---|----------|---------|
@@ -27,88 +48,69 @@ This is the formal gate execution artifact for VG-SAI-11. No other VG-SAI gate i
 | 3 | artifacts/kpi_mapping_validation.md | ✓ |
 | 4 | artifacts/fact_consumption_matrix.md | ✓ |
 | 5 | artifacts/block_taxonomy.md | ✓ |
-| 6 | artifacts/output_object_spec.md | ✓ |
-| 7 | gates/gate_vg_sai_01 through 10 | ✓ |
+| 6 | .domainization/reports/single_asset_intelligence_framework_kpi_source_intake_review_2026-06-07.md | ✓ |
 
 ---
 
-## 3. Repository Source Lookup
+## 5. Canonical KPI-Micro 20-Block Mapping
 
-| Search | Result |
-|--------|--------|
-| File search: `kpi` | Only kpi_mapping_validation.md |
-| File search: `analysis_sheet` | None |
-| File search: `micro_asset` | None |
-| Content grep: `KPI-Micro` (full repo) | References in SAI spec/preflight only |
-| Content grep: `Micro Asset Analysis` | References only |
-| Spreadsheet files (.csv, .xlsx, .xls) | None with KPI content |
+| # | KPI-Micro Block | SAI Block(s) | Status |
+|---|----------------|-------------|--------|
+| 1 | Geschäftsmodell | SAI-BLK-02 | mapped |
+| 2 | Umsatzqualität | SAI-BLK-03 | mapped |
+| 3 | Nachfrage / Pipeline | SAI-BLK-04 | mapped |
+| 4 | Margenqualität | SAI-BLK-05 | mapped |
+| 5 | Cashflow | SAI-BLK-06 | mapped |
+| 6 | Bilanzqualität | SAI-BLK-07 | mapped |
+| 7 | Verbindlichkeiten / Off-Balance-Sheet | SAI-BLK-08, SAI-BLK-09 | mapped |
+| 8 | Working Capital | SAI-BLK-11 | mapped |
+| 9 | Kundenkonzentration | SAI-BLK-12 | mapped |
+| 10 | Supply Chain Stability | SAI-BLK-13 | mapped |
+| 11 | Pricing Power | SAI-BLK-14 | mapped |
+| 12 | Capex / Produktionskapazität | SAI-BLK-06, SAI-BLK-07 | mapped |
+| 13 | Kapitalallokation | SAI-BLK-06, SAI-BLK-07 | mapped |
+| 14 | M&A / LBO-Risiko | SAI-BLK-08 | mapped |
+| 15 | Stock-Based Compensation / Verwässerung | SAI-BLK-15 | mapped |
+| 16 | Regulatorik / Litigation | SAI-BLK-09 | mapped |
+| 17 | Markt-/Konsensprognosen | SAI-BLK-16 | mapped |
+| 18 | Bewertung | SAI-BLK-17 | mapped |
+| 19 | Reverse DCF / implizite Erwartungen | SAI-BLK-18 | mapped |
+| 20 | Portfolio Fit | SAI-BLK-24 | mapped |
 
-**Full canonical KPI-Micro Asset Analysis Sheet: NOT FOUND.**
-
----
-
-## 4. Pass/Fail/Block Criteria
-
-| # | Criterion | Required |
-|---|-----------|----------|
-| 1 | Full canonical KPI source available OR accepted as complete | YES |
-| 2 | ≥80% mapped | YES |
-| 3 | No KPI invention | YES |
-| 4 | Valid block references | YES |
-| 5 | Zero drift | YES |
-
----
-
-## 5. KPI Source Availability
-
-| Check | Status |
-|-------|--------|
-| Full canonical sheet in repo | **NOT FOUND** |
-| Authoritative "complete set" declaration | **NOT AVAILABLE** |
-| Preflight representative mapping | 20 items (described as "representative") |
+**Coverage**: 20/20 = 100%. ≥80% criterion satisfied.
 
 ---
 
-## 6. Available Mapping (20/20 preflight items)
+## 6. Macro KPI List Exclusion
 
-All 20 representative preflight items are mapped to valid SAI blocks in kpi_mapping_validation.md. Coverage of available items: 100%.
-
-But the preflight explicitly describes these as "representative KPIs from a typical micro asset analysis sheet" — not the complete canonical source.
+The Macro KPI List (market/regime monitor categories: SPY, QQQ, VIX, GLD, HYG, BTC, etc.) is **NOT** part of the VG-SAI-11 denominator. It is classified as a future macro signal/dashboard contract source. No Macro KPI List items are included in this gate.
 
 ---
 
-## 7. External Input Requirement
+## 7. Gate Result
 
-The full canonical KPI-Micro Asset Analysis Sheet must be provided by the portfolio operator for this gate to achieve PASS.
+### PASS
 
----
+**VG-SAI-11 (KPI Mapping Validation Gate): PASS**
 
-## 8. Gate Result
-
-### BLOCKED
-
-**VG-SAI-11 (KPI Mapping Validation Gate): BLOCKED**
-
-**Blocked reason**: Full canonical KPI-Micro Asset Analysis Sheet not available in repository. The 20-item preflight mapping is described as "representative," not complete. The ≥80% criterion cannot be assessed without knowing the full item count.
-
-**What would unblock**:
-1. Portfolio operator provides full KPI sheet as repo file, OR
-2. Portfolio operator declares 20 preflight items = complete set
-
-**Not affected by this block**:
-- VG-SAI-1 through VG-SAI-10: all PASSED
-- VG-SAI-12: independent gate
-- SAI architecture completeness: verified by other gates
+**Justification**:
+1. CTO/operator completeness declaration received (§3)
+2. 20/20 canonical KPI-Micro items mapped to valid SAI blocks (§5)
+3. Coverage = 100% (≥80% criterion satisfied)
+4. No KPI items invented
+5. No KPI source files mutated
+6. Macro KPI List excluded from denominator (§6)
+7. Zero drift
 
 ---
 
-## 9. Formal Statements
+## 8. Formal Statements
 
-This is the **formal gate execution artifact for VG-SAI-11**. BLOCKED recorded.
+This is the **formal gate execution artifact for VG-SAI-11**. PASS recorded (amended from BLOCKED on 2026-06-07).
 
 **No other VG-SAI gate is executed by this artifact.**
 
-No KPI contents invented. No KPI sources mutated. No requirements/design/artifacts modified (except tasks.md). No registries or SSOT mutated. No implementation code or scoring/allocation logic created.
+No KPI contents invented. No KPI sources mutated. No requirements/design/artifacts modified. No registries or SSOT mutated. No implementation code or scoring/allocation logic created.
 
 ---
 

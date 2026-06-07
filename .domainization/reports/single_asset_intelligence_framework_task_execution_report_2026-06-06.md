@@ -27,7 +27,9 @@ This report summarizes the complete execution of the Single Asset Intelligence F
 
 ## 3. Execution Summary
 
-All 29 sub-tasks (Tasks 1.1 through 18.1) have been completed. 11/12 verification gates PASSED. 1 gate BLOCKED (VG-SAI-11) due to missing external KPI source. Registry update required with human approval pending. Zero implementation code, zero scoring, zero allocation logic. All artifacts are definition-layer documentation.
+All 29 sub-tasks (Tasks 1.1 through 18.1) have been completed. All 12 verification gates PASSED after VG-SAI-11 re-execution on 2026-06-07. VG-SAI-11 was initially BLOCKED due to a missing full KPI-Micro denominator; the CTO/operator completeness declaration on 2026-06-07 enabled re-execution and PASS. Registry update still pending human/CTO approval. Zero implementation code, zero scoring, zero allocation logic. All artifacts are definition-layer documentation.
+
+**Final status: SAI_TASK_EXECUTION_COMPLETE_WITH_REGISTRY_APPROVAL_PENDING**
 
 ---
 
@@ -59,7 +61,7 @@ All 29 sub-tasks (Tasks 1.1 through 18.1) have been completed. 11/12 verificatio
 | 15.8 | VG-SAI-8 Red Flag Taxonomy Gate | ✓ PASS | gates/gate_vg_sai_08.md |
 | 15.9 | VG-SAI-9 Temporal Resolution Gate | ✓ PASS | gates/gate_vg_sai_09.md |
 | 15.10 | VG-SAI-10 Cross-Framework Consistency Gate | ✓ PASS | gates/gate_vg_sai_10.md |
-| 15.11 | VG-SAI-11 KPI Mapping Validation Gate | ✓ BLOCKED | gates/gate_vg_sai_11.md |
+| 15.11 | VG-SAI-11 KPI Mapping Validation Gate | ✓ PASS (amended 2026-06-07) | gates/gate_vg_sai_11.md |
 | 15.12 | VG-SAI-12 Portfolio Fit Interface Gate | ✓ PASS | gates/gate_vg_sai_12.md |
 | 16.1 | SAI framework README | ✓ Complete | artifacts/README_single_asset_intelligence.md |
 | 17.1 | Registry readiness report | ✓ Complete | .domainization/reports/…_registry_readiness.md |
@@ -122,24 +124,25 @@ All 29 sub-tasks (Tasks 1.1 through 18.1) have been completed. 11/12 verificatio
 | VG-SAI-8 | Red Flag Taxonomy Gate | **PASS** |
 | VG-SAI-9 | Temporal Resolution Gate | **PASS** |
 | VG-SAI-10 | Cross-Framework Consistency Gate | **PASS** |
-| VG-SAI-11 | KPI Mapping Validation Gate | **BLOCKED** |
+| VG-SAI-11 | KPI Mapping Validation Gate | **PASS** (amended 2026-06-07) |
 | VG-SAI-12 | Portfolio Fit Interface Gate | **PASS** |
 
-**11/12 PASSED. 1 BLOCKED.**
+**12/12 PASSED.**
 
 ---
 
-## 8. VG-SAI-11 Blocked Explanation
+## 8. VG-SAI-11 Re-execution Explanation
 
-VG-SAI-11 (KPI Mapping Validation Gate) is BLOCKED for the following reasons:
+**Initial status (2026-06-06)**: VG-SAI-11 was BLOCKED because no standalone KPI-Micro Asset Analysis Sheet file existed in the repository and no CTO/operator completeness declaration was available. The ≥80% criterion could not be definitively assessed.
 
-1. The full canonical KPI-Micro Asset Analysis Sheet does not exist as a standalone file in this repository
-2. The preflight report contains only a "representative" 20-item subset, not the complete canonical source
-3. 20/20 available representative items are mapped to valid SAI blocks (100% of available)
-4. The full item count (denominator) is unknown — the ≥80% coverage criterion cannot be definitively assessed
-5. External input required: portfolio operator must provide full KPI sheet OR declare the 20-item set is complete
+**CTO/operator declaration (2026-06-07)**: The 20 analysis blocks (Geschäftsmodell through Portfolio Fit) were declared the full and complete canonical KPI-Micro denominator.
 
-This block does NOT affect VG-SAI-1 through VG-SAI-10 or VG-SAI-12, which are all PASSED and independent.
+**Re-execution result**:
+- 20/20 canonical KPI-Micro blocks mapped to valid SAI blocks
+- Coverage: 100%
+- ≥80% criterion satisfied
+- Macro KPI List confirmed excluded from denominator
+- **Current result: PASS**
 
 ---
 
@@ -163,10 +166,9 @@ All 7 deferred frameworks have explicit interface contracts in `deferred_interfa
 
 | # | Gap | Severity | Resolution Path |
 |---|-----|----------|----------------|
-| 1 | VG-SAI-11 BLOCKED: KPI source unavailable | MEDIUM | Portfolio operator to provide full KPI-Micro sheet or declare 20-item set complete |
+| 1 | Registry update required / human approval needed for 31 SAI files | MEDIUM | CTO approval needed before YAML frontmatter or registry entries are added |
 | 2 | 4 deferred signal-family gaps (SAI-BLK-01, 02, 14, 23) | LOW | Resolved by Signal Calculation Framework taxonomy expansion |
 | 3 | Peer Group Registry unavailable: SAI-BLK-21 peer comparison blocked | LOW | Resolved when Peer Group Registry is created |
-| 4 | Registry update required / human approval needed for 31 SAI files | MEDIUM | CTO approval needed before YAML frontmatter or registry entries are added |
 
 ---
 
@@ -203,12 +205,56 @@ All 7 deferred frameworks have explicit interface contracts in `deferred_interfa
 
 ## 13. Final Status
 
-### SAI_TASK_EXECUTION_COMPLETE_WITH_BLOCKED_KPI_AND_REGISTRY_APPROVAL_PENDING
+### SAI_TASK_EXECUTION_COMPLETE_WITH_REGISTRY_APPROVAL_PENDING
 
-All tasks 1.1 through 18.1 are complete. All verification gates except VG-SAI-11 passed. VG-SAI-11 is blocked pending external KPI source input. Registry readiness report documents required registration with human approval needed. Zero implementation code. Zero scope drift. Zero scoring or allocation logic.
+All tasks 1.1 through 18.1 are complete. All 12 VG-SAI gates PASS. VG-SAI-11 passed after CTO/operator completeness declaration on 2026-06-07. Registry approval remains pending (31 files, human/CTO approval required). No registry mutation performed. Zero implementation code. Zero scope drift. Zero scoring or allocation logic.
 
 The Single Asset Intelligence Framework is architecturally complete at the definition layer.
 
 ---
 
 *End of report.*
+
+---
+
+## Amendment 2026-06-07 — VG-SAI-11 Re-execution
+
+**Amendment date**: 2026-06-07
+
+### CTO/Operator Completeness Declaration
+
+> "The 20 analysis blocks in the KPI-Micro Asset Analysis Sheet — from Geschäftsmodell through Portfolio Fit — are hereby declared to be the full and complete canonical KPI-Micro denominator for VG-SAI-11 purposes."
+
+### Actions Taken
+
+1. CTO/operator completeness declaration received and recorded
+2. 20-block KPI-Micro denominator accepted as canonical
+3. VG-SAI-11 re-executed using the declared 20-block denominator
+4. All 20 blocks verified to map to valid SAI blocks (100% coverage)
+5. ≥80% criterion confirmed satisfied
+6. VG-SAI-11 result changed from **BLOCKED** to **PASS**
+7. Macro KPI List confirmed excluded from VG-SAI-11 denominator
+
+### Updated Gate Summary
+
+All 12 VG-SAI gates now PASS (12/12).
+
+### Updated Final Status
+
+**SAI_TASK_EXECUTION_COMPLETE_WITH_REGISTRY_APPROVAL_PENDING**
+
+### Registry Status (Unchanged)
+
+- Registry update required for 31 SAI files
+- Human/CTO approval still required
+- No registry mutation performed
+
+### Remaining Unresolved Gaps
+
+1. Registry update requiring human/CTO approval for 31 SAI files
+2. 4 deferred signal-family gaps: SAI-BLK-01, SAI-BLK-02, SAI-BLK-14, SAI-BLK-23
+3. Peer Group Registry unavailable for SAI-BLK-21
+
+---
+
+*End of amendment.*
