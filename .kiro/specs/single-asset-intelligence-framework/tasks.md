@@ -214,7 +214,7 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - Record: PASS / FAIL / BLOCKED with evidence
     - _Verification Gate: VG-SAI-10_
 
-  - [ ] 15.11 Execute VG-SAI-11 KPI Mapping Validation Gate
+  - [x] 15.11 Execute VG-SAI-11 KPI Mapping Validation Gate
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/gate_vg_sai_11.md`
     - Check: ≥80% of KPI-Micro items mapped to canonical blocks
     - Record: PASS / FAIL / BLOCKED with evidence
