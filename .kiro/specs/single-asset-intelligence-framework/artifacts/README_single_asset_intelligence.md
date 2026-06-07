@@ -373,7 +373,6 @@ Any artifact, output, or interpretation that violates these exclusions is non-co
 | 1 | 4 blocks with deferred signal-family taxonomy-vs-inventory gaps (SAI-BLK-01, SAI-BLK-02, SAI-BLK-14, SAI-BLK-23) | Signal consumption partially unresolvable until Signal Calculation Framework defines taxonomy |
 | 2 | Peer Group Registry unavailable: SAI-BLK-21 peer comparison blocked | Block cannot fully operate without peer group definitions |
 | 3 | Domainization registry not updated — registry approval pending | 31 SAI files require YAML frontmatter or registry entries; human/CTO approval needed |
-| 4 | Domainization registry not updated (Task 17 pending) | SAI artifacts not yet registered in `.domainization/artifact_registry.yaml` |
 
 These items require external input or governance coordination to resolve.
 
