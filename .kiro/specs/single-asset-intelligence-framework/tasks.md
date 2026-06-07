@@ -190,7 +190,7 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - Record: PASS / FAIL / BLOCKED with evidence
     - _Verification Gate: VG-SAI-6_
 
-  - [ ] 15.7 Execute VG-SAI-7 Signal Coverage Gate
+  - [x] 15.7 Execute VG-SAI-7 Signal Coverage Gate
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/gate_vg_sai_07.md`
     - Check: all 23 signal categories assigned; all blocks have ≥1 signal; matrix complete
     - Record: PASS / FAIL / BLOCKED with evidence
