@@ -178,7 +178,7 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - Record: PASS / FAIL / BLOCKED with evidence
     - _Verification Gate: VG-SAI-4_
 
-  - [ ] 15.5 Execute VG-SAI-5 Taxonomy Stability Gate
+  - [x] 15.5 Execute VG-SAI-5 Taxonomy Stability Gate
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/gate_vg_sai_05.md`
     - Check: block IDs frozen; extension mechanism documented; no block removal
     - Record: PASS / FAIL / BLOCKED with evidence
