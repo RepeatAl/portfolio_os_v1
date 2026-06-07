@@ -145,17 +145,17 @@ AVGO and MU may span subcluster A/B depending on portfolio classification approa
 | **purpose** | Peer context for assets in endpoint security, cloud security, network security, identity/access management, and security-adjacent observability platforms |
 
 **Core candidate universe:**
-CRWD, PANW, ZS, FTNT, CYBR, OKTA, NET, CHKP
+CRWD, PANW, ZS, FTNT, CYBR, S, OKTA, NET, CHKP
 
 **Adjacent / subcluster candidates:**
-DDOG, TEN, BR, PD
+DDOG, TENB, RPD
 
 **Subcluster notes:**
 This family requires separation into at minimum three subclusters:
-- *Subcluster A — Endpoint / XDR / Cloud Security*: CRWD, PANW (broad platform), ZS (cloud-native SASE)
+- *Subcluster A — Endpoint / XDR / Cloud Security*: CRWD, PANW (broad platform), ZS (cloud-native SASE), S (SentinelOne — endpoint/XDR platform candidate)
 - *Subcluster B — Network / Perimeter Security*: FTNT, CHKP (legacy + next-gen network)
 - *Subcluster C — Identity / Access Management*: CYBR (privileged access), OKTA (identity platform)
-- *Subcluster D — Security-Adjacent Observability*: DDOG, NET, PD (observability and networking with security overlap — may be adjacent only, not primary peers)
+- *Subcluster D — Security-Adjacent Observability / Vulnerability Management*: DDOG, NET (observability and networking with security overlap — may be adjacent only), TENB (Tenable — vulnerability management), RPD (Rapid7 — exposure management / SIEM-adjacent)
 
 CYBR prevents false peer comparison: CYBR privileged access management vs. CRWD endpoint detection are distinct competitive markets.
 
@@ -164,6 +164,7 @@ CYBR prevents false peer comparison: CYBR privileged access management vs. CRWD 
 **Unresolved decisions:**
 - Whether NET (Cloudflare) belongs in PGF-02 or PGF-01 (infrastructure adjacent)
 - Whether DDOG is a security peer or observability-only peer (affects subcluster assignment)
+- Whether TENB and RPD are adjacent peers or benchmark context only within PGF-02
 - Whether CHKP (Israeli-listed / Nasdaq) requires cross-region normalization
 
 ---
@@ -180,7 +181,7 @@ CYBR prevents false peer comparison: CYBR privileged access management vs. CRWD 
 V, MA, AXP, FI, FIS, GPN, ADYEN, PYPL, SQ (Block)
 
 **Adjacent / subcluster candidates:**
-TOST, AFRM, RMBS, ME, LI, STNE
+TOST, AFRM, MELI, STNE
 
 **Subcluster notes:**
 This family requires clear separation to prevent false peer comparisons:
@@ -196,7 +197,8 @@ AFRM should never be directly peer-compared with V or MA without subcluster sepa
 **Unresolved decisions:**
 - Whether AXP (closed-loop network + charge card) belongs in Subcluster A or a hybrid subcluster
 - Whether ADYEN (Amsterdam-listed / Euronext) requires cross-region normalization
-- Whether STNE / ME (LatAm-focused) require separate regional subcluster
+- Whether STNE / MELI (LatAm-focused) require a separate regional subcluster
+- AFRM remains credit-sensitive fintech — must not be peer-compared with V or MA without subcluster separation
 
 ---
 
@@ -209,7 +211,7 @@ AFRM should never be directly peer-compared with V or MA without subcluster sepa
 | **purpose** | Peer context for assets in rideshare, food/grocery delivery, travel platform, and local commerce aggregation |
 
 **Core candidate universe:**
-UBER, DASH, LYFT, ABNB, BKNG, EXPE, DHER, ME, IT, GRAB
+UBER, DASH, LYFT, ABNB, BKNG, EXPE, DHER, MEIT, GRAB
 
 **Adjacent / subcluster candidates:**
 RCL, CCL, MAR, HLT
@@ -217,7 +219,7 @@ RCL, CCL, MAR, HLT
 **Subcluster notes:**
 This family requires separation across distinct demand categories:
 - *Subcluster A — Mobility Platforms*: UBER, LYFT (rideshare); UBER also spans delivery (multi-subcluster candidate)
-- *Subcluster B — Delivery / Local Commerce*: DASH, DHER (food/grocery delivery marketplaces)
+- *Subcluster B — Delivery / Local Commerce*: DASH, DHER, MEIT (food/grocery/local commerce delivery marketplaces; MEIT = Meituan — China local commerce platform)
 - *Subcluster C — Travel Platforms*: ABNB (short-term rental), BKNG, EXPE (OTA aggregators)
 - *Subcluster D — Travel Demand Adjacent*: RCL, CCL (cruise), MAR, HLT (lodging chains — demand beneficiaries from travel platform volume, not platform operators)
 
@@ -278,14 +280,14 @@ AMZN is a cross-family candidate: retail segment belongs in PGF-05 while AWS/clo
 PLTR, AXON, MSI, RTX, LMT, NOC, GD, Rheinmetall, Hensoldt, Thales, Leonardo, Saab
 
 **Adjacent / subcluster candidates:**
-KTO, SAVA, LHX, BAE Systems
+KTOS, AVAV, LHX, BAE Systems
 
 **Subcluster notes:**
 This family spans distinct competitive markets that must not be collapsed:
 - *Subcluster A — Defense Software / AI / Analytics*: PLTR (data analytics, defense AI), AXON (public safety technology)
 - *Subcluster B — US Defense Primes*: RTX, LMT, NOC, GD, LHX (Tier-1 US defense contractors with full platform integration)
 - *Subcluster C — European Defense*: Rheinmetall (Germany), Hensoldt (Germany — sensors/electronic warfare), Thales (France — defense electronics), Leonardo (Italy), Saab (Sweden), BAE Systems (UK)
-- *Subcluster D — Drone / C-UAS / Public Safety Systems*: Emerging C-UAS players; AXON straddles public safety AI and law enforcement technology
+- *Subcluster D — Drone / C-UAS / Unmanned Systems*: KTOS (Kratos Defense — unmanned systems, C-UAS), AVAV (AeroVironment — tactical UAS/C-UAS); AXON straddles public safety AI and law enforcement technology
 
 PLTR should never be directly compared with LMT: analytics platform vs. defense prime are materially different business models and risk profiles.
 
@@ -346,13 +348,13 @@ VRT appears in both PGF-01 (AI Infrastructure adjacent) and PGF-07 (Industrials/
 | **purpose** | Peer context for assets in US money-center banking, investment banking, European banking, and regional banking; benchmark/context instruments for the broader financial sector |
 
 **Core candidate universe:**
-JPM, BAC, WFC, GS, MS, SAN, BNP, DB, UBS
+JPM, BAC, C, WFC, GS, MS, SAN, BNP, DB, UBS
 
 **Benchmark/context instruments (candidate — not company peers):**
-XLF (Financial Select Sector SPDR), KRE (SPDR S&P Regional Banking ETF — regional context)
+XLF (Financial Select Sector SPDR), EUFN (iShares MSCI Europe Financials ETF), SX7P (STOXX Europe 600 Banks Index — European banks benchmark context), KRE (SPDR S&P Regional Banking ETF — regional context)
 
 **Subcluster notes:**
-- *Subcluster A — US Money-Center Banks*: JPM, BAC, WFC (deposit base, retail/commercial banking scale)
+- *Subcluster A — US Money-Center Banks*: JPM, BAC, C, WFC (deposit base, retail/commercial banking scale)
 - *Subcluster B — US Investment Banks / Universal Banks*: GS, MS (capital markets, wealth management focus)
 - *Subcluster C — European Banks*: SAN (Santander — Spain/LatAm), BNP (France), DB (Deutsche Bank — Germany), UBS (Switzerland — post-Credit Suisse absorption)
 - *Subcluster D — Regional Banks*: Separate subcluster required; regional banks have materially different risk profiles from money-center banks (deposit concentration, CRE exposure, liquidity dynamics)
@@ -361,7 +363,7 @@ GS and MS should not be directly peer-compared with retail-focused WFC or BAC wi
 
 **Boundary notes:**
 - SAN, BNP, DB are European-listed (EUR-denominated); UBS is CHF-denominated; cross-region handling required
-- XLF/KRE are benchmark context only — not company peers
+- XLF, EUFN, SX7P, KRE are benchmark context only — not company peers
 
 **Unresolved decisions:**
 - Whether European banks belong in a dedicated PGF-08E subcluster or require their own family
