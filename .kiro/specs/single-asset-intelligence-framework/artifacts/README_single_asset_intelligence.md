@@ -255,7 +255,7 @@ See `red_flag_taxonomy.md` for the complete 48-flag specification.
 
 ### Stale/Expired Thresholds
 
-- **Quarterly blocks**: Stale after 95 days from last filing; expired after 120 days
+- **Quarterly blocks**: Stale after >100 days from last filing; expired after >120 days
 - **Daily blocks**: Stale after 2 trading days; expired after 5 trading days
 
 ### Real-Time Exception
@@ -327,18 +327,18 @@ This is an external dependency requiring human/CTO input to resolve.
 
 | Gate | Description | Status |
 |------|-------------|--------|
-| VG-SAI-1 | Block Taxonomy Completeness | **PASS** |
-| VG-SAI-2 | Fact Consumption Matrix Coverage | **PASS** |
-| VG-SAI-3 | Signal Consumption Matrix Coverage | **PASS** |
-| VG-SAI-4 | Output Object Compliance | **PASS** |
-| VG-SAI-5 | Provenance Contract Compliance | **PASS** |
-| VG-SAI-6 | Red Flag Taxonomy Completeness | **PASS** |
-| VG-SAI-7 | Temporal Resolution Assignment | **PASS** |
-| VG-SAI-8 | Deferred Interface Contracts | **PASS** |
-| VG-SAI-9 | Domain Boundary Compliance | **PASS** |
-| VG-SAI-10 | Terminology Audit | **PASS** |
-| VG-SAI-11 | KPI Mapping Validation | **BLOCKED** |
-| VG-SAI-12 | Cross-Artifact Consistency | **PASS** |
+| VG-SAI-1 | Requirements Completeness Gate | **PASS** |
+| VG-SAI-2 | Boundary Enforcement Gate | **PASS** |
+| VG-SAI-3 | Provenance Chain Gate | **PASS** |
+| VG-SAI-4 | Interface Contract Gate | **PASS** |
+| VG-SAI-5 | Taxonomy Stability Gate | **PASS** |
+| VG-SAI-6 | Fact Coverage Gate | **PASS** |
+| VG-SAI-7 | Signal Coverage Gate | **PASS** |
+| VG-SAI-8 | Red Flag Taxonomy Gate | **PASS** |
+| VG-SAI-9 | Temporal Resolution Gate | **PASS** |
+| VG-SAI-10 | Cross-Framework Consistency Gate | **PASS** |
+| VG-SAI-11 | KPI Mapping Validation Gate | **BLOCKED** |
+| VG-SAI-12 | Portfolio Fit Interface Gate | **PASS** |
 
 **Summary:** 11/12 PASSED. 1 BLOCKED (external input needed for KPI source).
 
