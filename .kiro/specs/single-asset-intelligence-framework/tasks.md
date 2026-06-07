@@ -226,8 +226,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - Record: PASS / FAIL / BLOCKED with evidence
     - _Verification Gate: VG-SAI-12_
 
-- [ ] 16. README Artifact
-  - [ ] 16.1 Create SAI framework README
+- [x] 16. README Artifact
+  - [x] 16.1 Create SAI framework README
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/README_single_asset_intelligence.md`
     - Explain: what SAI is, what SAI is not, how to read artifacts, canonical block list, relationship to Market Evidence, relationship to downstream frameworks, verification gate process, strict exclusions
     - _Requirements: All_
