@@ -232,8 +232,8 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - Explain: what SAI is, what SAI is not, how to read artifacts, canonical block list, relationship to Market Evidence, relationship to downstream frameworks, verification gate process, strict exclusions
     - _Requirements: All_
 
-- [ ] 17. Artifact Registry Readiness Check
-  - [ ] 17.1 Create registry readiness report
+- [x] 17. Artifact Registry Readiness Check
+  - [x] 17.1 Create registry readiness report
     - Create `.domainization/reports/single_asset_intelligence_framework_registry_readiness.md`
     - Document whether artifact registry update is required by repo governance policy
     - If update is required, document the needed mutation and STOP for human approval
