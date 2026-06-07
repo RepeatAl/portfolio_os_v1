@@ -29,52 +29,73 @@ The following locations were searched for the canonical KPI-Micro Asset Analysis
 
 ## 2. Missing Source Statement
 
-The KPI-Micro Asset Analysis Sheet is referenced in:
-- SAI-REQ-2, Acceptance Criterion 4: "KPI-Micro Asset Analysis Sheet mapping is validated against the fact consumption contracts"
-- SAI-GAP-7: "KPI-Micro Asset Analysis Sheet not canonicalized — existing analytical practice not formally mapped to SAI blocks"
-- VG-SAI-11: "≥80% of existing KPI-Micro items mapped to canonical blocks"
+**Amendment 2026-06-07**: The portfolio operator/CTO has provided an explicit completeness declaration. The 20 analysis blocks (Geschäftsmodell through Portfolio Fit) are declared to be the **full and complete canonical KPI-Micro denominator** for VG-SAI-11 purposes. This supersedes the prior "missing source" status.
 
-However, no standalone, canonical KPI-Micro Asset Analysis Sheet file exists in the repository. The preflight's representative mapping (20 items) is the only available partial evidence of the sheet's contents. This partial evidence is sufficient for a best-effort validation but insufficient for a complete canonical mapping.
-
-**External input required**: The full, canonical KPI-Micro Asset Analysis Sheet must be provided as an external input to complete this mapping at 100% coverage.
+The original preflight contained a "representative" 20-item subset. The CTO declaration confirms that this 20-block set IS the complete canonical source.
 
 ---
 
-## 3. Available Partial Source: Preflight Representative KPI Mapping
+## 3. Canonical KPI-Micro 20-Block Source (CTO-Declared Complete)
 
-**Source file**: `.domainization/reports/single_asset_intelligence_framework_preflight_2026-06-05.md`
-**Section**: Section 7 — Representative KPI-to-Block Mapping
-**Item count**: 20 representative KPI items
-**Nature**: Representative subset from "a typical micro asset analysis sheet" — not the full canonical sheet
+**Source**: KPI-Micro Asset Analysis Sheet — CTO/operator declared complete canonical denominator (2026-06-07)
+**Item count**: 20 blocks
+**Status**: Canonical — completeness declared by CTO/operator
+
+The following 20 blocks constitute the full KPI-Micro denominator per the CTO declaration:
+
+| # | Block Name (German) | English Equivalent |
+|---|--------------------|--------------------|
+| 1 | Geschäftsmodell | Business Model |
+| 2 | Umsatzqualität | Revenue Quality |
+| 3 | Nachfrage / Pipeline | Demand / Pipeline |
+| 4 | Margenqualität | Margin Quality |
+| 5 | Cashflow | Cashflow Quality |
+| 6 | Bilanzqualität | Balance Sheet Quality |
+| 7 | Verbindlichkeiten / Off-Balance-Sheet | Hidden Liabilities / Credit |
+| 8 | Working Capital | Working Capital |
+| 9 | Kundenkonzentration | Customer Concentration |
+| 10 | Supply Chain Stability | Supply Chain Stability |
+| 11 | Pricing Power | Pricing Power |
+| 12 | Capex / Produktionskapazität | Capex / Production Capacity |
+| 13 | Kapitalallokation | Capital Allocation |
+| 14 | M&A / LBO-Risiko | M&A / LBO Risk |
+| 15 | Stock-Based Compensation / Verwässerung | SBC / Dilution |
+| 16 | Regulatorik / Litigation | Regulatory / Litigation Risk |
+| 17 | Markt-/Konsensprognosen | Market / Consensus Forecasts |
+| 18 | Bewertung | Valuation Context |
+| 19 | Reverse DCF / implizite Erwartungen | Value Trap Guard / Implied Expectations |
+| 20 | Portfolio Fit | Portfolio Fit |
+
+**Macro KPI List exclusion**: The Macro KPI List (market/regime monitor categories: SPY, QQQ, VIX, GLD, etc.) is NOT part of this denominator. It is classified as a future macro signal/dashboard contract source.
 
 ---
 
-## 4. Mapping Table (Based on Available Preflight Evidence)
+## 4. Mapping Table (Based on CTO-Declared Canonical 20-Block Source)
 
-The following table maps all 20 available representative KPI items from the preflight to canonical SAI blocks. This mapping does NOT invent additional KPI items.
+All 20 canonical KPI-Micro blocks are mapped to valid SAI blocks. No KPI items invented.
 
-| # | KPI Item (from Preflight) | Mapped SAI Block ID(s) | Mapping Rationale | Mapping Status | Notes |
-|---|--------------------------|------------------------|-------------------|----------------|-------|
-| 1 | Revenue Growth YoY | SAI-BLK-03 (Revenue Quality) | Revenue growth is a primary fact consumed by the Revenue Quality block | mapped | Fact: fact.revenue.growth_yoy |
-| 2 | Organic Revenue Growth | SAI-BLK-03 (Revenue Quality) | Organic growth distinguishes core business trajectory from M&A-driven growth | mapped | Fact: fact.revenue.organic_growth |
-| 3 | ARR / Recurring Revenue % | SAI-BLK-03 (Revenue Quality) | ARR and recurring percentage indicate revenue sustainability and quality | mapped | Facts: fact.revenue.arr, fact.revenue.recurring_pct |
-| 4 | Order Intake | SAI-BLK-04 (Demand/Pipeline) | Order intake is a primary demand visibility indicator | mapped | Fact: fact.demand.order_intake |
-| 5 | Book-to-Bill Ratio | SAI-BLK-04 (Demand/Pipeline) | Book-to-bill directly measures demand replenishment vs. revenue consumption | mapped | Fact: fact.demand.book_to_bill |
-| 6 | Backlog / RPO | SAI-BLK-04 (Demand/Pipeline) | Backlog and RPO provide forward demand visibility | mapped | Facts: fact.demand.backlog, fact.revenue.rpo |
-| 7 | Gross Margin | SAI-BLK-05 (Margin Quality) | Gross margin is the primary margin quality indicator | mapped | Fact: fact.margin.gross_margin |
-| 8 | Operating Margin | SAI-BLK-05 (Margin Quality) | Operating margin indicates operational efficiency and cost structure | mapped | Fact: fact.margin.operating_margin |
-| 9 | EBITDA Margin | SAI-BLK-05 (Margin Quality) | EBITDA margin provides earnings quality context before capital structure effects | mapped | Fact: fact.margin.ebitda_margin |
-| 10 | Free Cash Flow | SAI-BLK-06 (Cashflow Quality) | FCF is the primary cash generation quality indicator | mapped | Fact: fact.cashflow.fcf |
-| 11 | FCF Conversion | SAI-BLK-06 (Cashflow Quality) | FCF conversion measures how well earnings translate to cash | mapped | Fact: fact.cashflow.fcf_conversion |
-| 12 | Net Debt / EBITDA | SAI-BLK-08 (Credit/Solvency Risk) | Leverage ratio is a primary credit/solvency diagnostic metric | mapped | Fact: fact.balance_sheet.net_debt_ebitda |
-| 13 | Interest Coverage | SAI-BLK-08 (Credit/Solvency Risk) | Interest coverage measures debt service capacity | mapped | Fact: fact.balance_sheet.interest_coverage |
-| 14 | Debt Maturity Schedule | SAI-BLK-07 (Balance Sheet Quality) | Maturity schedule identifies refinancing pressure points | mapped | Fact: fact.balance_sheet.maturity_schedule |
-| 15 | Pension Funding Status | SAI-BLK-10 (Pension Obligations) | Pension funding gap is the primary pension obligation metric | mapped | Fact: fact.obligations.pension_funding_gap |
-| 16 | Customer Concentration | SAI-BLK-12 (Customer Concentration) | Customer concentration directly measures single-customer dependency risk | mapped | Fact: fact.concentration.top_customer_pct |
-| 17 | EV/EBITDA Multiple | SAI-BLK-17 (Valuation Context) | EV/EBITDA is a primary valuation multiple for diagnostic context | mapped | Fact: fact.valuation.ev_ebitda; Deferred: Valuation Framework |
-| 18 | FCF Yield | SAI-BLK-17 (Valuation Context) | FCF yield provides cash-based valuation context | mapped | Fact: fact.valuation.fcf_yield; Deferred: Valuation Framework |
-| 19 | Relative Strength vs. Index | SAI-BLK-19 (Relative Strength) | Relative strength is the primary market position diagnostic | mapped | Fact: fact.market.relative_strength_vs_benchmark |
-| 20 | Estimate Revisions (3M) | SAI-BLK-16 (Guidance/Estimate Revisions) | Estimate revision trajectory is a primary earnings outlook indicator | mapped | Fact: fact.earnings.estimate_revision_3m; Deferred: Earnings Intelligence Framework |
+| # | KPI-Micro Block | Mapped SAI Block ID(s) | Mapping Status |
+|---|----------------|----------------------|----------------|
+| 1 | Geschäftsmodell | SAI-BLK-02 (Business Model Quality) | mapped |
+| 2 | Umsatzqualität | SAI-BLK-03 (Revenue Quality) | mapped |
+| 3 | Nachfrage / Pipeline | SAI-BLK-04 (Demand/Pipeline) | mapped |
+| 4 | Margenqualität | SAI-BLK-05 (Margin Quality) | mapped |
+| 5 | Cashflow | SAI-BLK-06 (Cashflow Quality) | mapped |
+| 6 | Bilanzqualität | SAI-BLK-07 (Balance Sheet Quality) | mapped |
+| 7 | Verbindlichkeiten / Off-Balance-Sheet | SAI-BLK-08 (Credit/Solvency Risk), SAI-BLK-09 (Hidden Liabilities) | mapped |
+| 8 | Working Capital | SAI-BLK-11 (Working Capital) | mapped |
+| 9 | Kundenkonzentration | SAI-BLK-12 (Customer Concentration) | mapped |
+| 10 | Supply Chain Stability | SAI-BLK-13 (Supply Chain Stability) | mapped |
+| 11 | Pricing Power | SAI-BLK-14 (Pricing Power) | mapped |
+| 12 | Capex / Produktionskapazität | SAI-BLK-06, SAI-BLK-07 | mapped |
+| 13 | Kapitalallokation | SAI-BLK-06, SAI-BLK-07 | mapped |
+| 14 | M&A / LBO-Risiko | SAI-BLK-08 (Credit/Solvency Risk) | mapped |
+| 15 | Stock-Based Compensation / Verwässerung | SAI-BLK-15 (Earnings Quality) | mapped |
+| 16 | Regulatorik / Litigation | SAI-BLK-09 (Hidden Liabilities) | mapped |
+| 17 | Markt-/Konsensprognosen | SAI-BLK-16 (Guidance/Estimate Revisions) | mapped |
+| 18 | Bewertung | SAI-BLK-17 (Valuation Context) | mapped |
+| 19 | Reverse DCF / implizite Erwartungen | SAI-BLK-18 (Value Trap Guard) | mapped |
+| 20 | Portfolio Fit | SAI-BLK-24 (Portfolio Fit) | mapped |
 
 ---
 
@@ -84,11 +105,10 @@ The following table maps all 20 available representative KPI items from the pref
 
 | Metric | Value |
 |--------|-------|
-| **Total available KPI items** | 20 (from preflight representative mapping) |
+| **Total canonical KPI-Micro blocks** | 20 (CTO/operator-declared complete) |
 | **Items mapped to canonical SAI blocks** | 20 |
-| **Items partially mapped** | 0 |
 | **Items unmapped** | 0 |
-| **Mapping coverage** | **100% of available items** (20/20) |
+| **Coverage** | **100%** (20/20) — ≥80% criterion satisfied |
 
 ### 5.2 SAI Block Coverage by KPI Items
 
@@ -170,28 +190,22 @@ This artifact does NOT invent, assume, or fabricate KPI sheet contents that are 
 
 ## 9. VG-SAI-11 Gate Status
 
-### 9.1 Current Gate Readiness
+### 9.1 Current Gate Status (After Re-execution 2026-06-07)
 
 | Criterion | Status | Evidence |
 |-----------|--------|----------|
-| ≥80% of KPI-Micro items mapped to canonical blocks | **CONDITIONAL** | 100% of 20 available items are mapped. However, 20 items represent only the preflight's representative subset — the full canonical sheet may contain additional items. |
-| Complete KPI source available | **BLOCKED** | Full canonical KPI-Micro Asset Analysis Sheet not found in repository |
-| All mapped items reference valid SAI blocks | READY | All 20 mappings reference canonical block IDs (SAI-BLK-01 through SAI-BLK-24) |
+| ≥80% of canonical KPI-Micro items mapped | **SATISFIED** | 20/20 = 100% |
+| Complete KPI source declared by operator | **CONFIRMED** | CTO/operator completeness declaration received 2026-06-07 |
+| All mapped items reference valid SAI blocks | **VERIFIED** | All 20 map to canonical block IDs |
+| Macro KPI List excluded from denominator | **CONFIRMED** | Excluded per CTO source distinction |
 
-### 9.2 Gate Assessment
+### 9.2 Gate Status: PASS
 
-VG-SAI-11 cannot be definitively PASSED until the full canonical KPI-Micro Asset Analysis Sheet is available and ≥80% of its items are mapped. Based on available evidence:
-
-- If the preflight's 20 representative items ARE the complete set: VG-SAI-11 is READY for gate execution (100% coverage)
-- If the full sheet contains additional items beyond the preflight sample: VG-SAI-11 remains PENDING until the full sheet is provided and mapped
-
-**Recommendation**: VG-SAI-11 gate execution (Task 15.11) should determine whether the 20 preflight items constitute sufficient coverage or whether external input is needed for the full sheet.
+VG-SAI-11 result changed from BLOCKED to **PASS** on 2026-06-07 following CTO/operator completeness declaration.
 
 ### 9.3 No-Auto-Completion Statement
 
-This artifact provides **preparatory evidence only** toward VG-SAI-11 (KPI Mapping Validation Gate). It does NOT execute or pass VG-SAI-11. Gate execution requires a separate, explicit Task 15.11 verification artifact with PASS/FAIL/BLOCKED evidence.
-
-(See: tasks.md, Section: 15.11 Execute VG-SAI-11 KPI Mapping Validation Gate)
+This artifact provides the mapping evidence for VG-SAI-11. The gate execution artifact is `gates/gate_vg_sai_11.md` which records the formal PASS result with full evidence.
 
 ---
 

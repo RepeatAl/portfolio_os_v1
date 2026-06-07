@@ -309,17 +309,11 @@ See `portfolio_fit_interface.md` for full specification.
 
 ## 15. KPI Mapping Status
 
-**VG-SAI-11 is BLOCKED.**
+**VG-SAI-11 is PASS** (amended 2026-06-07).
 
-The full canonical KPI-Micro Asset Analysis Sheet is unavailable. The verification gate cannot confirm complete coverage because the full denominator (total KPI items) is unknown.
+CTO/operator completeness declaration received. The 20 analysis blocks (Geschäftsmodell through Portfolio Fit) are declared the full and complete canonical KPI-Micro denominator. All 20 items map to valid SAI blocks (100% coverage). ≥80% criterion satisfied.
 
-**Current status:**
-- 20/20 representative preflight items have been mapped to SAI blocks
-- All 20 items map successfully to existing blocks
-- Full denominator unknown — external input required to unblock
-- Gate cannot PASS without confirmation that all KPI items are covered
-
-This is an external dependency requiring human/CTO input to resolve.
+The Macro KPI List (market/regime monitor categories) is explicitly excluded from the VG-SAI-11 denominator.
 
 ---
 
@@ -337,10 +331,10 @@ This is an external dependency requiring human/CTO input to resolve.
 | VG-SAI-8 | Red Flag Taxonomy Gate | **PASS** |
 | VG-SAI-9 | Temporal Resolution Gate | **PASS** |
 | VG-SAI-10 | Cross-Framework Consistency Gate | **PASS** |
-| VG-SAI-11 | KPI Mapping Validation Gate | **BLOCKED** |
+| VG-SAI-11 | KPI Mapping Validation Gate | **PASS** (amended 2026-06-07) |
 | VG-SAI-12 | Portfolio Fit Interface Gate | **PASS** |
 
-**Summary:** 11/12 PASSED. 1 BLOCKED (external input needed for KPI source).
+**Summary:** 12/12 PASSED.
 
 ---
 
@@ -376,9 +370,8 @@ Any artifact, output, or interpretation that violates these exclusions is non-co
 
 | # | Item | Impact |
 |---|------|--------|
-| 1 | VG-SAI-11 BLOCKED: KPI source unavailable | Cannot confirm full KPI coverage |
-| 2 | 4 blocks with deferred signal-family taxonomy-vs-inventory gaps (SAI-BLK-01, SAI-BLK-02, SAI-BLK-14, SAI-BLK-23) | Signal consumption partially unresolvable until Signal Calculation Framework defines taxonomy |
-| 3 | Peer Group Registry unavailable: SAI-BLK-21 peer comparison blocked | Block cannot fully operate without peer group definitions |
+| 1 | 4 blocks with deferred signal-family taxonomy-vs-inventory gaps (SAI-BLK-01, SAI-BLK-02, SAI-BLK-14, SAI-BLK-23) | Signal consumption partially unresolvable until Signal Calculation Framework defines taxonomy |
+| 2 | Peer Group Registry unavailable: SAI-BLK-21 peer comparison blocked | Block cannot fully operate without peer group definitions |
 | 4 | Domainization registry not updated (Task 17 pending) | SAI artifacts not yet registered in `.domainization/artifact_registry.yaml` |
 
 These items require external input or governance coordination to resolve.

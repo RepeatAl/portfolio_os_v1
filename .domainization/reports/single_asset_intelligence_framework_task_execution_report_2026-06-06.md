@@ -212,3 +212,47 @@ The Single Asset Intelligence Framework is architecturally complete at the defin
 ---
 
 *End of report.*
+
+---
+
+## Amendment 2026-06-07 — VG-SAI-11 Re-execution
+
+**Amendment date**: 2026-06-07
+
+### CTO/Operator Completeness Declaration
+
+> "The 20 analysis blocks in the KPI-Micro Asset Analysis Sheet — from Geschäftsmodell through Portfolio Fit — are hereby declared to be the full and complete canonical KPI-Micro denominator for VG-SAI-11 purposes."
+
+### Actions Taken
+
+1. CTO/operator completeness declaration received and recorded
+2. 20-block KPI-Micro denominator accepted as canonical
+3. VG-SAI-11 re-executed using the declared 20-block denominator
+4. All 20 blocks verified to map to valid SAI blocks (100% coverage)
+5. ≥80% criterion confirmed satisfied
+6. VG-SAI-11 result changed from **BLOCKED** to **PASS**
+7. Macro KPI List confirmed excluded from VG-SAI-11 denominator
+
+### Updated Gate Summary
+
+All 12 VG-SAI gates now PASS (12/12).
+
+### Updated Final Status
+
+**SAI_TASK_EXECUTION_COMPLETE_WITH_REGISTRY_APPROVAL_PENDING**
+
+### Registry Status (Unchanged)
+
+- Registry update required for 31 SAI files
+- Human/CTO approval still required
+- No registry mutation performed
+
+### Remaining Unresolved Gaps
+
+1. Registry update requiring human/CTO approval for 31 SAI files
+2. 4 deferred signal-family gaps: SAI-BLK-01, SAI-BLK-02, SAI-BLK-14, SAI-BLK-23
+3. Peer Group Registry unavailable for SAI-BLK-21
+
+---
+
+*End of amendment.*
