@@ -196,7 +196,7 @@ This plan defines definition-layer artifact creation tasks for the Single Asset 
     - Record: PASS / FAIL / BLOCKED with evidence
     - _Verification Gate: VG-SAI-7_
 
-  - [ ] 15.8 Execute VG-SAI-8 Red Flag Taxonomy Gate
+  - [x] 15.8 Execute VG-SAI-8 Red Flag Taxonomy Gate
     - Create `.kiro/specs/single-asset-intelligence-framework/artifacts/gate_vg_sai_08.md`
     - Check: ≥2 red flags per block; minimum 48 total; evidence-based; categorical severity only
     - Record: PASS / FAIL / BLOCKED with evidence
