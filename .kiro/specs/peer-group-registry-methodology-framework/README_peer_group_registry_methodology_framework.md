@@ -3,7 +3,7 @@
 **Spec**: peer-group-registry-methodology-framework
 **Date**: 2026-06-08
 **Authority**: CTO / Architecture
-**Status**: draft — ready for human review
+**Status**: ready for human review
 
 ---
 
