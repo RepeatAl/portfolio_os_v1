@@ -448,7 +448,58 @@ The benchmark/context instruments listed in each family profile (Section 5) are 
 
 ---
 
-## 8. Proposed Future Artifact Model (Preliminary Only)
+## 8. Non-Exhaustive Universe and Unsupported Asset-Class Rule
+
+### 8.1 Scope v0 Is Not Exhaustive
+
+The 9 peer group families documented in this preflight are Peer Group Family Scope v0. They are not exhaustive and do not limit the future MoneyHorst analyzable universe. Assets may exist outside these families — their absence from Scope v0 does not exclude them from the platform; it means their peer group scope has not yet been defined.
+
+### 8.2 No Ad-Hoc Peer Assignment
+
+Assets outside the defined families and subclusters are allowed in the platform, but must NOT be assigned ad-hoc peers. Inventing peer sets to fill a coverage gap is prohibited. An asset without a canonical peer group definition must be handled by the unsupported asset classification rule below — not by improvising a peer set.
+
+### 8.3 Unsupported Asset Classification
+
+If an asset does not fit an existing family/subcluster, or requires a different asset-class logic not covered by Scope v0, the system must classify it as one of:
+
+```
+UNSUPPORTED_ASSET_CLASS_NEEDS_SCOPE_DECISION
+```
+
+or
+
+```
+PEER_GROUP_SCOPE_REQUIRED_BEFORE_COMPARISON
+```
+
+No peer comparison may be performed for such an asset until a human/CTO scope decision has been made, or a future registry extension covering that asset class has been canonically approved.
+
+### 8.4 Asset-Class Examples Requiring Separate Logic
+
+The following asset classes require peer comparison logic that differs fundamentally from company equity peer groups. Each will require its own future scope decision and, where appropriate, a dedicated registry extension.
+
+| Asset Class | Required Comparison Logic | Why Company-Peer Logic Does Not Apply |
+|-------------|--------------------------|--------------------------------------|
+| Commodities | Commodity/macro/regime comparison | No company financials; price driven by supply/demand/regime, not business model |
+| Crypto | Crypto/risk-on/liquidity/network-context comparison | No earnings, no revenue; network effects, on-chain metrics, and liquidity regime drive comparison |
+| Bonds / Credit | Issuer, duration, spread, rating, covenant, seniority, and liquidity comparison | Fixed income instruments require credit spread, duration, and seniority context, not peer equity metrics |
+| Derivatives / Structured Products | Underlying plus product structure, leverage, maturity, issuer, spread, and risk profile | Product structure and payoff profile are the primary comparison dimensions, not company fundamentals |
+| FX / Cash | Currency, rate, liquidity, and macro context | No corporate entity; macro, monetary policy, and liquidity regime govern comparison |
+| Private companies | Private comparable handling requires explicit methodology | No public market pricing; comparable selection and financial disclosure standards differ materially |
+| ETFs / Funds | Already governed by PGF-09 — no company-peer mixing | ETF/fund peers are other ETFs/funds; constituents are not peers |
+| Indices | Benchmark context only — not peers | Indices are reference instruments, not investable peer entities |
+
+### 8.5 Future Expansion Is Additive-Only
+
+Future extensions to the Peer Group Registry — whether adding new families, new subclusters, or new asset-class logic modules — are additive-only. Existing canonical peer group definitions may not be silently modified or replaced. Any expansion requires human/CTO approval before becoming a canonical registry change.
+
+### 8.6 Boundary
+
+This section creates no new peer group families. It defines only the handling rule for assets that fall outside Peer Group Family Scope v0. No canonical peer groups are created, finalized, or implied by this section.
+
+---
+
+## 9. Proposed Future Artifact Model (Preliminary Only)
 
 This section proposes a preliminary artifact model for the future Peer Group Registry. This is a suggestion only. No file is created by this report. Human/CTO design confirmation required before any registry artifact is created.
 
@@ -481,7 +532,7 @@ This section proposes a preliminary artifact model for the future Peer Group Reg
 
 ---
 
-## 9. Required Future Registry Design Questions
+## 10. Required Future Registry Design Questions
 
 The following open questions require human/CTO decision before a Peer Group Registry can be created. No canonical answers exist at the time of this preflight.
 
@@ -500,7 +551,7 @@ The following open questions require human/CTO decision before a Peer Group Regi
 
 ---
 
-## 10. Boundary Confirmations
+## 11. Boundary Confirmations
 
 | Item | Confirmed |
 |------|-----------|
@@ -518,7 +569,7 @@ The following open questions require human/CTO decision before a Peer Group Regi
 
 ---
 
-## 11. Preflight Result
+## 12. Preflight Result
 
 ```
 PEER_GROUP_SCOPE_READY_FOR_HUMAN_REVIEW
