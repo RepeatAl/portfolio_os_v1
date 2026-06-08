@@ -1,10 +1,13 @@
-# Peer Group Registry Methodology Framework — Requirements v2
+# Requirements Document
 
-**Spec**: peer-group-registry-methodology-framework
-**Date**: 2026-06-08
-**Revision**: v2 hardening patch — 2026-06-08
-**Authority**: CTO / Architecture
-**Status**: hardened — ready for human review
+> **Peer Group Registry Methodology Framework — Requirements v2**
+> Spec: peer-group-registry-methodology-framework | Date: 2026-06-08 | Revision: v2 | Authority: CTO / Architecture | Status: hardened — ready for human review
+
+---
+
+## Introduction
+
+This document specifies the methodology framework requirements that govern how a future Peer Group Registry will be constructed, maintained, versioned, and consumed. All decisions trace to institutional evidence sources. No registry data is created by this document. No peer groups are assigned.
 
 ---
 
@@ -97,7 +100,9 @@ Source authority is domain-specific. A Tier 1 source is authoritative within its
 
 ---
 
-## 5. Q1–Q10 Canonical Decisions
+## Requirements
+
+### 5. Q1–Q10 Canonical Decisions
 
 ### PGMF-DEC-01 (Q1) — Peer Group Organization Principle
 
@@ -485,3 +490,30 @@ PEER_GROUP_REGISTRY_METHODOLOGY_REQUIREMENTS_READY_FOR_DESIGN_AFTER_HARDENING
 ---
 
 *End of requirements document v2.*
+
+## Glossary
+
+| Term | Definition |
+|------|-----------|
+| `canonical_entity_id` | Stable primary key identifying an economic entity, independent of listing venue or ticker |
+| `peer_role` | The role a given asset plays in a peer group: core_peer, adjacent_peer, benchmark_context, etf_peer, excluded_non_peer, or private_comparable_context |
+| `primary_family` | The single primary peer group family assignment for an economic entity (e.g., PGF-01) |
+| `secondary_family` | Optional secondary peer group family for cross-family candidates (e.g., UBER spanning mobility and delivery) |
+| `comparison_mode_allowed` | The set of comparison types permitted for a peer_role (e.g., valuation_comparison, ETF_fund_comparison) |
+| `exchange_mic` | ISO 10383 Market Identifier Code — four-character code uniquely identifying a trading venue |
+| `FIGI` | Financial Instrument Global Identifier — open standard 12-character identifier per instrument per listing venue (OpenFIGI) |
+| `ISIN` | International Securities Identification Number — security-level identifier (ISO 6166), not entity-level |
+| `comparability_adjustment_required` | Boolean flag indicating that cross-standard (GAAP/IFRS) adjustment documentation is required before direct metric comparison |
+| `threshold_calibration_status` | Indicator for whether numeric market-cap or liquidity thresholds have been calibrated; v1 value: NUMERIC_THRESHOLDS_DEFERRED |
+| `core_peer` | A direct rival that meets all financial comparability gates; valuation comparison permitted if gate passes |
+| `adjacent_peer` | A partial competitor or substitute; comparability_note required; valuation comparison requires explicit approval |
+| `benchmark_context` | Reference instrument (ETF, index, sector fund) used for comparison framing; never a company peer |
+| `etf_peer` | An ETF or fund peer within PGF-09 comparison logic; valid only when asset_type ∈ {etf, fund} |
+| `private_comparable_context` | Non-listed company noted as competitive context only; comparison_mode = ecosystem_context_only; valuation_peer_allowed = false |
+| `PGF-09` | Peer Group Family 09 — ETF/Fund Peer Rule; governs all ETF and fund peer comparison logic |
+| `SAI-BLK-21` | Single Asset Intelligence Block 21 — Peer Comparison; the SAI block that consumes canonical peer group definitions |
+| `UNSUPPORTED_ASSET_CLASS_NEEDS_SCOPE_DECISION` | Status value for assets that do not fit any v0 peer family; peer comparison blocked until CTO/human scope decision |
+| `PEER_GROUP_SCOPE_REQUIRED_BEFORE_COMPARISON` | Alternative status value for the same unsupported asset condition |
+| `methodology_version` | Version identifier of this framework; must be incremented on any material methodology change |
+| `peer_group_available` | Boolean registry output field indicating whether a canonical peer group exists for an asset |
+| `peer_comparison_allowed` | Boolean registry output field indicating whether SAI-BLK-21 may perform peer-relative interpretation |
