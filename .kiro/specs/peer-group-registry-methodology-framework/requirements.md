@@ -426,8 +426,8 @@ When the Peer Group Registry is created under this framework, SAI may expect the
 | `primary_family` | Primary peer family assignment |
 | `secondary_family` | Optional secondary family |
 | `peer_role` | This asset's role in the peer set |
-| `core_peer_set` | List of canonical_entity_ids with peer_role = core_peer |
-| `adjacent_peer_set` | List of canonical_entity_ids with peer_role = adjacent_peer |
+| `core_peer_set` | List of canonical_object_id values with peer_role = core_peer |
+| `adjacent_peer_set` | List of canonical_object_id values with peer_role = adjacent_peer |
 | `benchmark_context_set` | List of reference instruments |
 | `etf_peer_set` | List of ETF/fund peers (PGF-09 only) |
 | `comparison_mode_allowed` | Which comparison types are permitted for this asset |
@@ -495,7 +495,7 @@ PEER_GROUP_REGISTRY_METHODOLOGY_REQUIREMENTS_READY_FOR_DESIGN_AFTER_HARDENING
 
 | Term | Definition |
 |------|-----------|
-| `canonical_entity_id` | Stable primary key identifying an economic entity, independent of listing venue or ticker |
+| `canonical_entity_id` | Stable primary key identifying an economic entity — interpreted as `canonical_object_id` in design.md (polymorphic across companies, ETFs, funds, indices, private companies) |
 | `peer_role` | The role a given asset plays in a peer group: core_peer, adjacent_peer, benchmark_context, etf_peer, excluded_non_peer, or private_comparable_context |
 | `primary_family` | The single primary peer group family assignment for an economic entity (e.g., PGF-01) |
 | `secondary_family` | Optional secondary peer group family for cross-family candidates (e.g., UBER spanning mobility and delivery) |
