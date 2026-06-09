@@ -70,7 +70,7 @@ Hard boundaries — no task may produce:
   - List European-listed peers from confirmed families with exchange_mic, accounting_standard, comparability_adjustment_required
   - _Requirements: PGMF-DEC-08_
 
-- [ ] 6. Create Governance and Versioning Specification
+- [x] 6. Create Governance and Versioning Specification
   - Create `artifacts/governance_versioning_specification_2026-06-08.md`
   - Document annual review process and review_cycle field
   - Define event-triggered review triggers: material M&A, revenue mix shift >30%, business model restructuring, primary listing change, accounting standard change
