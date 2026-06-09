@@ -4,7 +4,7 @@ primary_domain: ARCH
 artifact_type: SSOT
 lifecycle_status: canonical
 created_date: 2024-06-10
-last_modified: 2026-05-25
+last_modified: 2026-06-09
 owner_role: Tracks planned future frameworks and expansion roadmap
 ssot_relationship: canonical
 topic: future_frameworks
@@ -253,7 +253,7 @@ P2
 
 ---
 
-# TACTICAL MOMENTUM EXECUTION GATE FRAMEWORK
+## 10. Tactical Momentum Execution Gate Framework
 
 Status:
 SSOT defined — `docs/tactical_momentum_execution_gate_framework.md`
@@ -286,7 +286,7 @@ P2
 
 ---
 
-## 10. Liquidity Stress Framework
+## 11. Liquidity Stress Framework
 
 Purpose:
 
@@ -308,7 +308,7 @@ P2
 
 ---
 
-## 11. Geopolitical Intelligence Framework
+## 12. Geopolitical Intelligence Framework
 
 Purpose:
 
@@ -322,7 +322,7 @@ P3
 
 ---
 
-## 12. Sector Rotation Framework
+## 13. Sector Rotation Framework
 
 Purpose:
 
@@ -336,7 +336,7 @@ P3
 
 ---
 
-## 13. Structural Fragility Heatmap Framework
+## 14. Structural Fragility Heatmap Framework
 
 Purpose:
 
@@ -349,7 +349,7 @@ P3
 
 ---
 
-## 14. Historical Scenario Archive Framework
+## 15. Historical Scenario Archive Framework
 
 Purpose:
 
@@ -362,7 +362,7 @@ P3
 
 ---
 
-## 15. Portfolio Durability Framework
+## 16. Portfolio Durability Framework
 
 Purpose:
 
@@ -380,7 +380,7 @@ P3
 
 ---
 
-## 16. Adaptive Semantic Weighting
+## 17. Adaptive Semantic Weighting
 
 Purpose:
 
@@ -393,7 +393,7 @@ P4
 
 ---
 
-## 17. Behavioral PM Overlay System
+## 18. Behavioral PM Overlay System
 
 Purpose:
 
@@ -406,7 +406,7 @@ P4
 
 ---
 
-## 18. Semantic Trend Detection Framework
+## 19. Semantic Trend Detection Framework
 
 Purpose:
 
@@ -419,7 +419,7 @@ P4
 
 ---
 
-## 19. AI-Assisted Structural Mapping
+## 20. AI-Assisted Structural Mapping
 
 Purpose:
 
@@ -432,7 +432,7 @@ P4
 
 ---
 
-## 20. Institutional Comparative Benchmarking
+## 21. Institutional Comparative Benchmarking
 
 Purpose:
 
@@ -493,7 +493,7 @@ Trigger for activation: Production incident or demonstrable risk requiring them.
 
 ---
 
-## 21. Warning Governance System
+## 22. Warning Governance System
 
 Status:
 Deferred (Scope Freeze 2026-05-29)
@@ -514,7 +514,7 @@ P3
 
 ---
 
-## 22. Governance Recursion Protection
+## 23. Governance Recursion Protection
 
 Status:
 Deferred (Scope Freeze 2026-05-29)
@@ -532,7 +532,7 @@ P3
 
 ---
 
-## 23. Enforcement Deadlock Prevention
+## 24. Enforcement Deadlock Prevention
 
 Status:
 Deferred (Scope Freeze 2026-05-29)
@@ -551,7 +551,7 @@ P3
 
 ---
 
-## 24. Transient Artifact Promotion Governance
+## 25. Transient Artifact Promotion Governance
 
 Status:
 Deferred (Scope Freeze 2026-05-29)
@@ -570,7 +570,7 @@ P3
 
 ---
 
-## 25. Governance Performance Budget
+## 26. Governance Performance Budget
 
 Status:
 Deferred (Scope Freeze 2026-05-29)
@@ -589,7 +589,7 @@ P3
 
 ---
 
-## 26. Bounded Fail-Soft Degradation
+## 27. Bounded Fail-Soft Degradation
 
 Status:
 Deferred (Scope Freeze 2026-05-29)
@@ -608,7 +608,7 @@ P3
 
 ---
 
-## 27. Governance Layer Complexity Budget
+## 28. Governance Layer Complexity Budget
 
 Status:
 Deferred (Scope Freeze 2026-05-29)
@@ -628,7 +628,7 @@ P3
 
 ---
 
-## 28. Mutation Audit Ledger Rotation
+## 29. Mutation Audit Ledger Rotation
 
 Status:
 Deferred (Scope Freeze 2026-05-29)
@@ -647,7 +647,7 @@ P3
 
 ---
 
-## 29. Warning Baseline Decay and Revalidation
+## 30. Warning Baseline Decay and Revalidation
 
 Status:
 Deferred (Scope Freeze 2026-05-29)
@@ -666,7 +666,7 @@ P3
 
 ---
 
-## 30. Scoped Policy Version Domains
+## 31. Scoped Policy Version Domains
 
 Status:
 Deferred (Scope Freeze 2026-05-29)
@@ -685,7 +685,7 @@ P3
 
 ---
 
-## 31. Temporary Authority Declarations
+## 32. Temporary Authority Declarations
 
 Status:
 Deferred (Scope Freeze 2026-05-29)
