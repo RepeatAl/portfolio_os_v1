@@ -253,6 +253,39 @@ P2
 
 ---
 
+# TACTICAL MOMENTUM EXECUTION GATE FRAMEWORK
+
+Status:
+SSOT defined — `docs/tactical_momentum_execution_gate_framework.md`
+Spec not yet started.
+
+Purpose:
+
+- entry-readiness assessment between Opportunity Score and Deployment
+- market ampel (derived from regime/breadth/liquidity/volatility/credit)
+- entry type classification: BREAKOUT / PULLBACK / NONE
+- risk and sizing gate (consumes Position Sizing Governance budget)
+- derivative product review gate (not execution — review only)
+- Human Execution Package production
+- execution_readiness_status: WAIT / LIMIT_READY / HUMAN_APPROVAL_REQUIRED / EXECUTED_EXTERNAL / BLOCKED / EXPIRED
+
+Architecture position:
+Portfolio State → Market Regime Gate → Asset Quality (SAI) → Opportunity Score
+→ Tactical Momentum Execution Gate → Deployment Readiness → Human Execution Package
+
+Scope constraint:
+This framework never says "Buy." Output is always execution_readiness_status.
+Tactical momentum is signal rank 9 — structural conditions always dominate.
+human_approval_required is always true.
+
+Next step:
+Create `.kiro/specs/tactical-momentum-execution-gate-framework/` with preflight and requirements.
+
+Priority:
+P2
+
+---
+
 ## 10. Liquidity Stress Framework
 
 Purpose:
