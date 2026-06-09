@@ -16,7 +16,7 @@ Hard boundaries — no task may produce:
 
 ## Tasks
 
-- [ ] 1. Produce Q1–Q10 Decision Intake Document
+- [x] 1. Produce Q1–Q10 Decision Intake Document
   - Create `artifacts/decision_intake_review_2026-06-08.md`
   - Cover Q1–Q10 each with: decision statement, evidence citations by source authority domain, key rationale, deferred items
   - Include summary table: question / decision / authority domain / deferred items
@@ -26,7 +26,7 @@ Hard boundaries — no task may produce:
   - Include trading governance boundary confirmation (FUTURE_COMPLIANCE_REFERENCE, no current obligations)
   - _Requirements: PGMF-DEC-01 through PGMF-DEC-10_
 
-- [ ] 2. Verify Source Authority Traceability
+- [x] 2. Verify Source Authority Traceability
   - Create `artifacts/source_authority_verification_2026-06-08.md`
   - Build traceability table: decision / cited source / authority domain / traceability status
   - Verify each decision is cited against sources in its correct authority domain
@@ -36,7 +36,7 @@ Hard boundaries — no task may produce:
   - Confirm no trading governance source is used as a current-obligation rule
   - _Requirements: Source Authority Hierarchy (Section 3)_
 
-- [ ] 3. Create Field Taxonomy Reference
+- [x] 3. Create Field Taxonomy Reference
   - Create `artifacts/field_taxonomy_reference_2026-06-08.md`
   - Section 1: Current methodology fields required in any v1 record (entity, security, peer assignment, comparability gate, ETF/fund, cross-region, governance)
   - Section 2: Data-model readiness fields CURRENT_MODEL_NULLABLE — list all 8 fields with activation rationale
@@ -47,7 +47,7 @@ Hard boundaries — no task may produce:
   - Confirm CURRENT_MODEL_NULLABLE fields match Listing Record in design.md
   - _Requirements: PGMF-DEC-04, PGMF-DEC-08, Sections 8 and 9_
 
-- [ ] 4. Create ETF / Fund Peer Rule Specification
+- [x] 4. Create ETF / Fund Peer Rule Specification
   - Create `artifacts/etf_fund_peer_rule_specification_2026-06-08.md`
   - Document all ETF/fund comparison fields with types, requirements, and source authority (ETF_methodology_authority)
   - Define peer_role = etf_peer vs. peer_role = benchmark_context distinction with examples
@@ -59,7 +59,7 @@ Hard boundaries — no task may produce:
   - Confirm no ETF receives core_peer or adjacent_peer in any example
   - _Requirements: PGMF-DEC-05_
 
-- [ ] 5. Create Cross-Region Comparability Specification
+- [x] 5. Create Cross-Region Comparability Specification
   - Create `artifacts/cross_region_comparability_specification_2026-06-08.md`
   - Document accounting standard comparability gaps: R&D capitalization, lease accounting, inventory LIFO prohibition, financial instruments classification
   - Document GICS vs. ICB taxonomy reconciliation requirement
