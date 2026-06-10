@@ -129,7 +129,7 @@ Hard boundaries — no task may produce:
   - Record gate result: PEER_GROUP_REGISTRY_METHODOLOGY_FRAMEWORK_SPEC_COMPLETE or BLOCKED
   - _Requirements: All sections_
 
-- [ ] 12. Update Framework README
+- [x] 12. Update Framework README
   - Update `README_peer_group_registry_methodology_framework.md`
   - Reflect final design.md v2 state: canonical_object_id, six-role peer_role taxonomy, CURRENT_MODEL_NULLABLE / FUTURE_VENDOR_INTEGRATION / FUTURE_COMPLIANCE_REFERENCE scope labels, 13 correctness properties, design status READY_FOR_TASKS
   - Update canonical artifact map to include all Task 1–10 artifact files
