@@ -90,7 +90,7 @@ Hard boundaries — no task may produce:
   - Include explicit boundary statement: these fields do NOT integrate market data; they reserve schema space only
   - _Requirements: Market Data Readiness Fields (Section 8)_
 
-- [ ] 8. Create Trading Governance Boundary Specification
+- [x] 8. Create Trading Governance Boundary Specification
   - Create `artifacts/trading_governance_boundary_2026-06-08.md`
   - State: MoneyHorst is not a broker-dealer, investment firm, exchange participant, or regulated trading venue
   - State: all 14 trading governance fields are FUTURE_COMPLIANCE_REFERENCE — reserved in methodology vocabulary only, not part of v1 schema, not populated, not operational
