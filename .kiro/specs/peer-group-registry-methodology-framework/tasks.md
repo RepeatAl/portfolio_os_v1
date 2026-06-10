@@ -100,7 +100,7 @@ Hard boundaries — no task may produce:
   - Include explicit prohibition: no trading enablement may be derived from the presence of these fields
   - _Requirements: Trading Governance Boundary (Section 9)_
 
-- [ ] 9. Create Unsupported Asset Class Handling Specification
+- [x] 9. Create Unsupported Asset Class Handling Specification
   - Create `artifacts/unsupported_asset_class_handling_2026-06-08.md`
   - Define UNSUPPORTED_ASSET_CLASS_NEEDS_SCOPE_DECISION and PEER_GROUP_SCOPE_REQUIRED_BEFORE_COMPARISON and their effect on peer_comparison_allowed and peer_group_available
   - Document all 8 asset classes: commodities, crypto, bonds/credit, derivatives, FX/cash, private companies, ETFs/funds (PGF-09), indices
