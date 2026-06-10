@@ -120,7 +120,7 @@ Hard boundaries — no task may produce:
   - Verify all 13 correctness properties from design.md are satisfiable
   - _Requirements: SAI Compatibility (Section 10)_
 
-- [ ] 11. Execute Verification Gate VG-PGMF-1
+- [x] 11. Execute Verification Gate VG-PGMF-1
   - Create `artifacts/gate_vg_pgmf_1.md`
   - Run full checklist: requirements.md v2 complete, design.md v2 complete (READY_FOR_TASKS)
   - Verify Tasks 1–10 artifacts are all complete
