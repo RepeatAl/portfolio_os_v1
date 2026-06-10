@@ -81,7 +81,7 @@ Hard boundaries — no task may produce:
   - Define methodology_version increment rules
   - _Requirements: PGMF-DEC-09, PGMF-DEC-10_
 
-- [ ] 7. Create Market Data Readiness Specification
+- [x] 7. Create Market Data Readiness Specification
   - Create `artifacts/market_data_readiness_specification_2026-06-08.md`
   - Section 1 — CURRENT_MODEL_NULLABLE: document all 8 fields that must exist in v1 schema with null values; explain why each must exist now
   - Section 2 — FUTURE_VENDOR_INTEGRATION: document all 9 fields excluded from v1 schema; explain activation condition for each
