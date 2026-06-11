@@ -80,17 +80,19 @@ Cross-region differences must remain visible and must never be silently normaliz
 
 ### 4.2 Required Cross-Region Fields
 
-All 7 fields are REQUIRED when cross-region conditions are detected:
+All 9 fields are REQUIRED when cross-region conditions are detected:
 
 | # | Field | Type | Purpose |
 |---|-------|------|---------|
-| 1 | `accounting_standard` | enum (GAAP / IFRS / other) | Identifies accounting framework |
-| 2 | `reporting_currency` | string (ISO 4217) | Currency in which financials are reported |
-| 3 | `trading_currency` | string (ISO 4217) | Currency in which the asset trades on its primary venue |
-| 4 | `fiscal_year_end` | string (three-letter month) | Fiscal year alignment |
-| 5 | `taxonomy_reference` | enum (GICS / ICB / other) | Industry classification framework |
-| 6 | `comparability_adjustment_required` | boolean | Must be true when accounting_standard differs between peers |
-| 7 | `comparability_note` | string | Documents which adjustments are needed |
+| 1 | `region` | string | Geographic region of the asset |
+| 2 | `domicile` | string (ISO 3166-1 alpha-2) | Country of legal domicile |
+| 3 | `reporting_currency` | string (ISO 4217) | Currency in which financials are reported |
+| 4 | `trading_currency` | string (ISO 4217) | Currency in which the asset trades on its primary venue |
+| 5 | `accounting_standard` | enum (GAAP / IFRS / other) | Identifies accounting framework |
+| 6 | `fiscal_year_end` | string (three-letter month) | Fiscal year alignment |
+| 7 | `listing_variant_type` | enum (primary / ADR / GDR / secondary) | Listing venue type for multi-venue assets |
+| 8 | `comparability_adjustment_required` | boolean | Must be true when accounting_standard differs between peers |
+| 9 | `comparability_note` | string | Documents which adjustments are needed |
 
 ### 4.3 Boundary Rules
 
@@ -100,7 +102,7 @@ All 7 fields are REQUIRED when cross-region conditions are detected:
 | CR-B-02 | ADR/GDR/multi-venue assets require listing_variant_type identification (primary / ADR / GDR / secondary) |
 | CR-B-03 | Currency differences require explicit reporting_currency and trading_currency values |
 | CR-B-04 | comparability_adjustment_required = true with empty/null comparability_note → CANDIDATE_BLOCKED |
-| CR-B-05 | Missing any of the 7 required cross-region fields → CANDIDATE_BLOCKED |
+| CR-B-05 | Missing any of the 9 required cross-region fields → CANDIDATE_BLOCKED |
 | CR-B-06 | Cross-region differences may NOT be silently normalized — visibility is mandatory |
 
 ### 4.4 Affected Families
@@ -341,7 +343,7 @@ Market data availability must NEVER affect peer methodology decisions. No price,
 
 All trading governance fields are future compliance references only. No trading readiness, tradability inference, execution eligibility, broker connectivity, exchange/ATS connectivity, order routing, market access, pre-trade control runtime, kill-switch runtime, surveillance runtime, or compliance certification may be derived from peer methodology or candidate records.
 
-### 10.2 The 16 Trading Governance Fields
+### 10.2 The 17 Trading Governance Fields
 
 All carry: `trading_governance_fields_status = FUTURE_COMPLIANCE_REFERENCE_NOT_OPERATIONAL`
 
@@ -586,7 +588,7 @@ No peer_group_registry.yaml or production registry file may be created during pr
 | # | Boundary Area | Rule | Forbidden Drift | Required Safe Value / Safe Role | Candidate_Status Outcome | Block State | Related Requirement | Related PGMF Decision / Artifact |
 |---|--------------|------|-----------------|--------------------------------|--------------------------|-------------|--------------------|---------------------------------|
 | 1 | ETF/Fund Boundary | ETFs/funds never company peers | ETF assigned core_peer/adjacent_peer vs. company | peer_role = benchmark_context (company families) or etf_peer (PGF-09) | CANDIDATE_BLOCKED | BLOCK_ETF_COMPANY_FALLBACK | R6 | PGMF-DEC-05 |
-| 2 | Cross-Region Comparability | Differences visible, never normalized | Silent normalization of GAAP/IFRS/currency differences | All 7 cross-region fields populated; comparability_note present | CANDIDATE_BLOCKED | BLOCK_CROSS_REGION_COMPARABILITY_UNVERIFIED | R7 | PGMF-DEC-08 |
+| 2 | Cross-Region Comparability | Differences visible, never normalized | Silent normalization of GAAP/IFRS/currency differences | All 9 cross-region fields populated; comparability_note present | CANDIDATE_BLOCKED | BLOCK_CROSS_REGION_COMPARABILITY_UNVERIFIED | R7 | PGMF-DEC-08 |
 | 3 | Unsupported Asset Protection | Unsupported assets blocked from peer assignment | Unsupported asset given core_peer/adjacent_peer/etf_peer | peer_role = excluded_non_peer; unsupported_status populated | CANDIDATE_BLOCKED or CANDIDATE_DEFERRED | BLOCK_UNSUPPORTED_ASSET_CLASS | R8 | PGMF-DEC-07, PGMF Task 9 |
 | 4 | Private Company Handling | Private companies context-only | Private company given final peer assignment | peer_role = private_comparable_context; valuation_peer_allowed = false | CANDIDATE_BLOCKED or CANDIDATE_CONTEXT_ONLY | BLOCK_PRIVATE_COMPANY_FINAL_PEER_ASSIGNMENT | R8 | PGMF Task 9 §7 |
 | 5 | Derivative/Structured Product | Never peer members | Derivative given peer_role other than excluded_non_peer | peer_role = excluded_non_peer | CANDIDATE_BLOCKED | BLOCK_DERIVATIVE_AS_PEER_MEMBER | R8 | PGMF Task 9 §6 |
@@ -594,7 +596,7 @@ No peer_group_registry.yaml or production registry file may be created during pr
 | 7 | Market Data Boundary | Data availability ≠ methodology | Market data used as peer_role criterion | market_data_fields_status = NOT_POPULATED_IN_PREFLIGHT | CANDIDATE_BLOCKED | BLOCK_MARKET_DATA_AS_METHODOLOGY_PROXY | R9 | PGMF Task 7 |
 | 8 | Trading Governance Boundary | Future reference only | Trading field set to operational value | trading_governance_fields_status = FUTURE_COMPLIANCE_REFERENCE_NOT_OPERATIONAL | CANDIDATE_BLOCKED | BLOCK_TRADING_ELIGIBILITY_INFERENCE | R10 | PGMF Task 8 |
 | 9 | SAI Boundary | SAI not mutated | SAI artifacts modified or candidate records treated as production SAI input | SAI_contract_status = PREFLIGHT_NOT_CANONICAL | CANDIDATE_BLOCKED | BLOCK_SAI_CONTRACT_SHAPE_VIOLATION | R11 | PGMF Task 10 |
-| 10 | Source Authority Boundary | Sources must be in-domain and registered | Out-of-domain citation or missing evidence | source_authority_status = VERIFIED (or documented gap) | CANDIDATE_BLOCKED | BLOCK_SOURCE_INSUFFICIENT | R4 | PGMF Source Registry |
+| 10 | Source Authority Boundary | Sources must be in-domain and registered | Out-of-domain citation or missing evidence | source_authority_status = SOURCE_AUTHORITY_PRESENT or documented gap status (SOURCE_EVIDENCE_MISSING, SOURCE_DOMAIN_SCOPE_CONFLICT, SOURCE_EXTENSION_REQUIRED, SOURCE_NOT_APPLICABLE_FOR_CONTEXT_ONLY) | CANDIDATE_BLOCKED | BLOCK_SOURCE_INSUFFICIENT | R4 | PGMF Source Registry |
 | 11 | Peer Assignment Boundary | Preliminary only, no final assignment | Candidate treated as registry truth | peer_comparison_allowed = false; peer_role = preliminary | CANDIDATE_BLOCKED | BLOCK_PEER_GROUP_ID_CREATION | R3, R12 | Design §Candidate Lifecycle |
 | 12 | peer_group_id Boundary | No canonical ID creation | Canonical peer_group_id minted | peer_group_id = PREFLIGHT_PLACEHOLDER_NOT_CANONICAL | CANDIDATE_BLOCKED | BLOCK_PEER_GROUP_ID_CREATION | R3, R5 | Design §Candidate Record Draft |
 | 13 | Registry Boundary | No production registry | peer_group_registry.yaml or production file created | No registry file exists | CANDIDATE_BLOCKED | BLOCK_REGISTRY_CREATION | R3, R13 | Design §Output Restrictions |
@@ -645,7 +647,7 @@ Task 6 defines boundary rules. Task 10 (Candidate Record Draft Artifacts for PGF
 - Any boundary violation detected during Task 10 candidate record creation must result in the appropriate Candidate_Status and block state
 - Task 10 records that trigger boundaries are documented as CANDIDATE_BLOCKED, CANDIDATE_DEFERRED, or CANDIDATE_CONTEXT_ONLY with specific blocked_reason referencing the boundary rule
 - ETF benchmark instruments in company families (PGF-01 through PGF-08) must carry peer_role = benchmark_context per Section 3
-- Cross-region assets must carry all 7 comparability fields per Section 4
+- Cross-region assets must carry all 9 comparability fields per Section 4
 
 ### 18.3 Clarification
 
@@ -708,13 +710,13 @@ This document explicitly confirms that the following outputs are PROHIBITED duri
 |---|-----------|--------|
 | 1 | All boundary areas documented with their block states | SATISFIED |
 | 2 | ETF/Fund boundary (PGMF-DEC-05) fully specified with BLOCK_ETF_COMPANY_FALLBACK | SATISFIED |
-| 3 | Cross-region comparability (PGMF-DEC-08) fully specified with 7 required fields | SATISFIED |
+| 3 | Cross-region comparability (PGMF-DEC-08) fully specified with 9 required fields | SATISFIED |
 | 4 | Unsupported asset protection (PGMF-DEC-07) fully specified with all classes listed | SATISFIED |
 | 5 | Private company handling specified with BLOCK_PRIVATE_COMPANY_FINAL_PEER_ASSIGNMENT | SATISFIED |
 | 6 | Derivative handling specified with BLOCK_DERIVATIVE_AS_PEER_MEMBER | SATISFIED |
 | 7 | Index/basket handling specified as benchmark_context only | SATISFIED |
 | 8 | Market data boundary specified with BLOCK_MARKET_DATA_AS_METHODOLOGY_PROXY | SATISFIED |
-| 9 | Trading boundary specified with all 16 fields and BLOCK_TRADING_ELIGIBILITY_INFERENCE | SATISFIED |
+| 9 | Trading boundary specified with all 17 fields and BLOCK_TRADING_ELIGIBILITY_INFERENCE | SATISFIED |
 | 10 | SAI boundary specified with BLOCK_SAI_CONTRACT_SHAPE_VIOLATION | SATISFIED |
 | 11 | Source authority boundary specified | SATISFIED |
 | 12 | Peer assignment boundary specified | SATISFIED |
