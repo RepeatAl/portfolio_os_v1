@@ -98,7 +98,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after the declared artifact exists, acceptance criteria are satisfied, hard boundaries are confirmed, and the final status marker is present. Do not start the next task.
   - _Requirements: R1 (PGMF Dependency)_
 
-- [ ] 2. Create Family Universe Intake Specification
+- [x] 2. Create Family Universe Intake Specification
   - **Purpose**: Document the 9 confirmed family universes PGF-01 through PGF-09 from the scope preflight without inventing new tickers, families, subclusters, or benchmark instruments.
   - **Report type**: Family Universe Intake Report
   - **Depends on**: Task 1
