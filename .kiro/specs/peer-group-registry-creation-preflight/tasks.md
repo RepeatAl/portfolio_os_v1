@@ -177,7 +177,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after the declared artifact exists, acceptance criteria are satisfied, hard boundaries are confirmed, and the final status marker is present. Do not start the next task.
   - _Requirements: R4 (Source Authority Mapping)_
 
-- [ ] 5. Create Field Taxonomy Mapping Specification
+- [x] 5. Create Field Taxonomy Mapping Specification
   - **Purpose**: Define how future candidate records map to the PGMF field taxonomy by scope label.
   - **Report type**: Field Taxonomy Mapping Report
   - **Depends on**: Task 1
