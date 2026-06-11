@@ -292,7 +292,7 @@ There is NO automated promotion path from any candidate status to any production
 | Attribute | Value |
 |-----------|-------|
 | **Block state** | BLOCK_CROSS_REGION_COMPARABILITY_UNVERIFIED |
-| **Trigger condition** | comparability_adjustment_required = true but comparability_note is null/empty (CROSS_REGION_COMPARABILITY_INCOMPLETE), OR any of the 7 required cross-region fields are missing (CROSS_REGION_FIELDS_INCOMPLETE) |
+| **Trigger condition** | comparability_adjustment_required = true but comparability_note is null/empty (CROSS_REGION_COMPARABILITY_INCOMPLETE), OR any of the 9 required cross-region fields are missing (CROSS_REGION_FIELDS_INCOMPLETE) |
 | **Related boundary area** | Cross-Region Comparability Boundary (Task 6 Section 4, PGMF-DEC-08) |
 | **Candidate_Status outcome** | CANDIDATE_BLOCKED |
 | **Required remediation** | Populate all required cross-region fields with valid values. Provide comparability_note documenting which adjustments are needed when comparability_adjustment_required = true. |
