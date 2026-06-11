@@ -204,7 +204,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after the declared artifact exists, acceptance criteria are satisfied, hard boundaries are confirmed, and the final status marker is present. Do not start the next task.
   - _Requirements: R5 (Field Taxonomy Mapping)_
 
-- [ ] 6. Create Boundary Rules Specification
+- [x] 6. Create Boundary Rules Specification
   - **Purpose**: Define all boundary protections that apply to candidate preflight records.
   - **Report type**: Boundary Rules Report
   - **Depends on**: Tasks 3 and 5
