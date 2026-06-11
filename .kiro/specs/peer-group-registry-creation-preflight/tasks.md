@@ -233,7 +233,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after the declared artifact exists, acceptance criteria are satisfied, hard boundaries are confirmed, and the final status marker is present. Do not start the next task.
   - _Requirements: R6, R7, R8, R9, R10 (ETF/Fund, Cross-Region, Unsupported, Market Data, Trading)_
 
-- [ ] 7. Create Candidate Lifecycle and Block State Specification
+- [x] 7. Create Candidate Lifecycle and Block State Specification
   - **Purpose**: Define the lifecycle state machine and all 14 block states for future candidate task execution.
   - **Report type**: Lifecycle and Block State Report
   - **Depends on**: Tasks 3, 5, and 6
