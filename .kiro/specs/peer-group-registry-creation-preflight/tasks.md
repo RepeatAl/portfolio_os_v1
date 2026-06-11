@@ -122,7 +122,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after the declared artifact exists, acceptance criteria are satisfied, hard boundaries are confirmed, and the final status marker is present. Do not start the next task.
   - _Requirements: R2 (Family Universe Intake)_
 
-- [ ] 3. Create Candidate Record Draft Schema Specification
+- [x] 3. Create Candidate Record Draft Schema Specification
   - **Purpose**: Define the non-production candidate record schema and lifecycle model that future tasks will use.
   - **Report type**: Candidate Schema Report
   - **Depends on**: Task 1
