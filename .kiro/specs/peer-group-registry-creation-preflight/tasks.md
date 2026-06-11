@@ -153,7 +153,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after the declared artifact exists, acceptance criteria are satisfied, hard boundaries are confirmed, and the final status marker is present. Do not start the next task.
   - _Requirements: R3 (Candidate-Only Record Status), R5 (Field Taxonomy Mapping)_
 
-- [ ] 4. Create Source Authority Mapping Specification
+- [x] 4. Create Source Authority Mapping Specification
   - **Purpose**: Define how every candidate record methodology-decision field maps to the PGMF source registry.
   - **Report type**: Source Authority Mapping Report
   - **Depends on**: Task 1
