@@ -255,7 +255,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after the declared artifact exists, acceptance criteria are satisfied, hard boundaries are confirmed, and the final status marker is present. Do not start the next task.
   - _Requirements: R3, R15 (Candidate Status, Drift Prevention)_
 
-- [ ] 8. Create SAI and Human Approval Boundary Specification
+- [x] 8. Create SAI and Human Approval Boundary Specification
   - **Purpose**: Define SAI read-only interpretation boundaries and human/CTO approval requirements.
   - **Report type**: SAI and Human Approval Boundary Report
   - **Depends on**: Tasks 3, 6, and 7
