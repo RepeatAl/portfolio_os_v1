@@ -307,7 +307,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after the declared artifact exists, acceptance criteria are satisfied, hard boundaries are confirmed, and the final status marker is present. Do not start the next task.
   - _Requirements: R13 (Output Restrictions), R15 (Drift Prevention)_
 
-- [ ] 10. Create Candidate Record Draft Artifacts for PGF-01 through PGF-09
+- [x] 10. Create Candidate Record Draft Artifacts for PGF-01 through PGF-09
   - **Purpose**: Produce non-production candidate record draft artifacts for all 9 confirmed family universes using only the scope preflight as family/ticker authority and PGMF as methodology authority.
   - **Report type**: Candidate Record Draft Report Set
   - **Depends on**: Tasks 1–9
