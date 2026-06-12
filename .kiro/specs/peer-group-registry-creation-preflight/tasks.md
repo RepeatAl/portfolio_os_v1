@@ -355,7 +355,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after all 9 declared artifacts exist, acceptance criteria are satisfied, hard boundaries are confirmed, and the final status marker is present. Do not start the next task.
   - _Requirements: R2, R3, R4, R5, R6, R7, R8, R9, R10, R11 (Family Intake, Candidate Status, Source Authority, Field Taxonomy, all Boundaries)_
 
-- [ ] 11. Create Evidence Gap Register
+- [x] 11. Create Evidence Gap Register
   - **Purpose**: Document all missing evidence, blocked fields, unresolved identities, unsupported assets, cross-region comparability gaps, source authority gaps, and human review issues discovered during candidate record draft creation.
   - **Report type**: Evidence Gap Register
   - **Depends on**: Task 10
