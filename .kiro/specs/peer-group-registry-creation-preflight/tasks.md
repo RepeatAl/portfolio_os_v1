@@ -283,7 +283,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after the declared artifact exists, acceptance criteria are satisfied, hard boundaries are confirmed, and the final status marker is present. Do not start the next task.
   - _Requirements: R11 (SAI Compatibility), R12 (Human Approval Gate)_
 
-- [ ] 9. Create Output Restrictions and Drift Prevention Specification
+- [x] 9. Create Output Restrictions and Drift Prevention Specification
   - **Purpose**: Define allowed/forbidden outputs and 8-category drift-prevention rules.
   - **Report type**: Output Restrictions and Drift Prevention Report
   - **Depends on**: Tasks 6, 7, and 8
