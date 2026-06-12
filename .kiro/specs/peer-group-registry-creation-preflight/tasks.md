@@ -379,7 +379,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after the declared artifact exists, acceptance criteria are satisfied, hard boundaries are confirmed, and the final status marker is present. Do not start the next task.
   - _Requirements: R4, R14, R15 (Source Authority, Verification Gate, Drift Prevention)_
 
-- [ ] 12. Execute Verification Gate VG-PGRC-PREFLIGHT-1
+- [x] 12. Execute Verification Gate VG-PGRC-PREFLIGHT-1
   - **Purpose**: Verify that the preflight specification and candidate draft artifacts are complete, non-production, and safe before any future production registry creation spec begins.
   - **Report type**: Verification Gate Report
   - **Depends on**: Tasks 1–11
