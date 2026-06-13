@@ -312,6 +312,14 @@ When designing new modules or features that touch research, evidence, signals, o
 
 ---
 
+## Investment Taxonomy Guidance
+
+MoneyHorst must not be described as a single Growth, Value, Quant, or Stock Investment strategy. MoneyHorst operates at the Portfolio Intelligence / Decision Governance layer and may evaluate many investment styles, factors, methods, and asset allocation choices. Canonical taxonomy is defined in:
+
+- `docs/moneyhorst/investment_style_method_taxonomy_ssot.md`
+
+---
+
 ## 15. Final Status
 
 ```
