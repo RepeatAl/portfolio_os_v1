@@ -412,6 +412,234 @@ failure_report:
 
 ---
 
+## Deterministic Verification Evidence
+
+> Verification evidence was produced by read-only repository inspection commands. No validation code, runtime code, or executable implementation was committed.
+
+### Check 1: Artifact Presence
+
+**Command family**: `test -f <artifact>` for each expected artifact in `artifacts/` directory
+
+**Expected**: All 20 artifacts present (Tasks 1–11 outputs + gate artifact)
+
+**Observed**:
+
+```
+PRESENT: source_alignment_preflight.md
+PRESENT: family_universe_intake_preflight.md
+PRESENT: candidate_record_schema_preflight.md
+PRESENT: source_authority_mapping_preflight.md
+PRESENT: field_taxonomy_mapping_preflight.md
+PRESENT: boundary_rules_preflight.md
+PRESENT: candidate_lifecycle_block_states_preflight.md
+PRESENT: sai_human_approval_boundary_preflight.md
+PRESENT: output_restrictions_drift_prevention_preflight.md
+PRESENT: candidate_records_pgf01_preflight.md
+PRESENT: candidate_records_pgf02_preflight.md
+PRESENT: candidate_records_pgf03_preflight.md
+PRESENT: candidate_records_pgf04_preflight.md
+PRESENT: candidate_records_pgf05_preflight.md
+PRESENT: candidate_records_pgf06_preflight.md
+PRESENT: candidate_records_pgf07_preflight.md
+PRESENT: candidate_records_pgf08_preflight.md
+PRESENT: candidate_records_pgf09_preflight.md
+PRESENT: candidate_evidence_gaps_preflight.md
+PRESENT: gate_vg_pgrc_preflight_1.md
+```
+
+**Result**: **PASS** — 20/20 artifacts present
+
+---
+
+### Check 2: Total Candidate Record Count
+
+**Command**: `grep -c "candidate_record_id:" candidate_records_pgf*_preflight.md | awk -F: '{sum += $2} END {print sum}'`
+
+**Expected**: 132
+
+**Observed**: 132
+
+**Result**: **PASS**
+
+---
+
+### Check 3: Candidate Status Distribution
+
+**Command family**: `grep "^Candidate_Status: <VALUE>" candidate_records_pgf*_preflight.md | wc -l`
+
+| Status | Expected | Observed | Result |
+|--------|----------|----------|--------|
+| CANDIDATE_DRAFT | 112 | 112 | PASS |
+| CANDIDATE_CONTEXT_ONLY | 20 | 20 | PASS |
+| CANDIDATE_BLOCKED | 0 | 0 | PASS |
+| CANDIDATE_DEFERRED | 0 | 0 | PASS |
+| CANDIDATE_READY_FOR_REVIEW | 0 | 0 | PASS |
+| **Total** | **132** | **132** | **PASS** |
+
+**Note**: Pattern `^Candidate_Status:` (line-start anchored) used to exclude prose mentions. Unanchored grep returns 133 (1 extra in PGF-09 prose explanation line 376). Anchored grep returns 132, matching candidate_record_id count exactly.
+
+**Result**: **PASS**
+
+---
+
+### Check 4: Per-Family Record Count
+
+**Command**: `grep -c "candidate_record_id:" candidate_records_pgf*_preflight.md`
+
+| Family | Expected | Observed | Result |
+|--------|----------|----------|--------|
+| PGF-01 | 18 | 18 | PASS |
+| PGF-02 | 15 | 15 | PASS |
+| PGF-03 | 15 | 15 | PASS |
+| PGF-04 | 14 | 14 | PASS |
+| PGF-05 | 19 | 19 | PASS |
+| PGF-06 | 18 | 18 | PASS |
+| PGF-07 | 15 | 15 | PASS |
+| PGF-08 | 14 | 14 | PASS |
+| PGF-09 | 4 | 4 | PASS |
+| **Total** | **132** | **132** | **PASS** |
+
+**Result**: **PASS** — All 9 families match expected counts
+
+---
+
+### Check 5: Production Authority
+
+**Command family**: grep with exclusion filter against candidate_records_pgf*_preflight.md
+
+| Check | Command Pattern | Expected | Observed | Result |
+|-------|----------------|----------|----------|--------|
+| production_authority ≠ NONE | `grep "^production_authority:" \| grep -v "NONE" \| wc -l` | 0 | 0 | PASS |
+| preliminary ≠ true | `grep "^preliminary:" \| grep -v "true" \| wc -l` | 0 | 0 | PASS |
+| lifecycle_status: ACTIVE | `grep "lifecycle_status: ACTIVE" \| wc -l` | 0 | 0 | PASS |
+| lifecycle_status: APPROVED | `grep "lifecycle_status: APPROVED" \| wc -l` | 0 | 0 | PASS |
+| Candidate_Status: ACTIVE | `grep "^Candidate_Status: ACTIVE" \| wc -l` | 0 | 0 | PASS |
+| Candidate_Status: APPROVED | `grep "^Candidate_Status: APPROVED" \| wc -l` | 0 | 0 | PASS |
+| Candidate_Status: PRODUCTION | `grep "^Candidate_Status: PRODUCTION" \| wc -l` | 0 | 0 | PASS |
+| Candidate_Status: VALIDATED | `grep "^Candidate_Status: VALIDATED" \| wc -l` | 0 | 0 | PASS |
+
+**Result**: **PASS** — Zero forbidden production authority or status values
+
+---
+
+### Check 6: Peer Group ID Non-Creation
+
+**Command family**: grep with exclusion filter against candidate_records_pgf*_preflight.md
+
+| Check | Command Pattern | Expected | Observed | Result |
+|-------|----------------|----------|----------|--------|
+| peer_group_id ≠ PREFLIGHT_PLACEHOLDER_NOT_CANONICAL | `grep "^peer_group_id:" \| grep -v "PREFLIGHT_PLACEHOLDER_NOT_CANONICAL" \| wc -l` | 0 | 0 | PASS |
+| peer_group_id_status ≠ NOT_CREATED | `grep "^peer_group_id_status:" \| grep -v "NOT_CREATED" \| wc -l` | 0 | 0 | PASS |
+| peer_group_registry.yaml exists | `find <repo_root> -name "peer_group_registry.yaml" \| wc -l` | 0 | 0 | PASS |
+
+**Result**: **PASS** — Zero canonical IDs, no registry file exists
+
+---
+
+### Check 7: Market Data / Trading / SAI Boundary
+
+**Command family**: grep with exclusion filter against candidate_records_pgf*_preflight.md
+
+| Check | Command Pattern | Expected | Observed | Result |
+|-------|----------------|----------|----------|--------|
+| market_data_fields_status ≠ NOT_POPULATED_IN_PREFLIGHT | `grep "^market_data_fields_status:" \| grep -v "NOT_POPULATED_IN_PREFLIGHT" \| wc -l` | 0 | 0 | PASS |
+| trading_governance_fields_status ≠ FUTURE_COMPLIANCE_REFERENCE_NOT_OPERATIONAL | `grep "^trading_governance_fields_status:" \| grep -v "FUTURE_COMPLIANCE_REFERENCE_NOT_OPERATIONAL" \| wc -l` | 0 | 0 | PASS |
+| SAI_contract_status ≠ PREFLIGHT_NOT_CANONICAL | `grep "^SAI_contract_status:" \| grep -v "PREFLIGHT_NOT_CANONICAL" \| wc -l` | 0 | 0 | PASS |
+| Runtime/validation code files in artifacts/ | `find artifacts/ -name "*.py" -o -name "*.ts" -o -name "*.js" -o -name "*.go" -o -name "*.sh" -o -name "*.yaml" -o -name "*.yml" \| wc -l` | 0 | 0 | PASS |
+
+**Note**: `exchange_candidates` fields inside candidate records are candidate identity metadata (listing venue MICs for identity resolution), NOT broker/execution connectivity. They are permitted per the candidate record schema (Component 2, design.md).
+
+**Result**: **PASS** — All boundary fields carry correct non-operational values; no runtime/code artifacts exist
+
+---
+
+### Check 8: PGF-09 Rule-Based Verification
+
+**Command family**: grep against candidate_records_pgf09_preflight.md
+
+| Check | Command Pattern | Expected | Observed | Result |
+|-------|----------------|----------|----------|--------|
+| PGF-09 candidate_record_id count | `grep -c "candidate_record_id:" candidate_records_pgf09_preflight.md` | 4 | 4 | PASS |
+| PGF-09 peer_role values | `grep "^peer_role:" candidate_records_pgf09_preflight.md` | All etf_peer | etf_peer ×4 | PASS |
+| PGF-09 asset_type values | `grep "^asset_type:" candidate_records_pgf09_preflight.md` | All etf | etf ×4 | PASS |
+| PGF-09 company peer fallback | `grep "^peer_role: core_peer\|^peer_role: adjacent_peer" candidate_records_pgf09_preflight.md \| wc -l` | 0 | 0 | PASS |
+
+**Result**: **PASS** — PGF-09 is rule-based with 4 ETF subcluster records, no company peer fallback
+
+---
+
+### Check 9: Evidence Gap Register Verification
+
+**Command family**: grep against candidate_evidence_gaps_preflight.md
+
+| Check | Command Pattern | Expected | Observed | Result |
+|-------|----------------|----------|----------|--------|
+| CANDIDATE_BLOCKED gaps | Structural analysis of gap register table | 0 | 0 | PASS |
+| CANDIDATE_DEFERRED gaps | Structural analysis of gap register table | 0 | 0 | PASS |
+| Context observations total | `grep "Total gap entries.*19\|Total.*19.*Zero blocking"` | 19 | 19 | PASS |
+| Final marker | `grep "CANDIDATE_EVIDENCE_GAPS_PREFLIGHT_COMPLETE"` | Present | Present | PASS |
+
+**Result**: **PASS** — 0 blocking gaps, 19 context observations, final marker present
+
+---
+
+### Check 10: Gate Result Marker
+
+**Command**: `grep "VG_PGRC_PREFLIGHT_1_READY_FOR_HUMAN_REVIEW" gate_vg_pgrc_preflight_1.md`
+
+**Expected**: Present
+
+**Observed**: Present
+
+**Result**: **PASS**
+
+---
+
+### Check 11: Task Status Verification
+
+**Command**: `grep -E "^\- \[" tasks.md | head -14`
+
+| Task | Expected Status | Observed | Result |
+|------|----------------|----------|--------|
+| Task 1 | [x] complete | [x] | PASS |
+| Task 2 | [x] complete | [x] | PASS |
+| Task 3 | [x] complete | [x] | PASS |
+| Task 4 | [x] complete | [x] | PASS |
+| Task 5 | [x] complete | [x] | PASS |
+| Task 6 | [x] complete | [x] | PASS |
+| Task 7 | [x] complete | [x] | PASS |
+| Task 8 | [x] complete | [x] | PASS |
+| Task 9 | [x] complete | [x] | PASS |
+| Task 10 | [x] complete | [x] | PASS |
+| Task 11 | [x] complete | [x] | PASS |
+| Task 12 | [x] complete | [x] | PASS |
+| Task 13 | [ ] not started | [ ] | PASS |
+| Task 14 | [ ] not started | [ ] | PASS |
+
+**Result**: **PASS** — Tasks 1–12 complete; Tasks 13–14 remain unchecked
+
+---
+
+### Deterministic Evidence Summary
+
+| Check # | Category | Result |
+|---------|----------|--------|
+| 1 | Artifact Presence (20/20) | **PASS** |
+| 2 | Total Candidate Record Count (132) | **PASS** |
+| 3 | Candidate Status Distribution (112+20=132) | **PASS** |
+| 4 | Per-Family Record Count (all 9 match) | **PASS** |
+| 5 | Production Authority (zero forbidden values) | **PASS** |
+| 6 | Peer Group ID Non-Creation (zero canonical) | **PASS** |
+| 7 | Market Data / Trading / SAI Boundary (zero violations) | **PASS** |
+| 8 | PGF-09 Rule-Based (4 records, all etf_peer) | **PASS** |
+| 9 | Evidence Gap Register (0 blocked, 19 observations) | **PASS** |
+| 10 | Gate Result Marker (present) | **PASS** |
+| 11 | Task Status (1–12 complete, 13–14 unchecked) | **PASS** |
+
+**Aggregate verification**: All 11 deterministic checks PASS. Gate result remains **READY_FOR_HUMAN_REVIEW**.
+
+---
+
 ## Final Status
 
 ```
