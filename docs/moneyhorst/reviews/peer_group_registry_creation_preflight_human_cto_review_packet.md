@@ -96,8 +96,6 @@ These observations require production-data or comparability decisions that canno
 
 For each observation, record the decision using this structure:
 
-</text>
-</invoke>
 ```
 Gap ID:
 Asset / record:
