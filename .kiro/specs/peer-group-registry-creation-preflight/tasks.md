@@ -416,7 +416,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after the declared artifact exists, all 8 check categories are evaluated, all 8 drift categories show zero violations, the aggregate verdict is recorded, and the final status marker is present. Do not start the next task. This task must have its own commit and PR.
   - _Requirements: R14 (Verification Gate)_
 
-- [ ] 13. Create Preflight README
+- [x] 13. Create Preflight README
   - **Purpose**: Document the spec purpose, boundaries, artifact inventory, and next-step constraints.
   - **Report type**: Framework README
   - **Depends on**: Tasks 1–12
