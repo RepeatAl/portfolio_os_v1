@@ -450,7 +450,7 @@ When tasks produce artifacts, they must:
   - **Completion rule**: Complete this task only after the declared artifact exists, acceptance criteria are satisfied, hard boundaries are confirmed, and the final status marker is present. Do not start the next task.
   - _Requirements: All (R1–R15 summary)_
 
-- [ ] 14. Create Final Preflight Completion Review
+- [x] 14. Create Final Preflight Completion Review
   - **Purpose**: Final review confirming all Tasks 1–13 artifacts are complete, consistent, and non-production.
   - **Report type**: Final Completion Review Report
   - **Depends on**: Tasks 1–13
