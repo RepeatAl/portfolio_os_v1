@@ -26,6 +26,16 @@ Future specs that address asset-type expansion or sentiment integration should c
 
 ---
 
+## Cross-References
+
+This guidance must be read together with the MoneyHorst Investment Style, Method, and Allocation Taxonomy SSOT:
+
+- `docs/moneyhorst/investment_style_method_taxonomy_ssot.md`
+
+That SSOT defines the distinction between asset class, instrument, investment style, factor, method, asset allocation, strategy, and system layer. This document uses "asset type" in the SAI block-applicability sense and must not override the taxonomy SSOT.
+
+---
+
 ## Core Principles
 
 1. **Asset type must be explicit.** Every asset analyzed by SAI or any future extension must carry an explicit asset_type classification. Implicit assumptions about asset nature are prohibited.
@@ -45,6 +55,19 @@ Future specs that address asset-type expansion or sentiment integration should c
 ---
 
 ## Asset Type Handling
+
+### Taxonomy Clarification
+
+In the MoneyHorst Investment Taxonomy, ETFs and funds are classified as **instruments**: legal/security wrappers used to express exposure.
+
+Within SAI guidance, ETFs and funds may also be treated as distinct **asset types** for block-applicability purposes. This means certain SAI blocks may be enabled, disabled, or reinterpreted depending on whether the subject is an operating company equity, ETF, fund, index, derivative, commodity, or other wrapper.
+
+These two classifications are compatible because they operate at different architectural layers:
+
+- **Taxonomy layer**: ETF/fund = instrument
+- **SAI block-applicability layer**: ETF/fund = asset type category
+
+This document must not be interpreted as redefining ETFs or funds as investment styles, factors, strategies, or asset classes.
 
 The following asset-type categories are defined at guidance level for future specification work.
 
