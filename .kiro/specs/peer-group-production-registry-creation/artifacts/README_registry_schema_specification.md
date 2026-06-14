@@ -124,6 +124,24 @@ The `structural_break_caveat` field documents:
 
 ---
 
+## Authority vs Lifecycle — Critical Distinction
+
+The schema defines two independent fields that must never be conflated:
+
+| Field | Describes | Governs |
+|-------|-----------|---------|
+| `production_authority` | **Governance authorization** | Whether the record has passed the Human_Approval_Gate |
+| `lifecycle_state` | **Operational lifecycle** | The current functional state of the record in the registry |
+
+**Key rules:**
+
+- `production_authority: HUMAN_CTO_APPROVED` is valid ONLY for records that have passed the Human_Approval_Gate and are authorized for production activation.
+- `production_authority: NONE` applies to candidate, deferred, context-only, or pre-production documentation records.
+- A record with `lifecycle_state: DEFERRED` or `lifecycle_state: CONTEXT_ONLY` must NOT be treated as a production-approved peer assignment unless and until explicit Human/CTO approval changes its authority state.
+- Verification Gate VG-PGRC-PRODUCTION-1 must FAIL if any deferred/context-only record is silently promoted to `HUMAN_CTO_APPROVED` without documented approval evidence.
+
+---
+
 ## Agent Drift Prevention
 
 Future agents reading this README must understand:
@@ -133,6 +151,7 @@ Future agents reading this README must understand:
 3. **No premature creation**: Even if the schema is complete and correct, the registry cannot be created without explicit Human_Approval_Gate passage at Stages 2, 3, and 4.
 4. **No field invention**: Only fields defined in this specification may appear in the registry. Adding fields requires governance proposal and CTO approval.
 5. **No prohibited fields**: The Prohibited Fields Table (Section 11 of the specification) is absolute. Any prohibited field appearing in registry artifacts triggers verification gate failure.
+6. **Authority ≠ Lifecycle**: A record's `lifecycle_state` (DEFERRED, CONTEXT_ONLY) does not imply production authorization. Only `production_authority: HUMAN_CTO_APPROVED` with documented approval evidence grants production status.
 
 ---
 

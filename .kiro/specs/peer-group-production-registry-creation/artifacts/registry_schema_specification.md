@@ -335,8 +335,8 @@ No ad-hoc extension without governance.
 
 | Field | Value | Meaning |
 |-------|-------|---------|
-| production_authority | `HUMAN_CTO_APPROVED` | Record has passed Human_Approval_Gate and is production-authorized |
-| production_authority | `NONE` | Record is in candidate/preflight state — NOT production |
+| production_authority | `HUMAN_CTO_APPROVED` | Record has passed Human_Approval_Gate and is authorized for production activation |
+| production_authority | `NONE` | Record is in candidate, deferred, context-only, or pre-production documentation state — NOT production-authorized |
 
 **Rule**: Every production record MUST carry `production_authority: HUMAN_CTO_APPROVED` (R1.3). No record may exist in the production registry without this value.
 
@@ -349,6 +349,17 @@ No ad-hoc extension without governance.
 | `CONTEXT_ONLY` | Record provides context but is not a full production peer assignment |
 | `DEPRECATED` | Record has been superseded or retired |
 | `NOT_CREATED` | Registry-level state before activation |
+
+### 8.5 Authority vs Lifecycle Distinction
+
+`production_authority` and `lifecycle_state` are independent dimensions and must not be conflated:
+
+- **production_authority** describes **governance authorization** — whether the record has passed the Human_Approval_Gate and is approved for production use.
+- **lifecycle_state** describes **operational/registry lifecycle** — the current functional state of the record within the registry.
+
+A record with `lifecycle_state: DEFERRED` or `lifecycle_state: CONTEXT_ONLY` must NOT be treated as a production-approved peer assignment unless and until explicit Human/CTO approval changes its `production_authority` to `HUMAN_CTO_APPROVED`.
+
+**Verification Gate enforcement**: VG-PGRC-PRODUCTION-1 must FAIL if any record with `lifecycle_state: DEFERRED` or `lifecycle_state: CONTEXT_ONLY` is found carrying `production_authority: HUMAN_CTO_APPROVED` without documented evidence of explicit Human/CTO approval for that state transition. Silent promotion from deferred/context-only to production-approved is a governance violation (R8.5, R9.1).
 
 ### 8.3 Approver Identity
 
