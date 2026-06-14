@@ -590,41 +590,61 @@ The future tasks.md must:
 
 No two production records may share a peer_group_id value.
 
+**Validates: Requirements 2.3**
+
 ### Property 2: P1–P4 Fidelity
 
 Every owner-verified decision must be faithfully encoded without silent modification.
+
+**Validates: Requirements 3.1, 4.1, 5.1, 6.1**
 
 ### Property 3: Deferred Non-Promotion
 
 No deferred decision may reach production status without explicit CTO resolution evidence.
 
+**Validates: Requirements 8.5**
+
 ### Property 4: Regional Preservation
 
 Every regional_context field assigned must remain present and uncleared.
+
+**Validates: Requirements 16.4**
 
 ### Property 5: Structural Break Preservation
 
 Every structural_break_caveat assigned must remain present and uncleared.
 
+**Validates: Requirements 7.1, 7.5**
+
 ### Property 6: Schema Compliance
 
 Every record must conform to the defined schema structure.
+
+**Validates: Requirements 1.1, 1.2**
 
 ### Property 7: Source Traceability
 
 Every peer assignment must trace to a PGMF methodology reference and a P1–P4 decision record.
 
+**Validates: Requirements 12.1, 12.2**
+
 ### Property 8: No Authority Simulation
 
 No registry output may imply investment recommendation, thesis validation, or buy/sell/hold conclusion.
+
+**Validates: Requirements 29.1, 29.2, 29.3**
 
 ### Property 9: Dependency Type Validity
 
 Every dependency_relationships entry must use governed relationship_type and target_type values only.
 
+**Validates: Requirements 1.1, 11.1**
+
 ### Property 10: Boundary Compliance
 
 Zero prohibited outputs may be present in any registry artifact.
+
+**Validates: Requirements 13.1, 13.2, 13.7, 17.1**
 
 ---
 
