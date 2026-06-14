@@ -48,7 +48,7 @@ Tasks that produce README files must explain the relevant concept for both human
 
 ## Tasks
 
-- [ ] 1. Create Source Authority Matrix
+- [x] 1. Create Source Authority Matrix
   - **Purpose**: Document the complete source authority classification for every governing document referenced by this spec.
   - **Output**: `.kiro/specs/peer-group-production-registry-creation/artifacts/source_authority_matrix.md`
   - **Required content**:
