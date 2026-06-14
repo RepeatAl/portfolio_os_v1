@@ -100,7 +100,7 @@ Tasks that produce README files must explain the relevant concept for both human
   - **Commit**: `docs(peer-group-production-registry-creation): Task 2: Add registry schema specification`
   - _Requirements: R1, R15, R16_
 
-- [ ] 3. Create Layer Separation and Boundary Specification
+- [x] 3. Create Layer Separation and Boundary Specification
   - **Purpose**: Define the explicit architectural layer boundaries showing what the registry owns vs what belongs to other Portfolio OS layers.
   - **Output**: `.kiro/specs/peer-group-production-registry-creation/artifacts/layer_separation_boundary_specification.md`
   - **Required content**:
