@@ -631,4 +631,13 @@ No property-based testing applies because no executable code is produced by this
 
 ---
 
-## 27. Boundary Confirmations
+
+---
+
+```
+PEER_GROUP_PRODUCTION_REGISTRY_CREATION_DESIGN_READY
+```
+
+---
+
+*End of design document.*
