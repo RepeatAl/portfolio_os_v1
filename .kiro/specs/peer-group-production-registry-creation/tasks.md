@@ -70,7 +70,7 @@ Tasks that produce README files must explain the relevant concept for both human
   - **Commit**: `docs(peer-group-production-registry-creation): Task 1: Add source authority matrix`
   - _Requirements: R12_
 
-- [ ] 2. Create Registry Schema Specification
+- [x] 2. Create Registry Schema Specification
   - **Purpose**: Define the complete production registry schema (YAML structure, field definitions, types, constraints) as a specification document without creating the actual registry file.
   - **Output**: `.kiro/specs/peer-group-production-registry-creation/artifacts/registry_schema_specification.md`
   - **Required content**:
