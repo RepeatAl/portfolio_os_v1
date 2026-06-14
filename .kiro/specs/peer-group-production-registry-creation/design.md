@@ -586,18 +586,45 @@ The future tasks.md must:
 
 ## Correctness Properties
 
-The following correctness properties must hold for any future production registry creation:
+### Property 1: ID Uniqueness
 
-1. **ID Uniqueness**: No two production records may share a peer_group_id value
-2. **P1–P4 Fidelity**: Every owner-verified decision must be faithfully encoded without silent modification
-3. **Deferred Non-Promotion**: No deferred decision may reach production status without explicit CTO resolution evidence
-4. **Regional Preservation**: Every regional_context field assigned must remain present and uncleared
-5. **Structural Break Preservation**: Every structural_break_caveat assigned must remain present and uncleared
-6. **Schema Compliance**: Every record must conform to the defined schema structure
-7. **Source Traceability**: Every peer assignment must trace to a PGMF methodology reference and a P1–P4 decision record
-8. **No Authority Simulation**: No registry output may imply investment recommendation, thesis validation, or buy/sell/hold conclusion
-9. **Dependency Type Validity**: Every dependency_relationships entry must use governed relationship_type and target_type values only
-10. **Boundary Compliance**: Zero prohibited outputs may be present in any registry artifact
+No two production records may share a peer_group_id value.
+
+### Property 2: P1–P4 Fidelity
+
+Every owner-verified decision must be faithfully encoded without silent modification.
+
+### Property 3: Deferred Non-Promotion
+
+No deferred decision may reach production status without explicit CTO resolution evidence.
+
+### Property 4: Regional Preservation
+
+Every regional_context field assigned must remain present and uncleared.
+
+### Property 5: Structural Break Preservation
+
+Every structural_break_caveat assigned must remain present and uncleared.
+
+### Property 6: Schema Compliance
+
+Every record must conform to the defined schema structure.
+
+### Property 7: Source Traceability
+
+Every peer assignment must trace to a PGMF methodology reference and a P1–P4 decision record.
+
+### Property 8: No Authority Simulation
+
+No registry output may imply investment recommendation, thesis validation, or buy/sell/hold conclusion.
+
+### Property 9: Dependency Type Validity
+
+Every dependency_relationships entry must use governed relationship_type and target_type values only.
+
+### Property 10: Boundary Compliance
+
+Zero prohibited outputs may be present in any registry artifact.
 
 ---
 
