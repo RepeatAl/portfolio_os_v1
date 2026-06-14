@@ -6,11 +6,13 @@
 
 ---
 
-## 1. Purpose
+## Overview
 
-This design defines the controlled documentation architecture for future production registry creation for the MoneyHorst Peer Group system. It translates the hardened requirements (31 requirements, v2) into an architectural model governing how the production registry will be structured, governed, and verified.
+This design defines the controlled documentation architecture for future production registry creation for the MoneyHorst Peer Group system. It translates the hardened requirements (v2) into an architectural model governing how the production registry will be structured, governed, and verified.
 
 This design does NOT create the registry. It defines HOW the registry will be structured when future execution is authorized.
+
+The Peer Group Production Registry is a canonical structural intelligence layer inside Portfolio OS. It supports portfolio reasoning, asset comparability, peer context, evidence traceability, and future semantic interpretation. It is not a trading system, not a portfolio allocator, not a recommendation engine, and not an autonomous investment AI. Principle: Signals decide, AI interprets, Human decides.
 
 ---
 
@@ -72,7 +74,9 @@ This design document does **NOT**:
 
 ---
 
-## 4. Architectural Position
+## Architecture
+
+### Architectural Position
 
 The Peer Group Production Registry is a **canonical structural intelligence layer** inside Portfolio OS.
 
@@ -126,7 +130,9 @@ The Peer Group Production Registry is a **canonical structural intelligence laye
 
 ---
 
-## 6. Registry Schema Boundaries
+## Components and Interfaces
+
+### Registry Schema Boundaries
 
 **Contains**:
 - Peer group family definitions (PGF-01 through PGF-09, future PGF-10)
@@ -153,7 +159,9 @@ The Peer Group Production Registry is a **canonical structural intelligence laye
 
 ---
 
-## 7. Production Registry Schema Model
+## Data Models
+
+### Production Registry Schema Model
 
 ```yaml
 # peer_group_registry.yaml — CONCEPTUAL MODEL ONLY
@@ -576,10 +584,51 @@ The future tasks.md must:
 
 ---
 
-```
-PEER_GROUP_PRODUCTION_REGISTRY_CREATION_DESIGN_READY
-```
+## Correctness Properties
+
+The following correctness properties must hold for any future production registry creation:
+
+1. **ID Uniqueness**: No two production records may share a peer_group_id value
+2. **P1–P4 Fidelity**: Every owner-verified decision must be faithfully encoded without silent modification
+3. **Deferred Non-Promotion**: No deferred decision may reach production status without explicit CTO resolution evidence
+4. **Regional Preservation**: Every regional_context field assigned must remain present and uncleared
+5. **Structural Break Preservation**: Every structural_break_caveat assigned must remain present and uncleared
+6. **Schema Compliance**: Every record must conform to the defined schema structure
+7. **Source Traceability**: Every peer assignment must trace to a PGMF methodology reference and a P1–P4 decision record
+8. **No Authority Simulation**: No registry output may imply investment recommendation, thesis validation, or buy/sell/hold conclusion
+9. **Dependency Type Validity**: Every dependency_relationships entry must use governed relationship_type and target_type values only
+10. **Boundary Compliance**: Zero prohibited outputs may be present in any registry artifact
 
 ---
 
-*End of design document.*
+## Error Handling
+
+Since this spec produces documentation-only artifacts (no runtime code), error handling applies to the governance process:
+
+| Error Condition | Response |
+|----------------|----------|
+| Verification gate check fails | Block production activation; report failure to CTO |
+| Deferred decision silently promoted | Halt; revert to deferred state; require explicit resolution |
+| Schema validation failure | Block registry creation; document violation |
+| Unauthorized relationship_type used | Reject record; require governed extension process |
+| Human_Approval_Gate not passed | Prohibit all production-state transitions |
+| Boundary violation detected | Halt; document violation; block until resolved |
+| Source authority gap | Set record to BLOCKED; require evidence provision |
+
+---
+
+## Testing Strategy
+
+Since this spec is documentation-only and produces no runtime code, verification is achieved through:
+
+1. **Deterministic Verification Gate (VG-PGRC-PRODUCTION-1)**: 16 checks (A–P) verify schema compliance, field completeness, ID uniqueness, P1–P4 fidelity, deferred non-promotion, regional/structural caveat preservation, dependency schema compliance, and boundary compliance
+2. **Source Authority Audit**: Every record traces to PGMF methodology and P1–P4 decision records
+3. **Prohibited Output Scan**: Automated check that zero prohibited outputs exist in any produced artifact
+4. **Dependency Type Validation**: Every relationship_type and target_type is checked against governed allowed-values list
+5. **Human Review**: CTO reviews verification gate results before any production activation
+
+No property-based testing applies because no executable code is produced by this spec. When future implementation occurs, property-based tests will validate ID uniqueness, schema compliance, and boundary adherence.
+
+---
+
+## 27. Boundary Confirmations
