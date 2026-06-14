@@ -452,7 +452,26 @@ It must remain compatible with Portfolio OS principles: **Signals decide, AI int
 4. THE Production_Registry SHALL ONLY provide structured comparability context
 5. Any downstream system consuming registry data SHALL be responsible for its own governance boundaries and must not attribute investment conclusions to the registry
 
-### Requirement 30: Design Preparation Requirements
+### Requirement 30: Scalable Correlation & Dependency Context Model
+
+**User Story:** As a CTO, I want the peer group registry to represent dependency and correlation context as scalable structured relationships, so that future Portfolio OS engines can interpret thematic overlap, narrative dependency, macro exposure, regional comparability, and hidden concentration without the registry performing calculations or reasoning itself.
+
+#### Acceptance Criteria
+
+1. THE Production_Registry_Schema SHALL support a structured dependency_relationships section per asset or peer record
+2. THE dependency_relationships section SHALL be machine-readable and SHALL NOT depend on natural-language parsing
+3. THE dependency_relationships section SHALL support multiple relationship entries per record
+4. Each dependency relationship SHALL include at minimum: relationship_type, target_type, target_id_or_token, relationship_direction, source_authority, evidence_status, confidence_context, lifecycle_state
+5. Allowed relationship_type values SHALL include, at minimum: narrative_dependency, thematic_overlap, business_model_dependency, macro_dependency, liquidity_dependency, regional_dependency, supply_chain_dependency, benchmark_context_dependency, valuation_comparability_dependency, structural_break_dependency
+6. Allowed target_type values SHALL include, at minimum: asset, family, subcluster, theme, region, macro_factor, benchmark, structural_event
+7. THE Production_Registry SHALL support one-to-many and many-to-one dependency relationships without schema migration
+8. THE Production_Registry SHALL support future addition of new relationship_type and target_type values through governed extension rules
+9. THE Production_Registry SHALL NOT calculate statistical correlations, rolling correlations, beta, covariance, factor exposure, or portfolio concentration
+10. THE Production_Registry SHALL NOT activate semantic states such as dependency_elevated, dependency_fragile, concentration_risk_elevated, ai_dependency_high, or portfolio_health_fragile
+11. THE Production_Registry SHALL provide graph-readable structural context only; correlation engines, semantic interpreters, portfolio health engines, and PM reasoning layers remain responsible for calculations and interpretations
+12. THE Verification_Gate SHALL validate that dependency relationships are schema-compliant, source-traceable, non-circular where prohibited, and do not introduce reasoning or scoring output
+
+### Requirement 31: Design Preparation Requirements
 
 **User Story:** As a CTO, I want design.md preparation requirements defined so that the future design document carries the full architectural scope forward.
 
@@ -467,15 +486,20 @@ It must remain compatible with Portfolio OS principles: **Signals decide, AI int
 7. THE future design.md SHALL include a Verification Gate Structure defining VG-PGRC-PRODUCTION-1 checks
 8. THE future design.md SHALL include a Human/CTO Approval Model with multi-stage gate definitions
 9. THE future design.md SHALL include a Deferred-Decision Handling Model for PLTR/PGF-10 and PGF-09
+10. THE future design.md SHALL include a Dependency Relationship Model defining the structured schema for dependency_relationships
+11. THE future design.md SHALL include a Graph-Readiness Model describing how dependency data is consumable as graph-structured context
+12. THE future design.md SHALL include a Relationship Extension Governance section defining how new relationship_type and target_type values are approved
+13. THE future design.md SHALL include a Dependency Boundary Table listing what dependency-related calculations and semantic activations are prohibited
+14. THE future design.md SHALL include a Correlation Calculation Prohibition Table confirming that no statistical correlation, beta, covariance, or factor-exposure calculation is performed by the registry
 
-### Requirement 31: Tasks Preparation Requirements
+### Requirement 32: Tasks Preparation Requirements
 
 **User Story:** As a CTO, I want tasks.md defined as documentation-only preparation tasks, so that no implementation or registry creation occurs until explicitly approved.
 
 #### Acceptance Criteria
 
 1. THE future tasks.md SHALL be documentation-only and SHALL NOT include implementation tasks or registry creation tasks unless explicitly approved by a subsequent Human_Approval_Gate
-2. THE future tasks.md SHALL include artifacts for: source authority matrix, registry schema specification, layer separation and boundary specification, canonical ID minting rules, P1–P4 carry-forward matrix, deferred-decision resolution model, SAI read-only interface contract, verification gate definition, human/CTO approval gate specification, and final spec readiness review
+2. THE future tasks.md SHALL include artifacts for: source authority matrix, registry schema specification, layer separation and boundary specification, canonical ID minting rules, P1–P4 carry-forward matrix, deferred-decision resolution model, SAI read-only interface contract, verification gate definition, human/CTO approval gate specification, dependency_relationship_model_specification.md, and final spec readiness review
 3. THE future tasks.md SHALL require that each task produces a documentation artifact only
 4. THE future tasks.md SHALL NOT include tasks that create peer_group_registry.yaml, mint canonical peer_group_id values, approve candidate records, or execute production registry activation
 5. THE future tasks.md SHALL include a final spec readiness review task that verifies all preparation artifacts are complete before any production execution may be proposed
@@ -503,7 +527,7 @@ It must remain compatible with Portfolio OS principles: **Signals decide, AI int
 ---
 
 ```
-PEER_GROUP_PRODUCTION_REGISTRY_CREATION_REQUIREMENTS_HARDENED_AGAINST_MONEYHORST_SSOT
+PEER_GROUP_PRODUCTION_REGISTRY_CREATION_REQUIREMENTS_HARDENED_AGAINST_MONEYHORST_SSOT_AND_DEPENDENCY_MODEL
 ```
 
 ---
