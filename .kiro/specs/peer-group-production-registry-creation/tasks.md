@@ -194,7 +194,7 @@ Tasks that produce README files must explain the relevant concept for both human
 
 - [ ] 7. Create Dependency Relationship Specification
   - **Purpose**: Define the complete dependency_relationships model including all governed types, structures, extension governance, and graph-readiness properties.
-  - **Output**: `.kiro/specs/peer-group-production-registry-creation/artifacts/dependency_relationship_specification.md`
+  - **Output**: `.kiro/specs/peer-group-production-registry-creation/artifacts/dependency_relationship_model_specification.md`
   - **Required content**:
     - Full YAML structure from design.md Section 12
     - All 10 relationship_type values with definitions and examples
@@ -218,7 +218,7 @@ Tasks that produce README files must explain the relevant concept for both human
     - Boundary between context and calculation explicit
   - **Hard boundaries**: Documentation only. No correlations calculated. No graph algorithms executed.
   - **Commit**: `docs(peer-group-production-registry-creation): Task 7: Add dependency relationship specification`
-  - _Requirements: R1, R11, R27_
+  - _Requirements: R11, R30, R31, R32_
 
 - [ ] 8. Create SAI Read-Only Interface Contract
   - **Purpose**: Define the contract boundary through which SAI consumes peer group data without mutating the registry or SAI artifacts.
@@ -344,14 +344,14 @@ Tasks that produce README files must explain the relevant concept for both human
     - No scope expansion
   - **Hard boundaries**: Documentation only. No registry.
   - **Commit**: `docs(peer-group-production-registry-creation): Task 13: Add spec README`
-  - _Requirements: All (R1–R31 summary)_
+  - _Requirements: All (R1–R32 summary)_
 
 - [ ] 14. Final Spec Readiness Review
   - **Purpose**: Verify all Tasks 1–13 artifacts are complete, consistent, and non-production before any future execution phase may be proposed.
   - **Output**: `.kiro/specs/peer-group-production-registry-creation/artifacts/spec_readiness_review.md`
   - **Required content**:
     - All task artifacts (Tasks 1–13) verified present
-    - Requirements traceability: each R1–R31 mapped to producing task(s)
+    - Requirements traceability: each R1–R32 mapped to producing task(s)
     - Design traceability: each design section mapped to producing task(s)
     - Boundary confirmations: zero prohibited outputs
     - Deferred decisions still deferred (no silent promotion)
@@ -368,7 +368,7 @@ Tasks that produce README files must explain the relevant concept for both human
   - **Hard boundaries**: Review only. No production activation. Must not complete until Tasks 1–13 are done.
   - **Final status marker**: `PEER_GROUP_PRODUCTION_REGISTRY_CREATION_SPEC_PREPARATION_COMPLETE`
   - **Commit**: `docs(peer-group-production-registry-creation): Task 14: Add final spec readiness review`
-  - _Requirements: All (R1–R31 final verification)_
+  - _Requirements: All (R1–R32 final verification)_
 
 ## Task Dependency Graph
 
